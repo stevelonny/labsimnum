@@ -49,9 +49,6 @@ int main(int argc, const char** argv){
     for(int i{0}; i<n_blocks; i++){
         sum = 0;
         v_sum = 0;
-        //sum_prog += ave;
-        //su2_prog += av2;
-        //av2 = sum;
         for(int j{0}; j<l_blocks; j++){
             sum += rnd.Rannyu();
             v_sum += pow(rnd.Rannyu() - 0.5, 2);
