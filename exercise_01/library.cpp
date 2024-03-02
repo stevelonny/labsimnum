@@ -1,5 +1,6 @@
 #include "library.h"
 
+/* base class for blocking average */
 BlockingAvg::BlockingAvg()
 {
 }
@@ -38,6 +39,7 @@ double BlockingAvg::Error(double ave, double av2, int i){
     }
 }
 
+/* child class for variance */
 void BlockingVar::funny(double rand){
     sum += pow(rand - 0.5, 2);
 }
