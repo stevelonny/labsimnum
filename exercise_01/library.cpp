@@ -1,5 +1,47 @@
 #include "library.h"
 
+BlockingAvg::BlockingAvg()
+{
+}
+
+BlockingAvg::~BlockingAvg()
+{
+}
+
+void BlockingAvg::Calculate(int n_throws, int n_blocks, Random &rnd, ofstream &file){
+    cum_sum = 0.;
+    cum_sum2 = 0.;
+    l_block = (double)n_throws/(double)n_blocks;
+    for(int i{0}; i<n_blocks; i++){
+        sum = 0;
+        for(int j{0}; j<l_block; j++){
+            funny(rnd.Rannyu());
+        }
+        //cumulative sum: this is the (i+1)-th point
+        cum_sum += sum / (double)l_block;           
+        cum_sum2 += pow(sum / (double)l_block, 2);
+        //write out to file
+        fmt::print(file, "{0}\t{1}\t{2}\n", (i+1)*l_block, cum_sum/(double)(i+1), Error(cum_sum/(double)(i+1), cum_sum2/(double)(i+1), i));
+    }
+}
+
+void BlockingAvg::funny(double rand){
+    sum += rand;
+}
+
+double BlockingAvg::Error(double ave, double av2, int i){
+    if(i == 0){
+        return 0.;
+    }
+    else{
+        return sqrt(fabs(av2 - ave*ave)/((double)i));
+    }
+}
+
+void BlockingVar::funny(double rand){
+    sum += pow(rand - 0.5, 2);
+}
+
 
 void initRandom(Random &rnd, string seedfile = string(ROOT_PATH) + "/random/seed.in"){
 
