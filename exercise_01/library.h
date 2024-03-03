@@ -36,3 +36,5 @@ private:
 void initRandom(Random &rnd, string seedfile);
 double error(double ave, double av2, int i);
 
+double expo(double rand, double lambda);
+double cauchy(double rand, double center, double gamma);

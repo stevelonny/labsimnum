@@ -18,7 +18,7 @@ void BlockingAvg::Calculate(int n_throws, int n_blocks, Random &rnd, ofstream &f
         for(int j{0}; j<l_block; j++){
             funny(rnd.Rannyu());
         }
-        //cumulative sum: this is the (i+1)-th point
+        //cumulative avg?: this is the (i+1)-th point
         cum_sum += sum / (double)l_block;           
         cum_sum2 += pow(sum / (double)l_block, 2);
         //write out to file
@@ -82,3 +82,11 @@ double error(double ave, double av2, int i){
         return sqrt(fabs(av2 - ave*ave)/((double)i));
     }
 }
+
+double expo(double rand, double lambda){
+    return (-1./lambda) * log(1. - rand);
+}
+double cauchy(double rand, double center, double gamma){
+    return center + gamma * tan(M_PI * (rand - 0.5));
+}
+
