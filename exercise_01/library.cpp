@@ -45,11 +45,11 @@ void BlockingVar::funny(double rand){
 }
 
 
-void initRandom(Random &rnd, string seedfile = string(ROOT_PATH) + "/random/seed.in"){
+void initRandom(Random &rnd, string seedfile = paths::path_SEED){
 
     double p1, p2;
     int seed[4];
-    ifstream Primes(string(ROOT_PATH) + "/random/Primes");
+    ifstream Primes(paths::path_PRIMES);
     if(Primes.is_open()){
         Primes >> p1 >> p2;
         Primes.close();

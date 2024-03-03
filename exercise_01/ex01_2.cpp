@@ -4,11 +4,12 @@
 #include "library.h"
 
 using namespace std;
+using namespace filesystem;
 
 int main(){
 
-    vector<int> N {1, 2, 10, 100};
-    int n_real = 1e4;
+    vector<size_t> N {1, 2, 10, 100};
+    size_t n_real = 1e4;
     double lambda{1.};
     double center{0.};
     double gamma{1.};
@@ -20,7 +21,7 @@ int main(){
 
 
     Random rnd;
-    initRandom(rnd, string(ROOT_PATH) + "/random/seed.in");
+    initRandom(rnd, paths::path_SEED);
 
 /*
     ofstream out_unif, out_expo, out_cauchy;
@@ -55,20 +56,20 @@ int main(){
     /* lets use some smart pointer and ofstream, we're writing in c++ anyway */
     unique_ptr<ofstream[]> out(new ofstream[N.size()]);
     for(int i{0}; i<N.size(); i++){
-        string filename = fmt::format("{0}/data/ex_01.2s_{1}.dat", string(ROOT_PATH), N[i]);
-        out[i].open(filename);
+        path filepath = paths::path_DATA / fmt::format(string("ex_01.2s_{}.dat"), N[i]);
+        out[i].open(filepath);
         if(!out[i].is_open()){
-            fmt::print(cerr, "Error: unable to open {0}\n", filename);
+            fmt::print(cerr, "Error: unable to open {0}\n", filepath);
             return -1;
         }
     }
 
-    for(int i{0}; i<n_real; i++){
+    for(size_t i{0}; i<n_real; i++){
         sum_unif    = 0.;
         sum_expo    = 0.;
         sum_cauchy  = 0.;
-        for(int s{0}; s<N.size(); s++){
-            for(int d{0}; d<N[s]-((s<1)?0:N[s-1]) /* reduces the # of generations by reusing the previous one */; d++){
+        for(size_t s{0}; s<N.size(); s++){
+            for(size_t d{0}; d<N[s]-((s<1)?0:N[s-1]) /* reduces the # of generations by reusing the previous one */; d++){
                 current = rnd.Rannyu();
                 sum_unif += current;
                 sum_expo += expo(current, lambda);

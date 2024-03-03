@@ -70,7 +70,11 @@ ipython_config.py
 
 # End of https://www.toptal.com/developers/gitignore/api/c++,jupyternotebooks,visualstudiocode
 
+#custom
+
 build/
 build/*
 build/**
 data/
+
+version_config.hpp

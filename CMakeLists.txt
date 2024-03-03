@@ -1,11 +1,13 @@
-cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 project(Lab_Simulazione_Numerica)
 
-set(CMAKE_CXX_FLAGS "-Wall -O3 --std=c++17")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED On)
+set(CMAKE_CXX_FLAGS "-Wall -O3")
 set(MAKEFLAGS += -s)
 
 add_subdirectory(random)
 add_subdirectory(fmt)
 add_subdirectory(exercise_01)
 
-configure_file( ${CMAKE_SOURCE_DIR}/version_config.h.in ${CMAKE_BINARY_DIR}/version_config.h)
+configure_file( ${CMAKE_SOURCE_DIR}/version_config.hpp.in ${CMAKE_BINARY_DIR}/version_config.h)

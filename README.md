@@ -4,27 +4,31 @@
 
 ## Description
 
-This is a collection of exercises written during Laboratorio di Simulazione Numerica (A.A. 2023-2024) @UNIMI. It's a pair of `C++` codes for data generation and `jupyter-notebooks` for data analysis.
+This is a collection of exercises written during Laboratorio di Simulazione Numerica (A.A. 2023-2024) @UNIMI. It's a pair of `C++` codes for data generation and `jupyter-notebook` for data analysis.
 
 ## Installation & Usage
 
 ### Dependences
-For building and running the `C++` codes, `cmake` and `make` are required, in addiction of a `C++` compiler such as gcc/g++ or clang. All the data analysis is done through `jupyter-notebooks`, using the following `python` modules: `mathplotlib`, `numpy`, `math`. 
+For building and running the `C++` codes `cmake` and `make` are required, in addiction of a `C++` compiler such as gcc/g++ or clang version `c++17` or later. Data formatting in `c++`is done through [`fmtlib`](https://fmt.dev/latest/index.html) and it is provided within the repository.
+
+All the data analysis is done through `jupyter-notebook` using as kernel python 3.12.2 with the following `python` modules: `mathplotlib`, `numpy`, `math`.
 
 ### Build
-After having cloned this repo, in its root directory create a directory called `build`, where `cmake` will create the required configuration files.
+Clone this repo. In the root directory create a folder called `build`. This is needed by `cmake` for storing the required configuration and `Makefile` files.
 
 ```shell
 mkdir build
 ```
-Navigate to the directory just created and run `cmake`
+
+Navigate to the directory just created and run `cmake`:
 ```shell
 cd build
 cmake ..
 ```
-Once finished, `cmake` configured the necessary `Makefile` for each exercise. The codes can now be compiled and run, by navigating to the desidered exercise's folder (inside the `build` directory)mor compiling all of the targets.
 
-These codes will store all the data generated in a folder called `data`, which has to be created in the root directory of the project. The Jupyter notebooks will use this folder for the data analysis.
+Once finished, `cmake` will have configured the necessary `Makefile` for each exercise. The codes can now be compiled and run. Navigate to the desidered exercise's folder (inside the `build` directory) or compile all of the targets by running in the `build` directory.
+
+The data generated will be store  in a direcotry called `data`. Create such directory in the root of the project. The Jupyter notebooks will use this folder for the data analysis.
 
 ### Usage
 

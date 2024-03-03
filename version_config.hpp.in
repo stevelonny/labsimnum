@@ -1,0 +1,27 @@
+#pragma once
+
+#include <filesystem>
+#include <fmtlib.h>
+//macross
+//#define ROOT_PATH "@CMAKE_SOURCE_DIR@"
+//#define ROOT_DATA "@CMAKE_SOURCE_DIR@/data"
+/* the future is now, old man */
+namespace paths{
+    const std::filesystem::path path_SEED("@CMAKE_SOURCE_DIR@/random/seed.in");
+    const std::filesystem::path path_PRIMES("@CMAKE_SOURCE_DIR@/random/Primes");
+    const std::filesystem::path path_ROOT("@CMAKE_SOURCE_DIR@");
+    const std::filesystem::path path_DATA("@CMAKE_SOURCE_DIR@/data");
+}
+
+/* add formatter for filepath (ok)*/
+/* simply add a way to return the string version of a filesystem::path */
+template <> struct fmt::formatter<std::filesystem::path>{
+    template<typename ParseContext>
+    constexpr auto parse(ParseContext& ctx){
+        return ctx.begin();
+    }
+    template<typename FormatContext>
+    auto format(const std::filesystem::path& p, FormatContext& ctx){
+        return format_to(ctx.out(), "{}", p.string());
+    }
+};

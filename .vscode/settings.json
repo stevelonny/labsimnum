@@ -2,6 +2,8 @@
     "C_Cpp.default.compilerPath": "/usr/bin/g++",
     "files.associations": {
         "cmath": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "fstream": "cpp",
+        "iostream": "cpp"
     }
 }
