@@ -46,9 +46,9 @@ int main(int argc, const char** argv){
     out.close();
 
     out.clear();
-    out.open(paths::path_DATA/"ex_01.1b.dat");
+    out.open(paths::path_DATA/"ex_01.1c.dat");
     if(!out.is_open()){
-        fmt::print(cerr, "Error: unable to open {0}\n", paths::path_DATA/"ex_01.1b.dat");
+        fmt::print(cerr, "Error: unable to open {0}\n", paths::path_DATA/"ex_01.1c.dat");
         return -1;
     }
 

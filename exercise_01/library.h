@@ -14,12 +14,13 @@ using namespace std;
 class BlockingAvg
 {
 private:
-    int n_throws, n_blocks, l_block;
-    double cum_sum, cum_sum2;
-    virtual void funny(double rand);
+    virtual void funny(Random &rnd);
+    virtual void avg(Random &rnd);
     double Error(double ave, double av2, int i);
 protected:
+    double cum_avg, cum_avg2;
     double sum;
+    int n_throws, n_blocks, l_block;
 public:
     BlockingAvg();
     virtual ~BlockingAvg();
@@ -29,7 +30,18 @@ public:
 class BlockingVar : public BlockingAvg
 {
 private:
-    void funny(double rand) override;
+    void funny(Random &rnd) override;
+};
+
+class BlockingBuffon : public BlockingAvg
+{
+    public:
+        BlockingBuffon();
+        BlockingBuffon(double needle, double distance);
+    private:
+        double l, d;
+        void avg(Random &rnd) override;
+        void funny(Random &rnd) override;
 };
 
 

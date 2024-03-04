@@ -38,6 +38,20 @@ _TODO_
 
 _TODO_
 
+### Exercise 01
+[Notebook](/notebooks/exercise_01.ipynb), [Codes](/exercise_01/)
+
+#### To Do
+
+- [ ] Accurate description in the notebook
+- [ ] Progressive uncertainity for all blocking avgs in the notebooks
+- [ ] Add fits to histograms in notebook, ex01.2
+- [ ] Commenting code where needed
+- [ ] Adding messages in the c++ codes
+- [ ] ...
+
+
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
