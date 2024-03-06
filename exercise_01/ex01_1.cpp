@@ -26,8 +26,9 @@ int main(int argc, const char** argv){
         return -1;
     }
 
+    fmt::print("Calculating average of rannyu distribution with {0} throws through {1} blocks\n", n_throws, n_blocks);
     avg.Calculate(n_throws, n_blocks, rnd, out);
-
+    fmt::print("Output written in {0}\n", paths::path_DATA/"ex_01.1a.dat");
     out.close();
 
     /* variance */
@@ -40,7 +41,9 @@ int main(int argc, const char** argv){
         return -1;
     }
 
+    fmt::print("Calculating variance of rannyu distribution with {0} throws through {1} blocks\n", n_throws, n_blocks);
     var.Calculate(n_throws, n_blocks, rnd, out);
+    fmt::print("Output written in {0}\n", paths::path_DATA/"ex_01.1b.dat");
 
     /* chi2 */
     out.close();
@@ -60,14 +63,15 @@ int main(int argc, const char** argv){
     double expected{(double)n_throws/(double)m_intervals};
     double chi;
 
+    fmt::print("Calculating chi2 estimator for the Rannyu distribution with {0} throws in {1} intervals\n", n_throws, m_intervals);
     for(int k{0}; k<100; k++){
         //reset each cycle counters for throws fallen inside defined intervals    
-        //reset chi2
         counter.assign(counter.size(), 0);
+        //reset chi2
         chi = 0;
         for(int i{0}; i<n_throws; i++){
             current = rnd.Rannyu();
-            // round to the nearest lower int
+            // round to the nearest lower int to get which interval the throw is fallen into
             int j{static_cast<int>(current/width)};
             counter[j] ++;
             /* 
@@ -81,7 +85,7 @@ int main(int argc, const char** argv){
         }
         fmt::print(out, "{0}\t{1}\n", k+1, chi);
     }
-
+    fmt::print("Output written in {0}\n", paths::path_DATA/"ex_01.1c.dat");
     out.close();
 
     return 0;

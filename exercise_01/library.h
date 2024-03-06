@@ -11,11 +11,15 @@
 
 using namespace std;
 
+/* init random number generator */
+void initRandom(Random &rnd, string seedfile);
+
+/* mother class for blocking avg */
 class BlockingAvg
 {
 private:
-    virtual void funny(Random &rnd);
-    virtual void avg(Random &rnd);
+    virtual void Funny(Random &rnd);
+    virtual void Average(Random &rnd);
     double Error(double ave, double av2, int i);
 protected:
     double cum_avg, cum_avg2;
@@ -27,12 +31,14 @@ public:
     void Calculate(int n_throws, int n_blocks, Random &rnd, ofstream &file);
 };
 
+/* child class for sigma^2 */
 class BlockingVar : public BlockingAvg
 {
 private:
-    void funny(Random &rnd) override;
+    void Funny(Random &rnd) override;
 };
 
+/* child class for buffon's needle */
 class BlockingBuffon : public BlockingAvg
 {
     public:
@@ -40,13 +46,10 @@ class BlockingBuffon : public BlockingAvg
         BlockingBuffon(double needle, double distance);
     private:
         double l, d;
-        void avg(Random &rnd) override;
-        void funny(Random &rnd) override;
+        void Average(Random &rnd) override;
+        void Funny(Random &rnd) override;
 };
 
-
-void initRandom(Random &rnd, string seedfile);
-double error(double ave, double av2, int i);
-
-double expo(double rand, double lambda);
-double cauchy(double rand, double center, double gamma);
+/* inverse distribution */
+double exponential_distribution(double rand, double lambda);
+double cauchy_distribution(double rand, double center, double gamma);
