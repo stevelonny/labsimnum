@@ -50,6 +50,16 @@ _TODO_
 - [x] Commenting code where needed
 - [x] Adding messages in the c++ codes
 
+### Exercise 02
+[Notebook](/notebooks/exercise_02.ipynb), [Codes](/exercise_02/)
+
+### To Do
+
+- [ ] Accurate description in the notebook
+- [ ] Add assignments
+- [ ] Add fits for random walks
+- [ ] Commenting code where needed
+- [ ] Adding messages in the c++ codes
 
 
 ## License
