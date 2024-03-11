@@ -58,7 +58,8 @@ _TODO_
 - [ ] Accurate description in the notebook
 - [ ] Add assignments
 - [ ] Add fits for random walks
-- [ ] Commenting code where needed
+- [ ] Add comparison with fitted curves
+- [x] Commenting code where needed
 - [ ] Adding messages in the c++ codes
 
 

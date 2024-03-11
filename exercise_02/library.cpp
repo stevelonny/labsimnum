@@ -114,18 +114,21 @@ void BlockingBuffon::Funny(Random &rnd){
     if((rnd.Rannyu() * sqrt(x*x+y*y))/ x /* sin function! */ <=(l/d)){
         sum += 1.;
     }
-    //sum += ((double)rnd.Rannyu()/(acos(1.-(double)rnd.Rannyu()))>(l/d))?0.:1.;
+}
+
+/* coseno funciton */
+double Coseno::Eval(double x){
+    return (double)M_PI_2*cos(x*(double)M_PI_2);
 }
 
 
-/*  */
-BlockingMonte::BlockingMonte() : a{0.}, b{1.}{
+/* integrals with montecarlo mean method, with blck avg */
+//base class with uniform distribution
+BlockingMonte::BlockingMonte(){}
 
-}
+BlockingMonte::BlockingMonte(Function &fun) : a{0.}, b{1.}, fun{&fun}{}
 
-BlockingMonte::BlockingMonte(double a, double b) : a{a}, b{b}{
-
-}
+BlockingMonte::BlockingMonte(Function &fun, double a, double b) : a{a}, b{b}, fun{&fun}{}
 
 void BlockingMonte::SetInterval(double a, double b){
     a=a;
@@ -133,27 +136,34 @@ void BlockingMonte::SetInterval(double a, double b){
 }
 
 void BlockingMonte::Funny(Random &rnd){
-    sum += (b-a)*(double)M_PI_2*cos(Probability(rnd)*(double)M_PI_2);
+    double x{Probability(rnd)};
+    sum += (b-a)*(fun->Eval(x))/Denominator(x);
+}
+
+double BlockingMonte::Denominator(double x){
+    return 1.;
 }
 
 double BlockingMonte::Probability(Random &rnd){
     return rnd.Rannyu(a,b);
 }
 
-/*  */
-MonteLin::MonteLin(){
-    SetInterval(0., 1.);
-}
+/* montecarlo mean method with samples from a linear dist */
+MonteLin::MonteLin(){}
 
+//method to copy over from already constructed uniform montecarlo
+MonteLin::MonteLin(BlockingMonte &monte) : BlockingMonte(monte) {}
 
-MonteLin::MonteLin(double b, double a){
-    SetInterval(a, b);
-}
+MonteLin::MonteLin(Function &fun, double a, double b) : BlockingMonte(fun, a, b) {}
 
-void MonteLin::Funny(Random &rnd){
+/* void MonteLin::Funny(Random &rnd){
     double x{Probability(rnd)};
     double den{2.-2.*x};
-    sum += (double)M_PI_2*cos(x*(double)M_PI_2)/den;
+    sum += (b-a)*(double)M_PI_2*cos(x*(double)M_PI_2)/den;
+} */
+
+double MonteLin::Denominator(double x){
+    return 2.-2.*x;
 }
 
 double MonteLin::Probability(Random &rnd){
@@ -161,7 +171,7 @@ double MonteLin::Probability(Random &rnd){
     return 1.-sqrt(1.-x);
 }
 
-/* inverse distribution */
+/* inverse distributions */
 double exponential_distribution(double rand, double lambda){
     return (-1./lambda) * log(1. - rand);
 }
@@ -170,7 +180,7 @@ double cauchy_distribution(double rand, double center, double gamma){
     return center + gamma * tan(M_PI * (rand - 0.5));
 }
 
-/* discrete lattice */
+/* discrete random walk */
 BlockingLattice::BlockingLattice(/* args */) : x{0.}, y{0.}, z{0.}, nstep{100}
 {
     postep = vector<double>(nstep);
@@ -184,22 +194,25 @@ BlockingLattice::~BlockingLattice()
 }
 
 void BlockingLattice::Calculate(int throws, int blocks, Random &rnd, ofstream &file){
+    //set number of blocks and throws
     BlockingLattice::n_blocks = blocks;
     BlockingLattice::n_throws = throws;
     // set lenght of each block
     l_block = (double)n_throws/(double)n_blocks;
     for(int i{0}; i<n_blocks; i++){
-       Average(rnd);
-       for(int j{0}; j<nstep; j++){
+        // compute sum for this block
+        Average(rnd);
+        for(int j{0}; j<nstep; j++){
            posavg[j] += postep[j]/(double)l_block;
            posavg2[j] += (postep[j]*postep[j])/(double)l_block;
-       }
-       fill(postep.begin(), postep.end(), 0.);
+        }
+        //reset cumulative square position
+        fill(postep.begin(), postep.end(), 0.);
     }
     //write out to file
     for(int i{0}; i<nstep; i++){
         // calculate uncertainty: this is the error of the mean
-        // should be propagated with the error of the sum
+        // should be propagated with the error of the sum? (did in the notebooks)
         double uncert = Error(posavg[i]/n_blocks, posavg2[i]/n_blocks, n_blocks);
         fmt::print(file, "{0}\t{1}\t{2}\n", i+1, posavg[i]/(double)n_blocks, uncert);
     }
@@ -207,21 +220,25 @@ void BlockingLattice::Calculate(int throws, int blocks, Random &rnd, ofstream &f
 }
 
 void BlockingLattice::Funny(Random &rnd){
-    int step{(rnd.Rannyu(0,3))};
-    int which_way{rnd.Rannyu(-1.,1.)>0?1:-1};
-    double cart[3] = {x, y, z};
-    cart[step] += which_way;
-    x = cart[0];
-    y = cart[1];
-    z = cart[2];
+    //decide which direction will be the step
+    int which_dir{(rnd.Rannyu(0,3))};
+    //decide if you want to step forward or backward
+    int which_way{rnd.Rannyu(-1.,1.)<0?-1:1};
+    double step[3] = {x, y, z};
+    step[which_dir] += which_way;
+    x = step[0];
+    y = step[1];
+    z = step[2];
 }
 
-// generate one walk and store the sum of the square of the steps for each step
+// generate one walk and store addup to the current square position for each step
 void BlockingLattice::Average(Random &rnd){
     for(int j{0}; j<l_block; j++){
+        //reset position for each block
         x = 0.;
         y = 0.;
         z = 0.;
+        //lets walk
         for(int i{0}; i<nstep; i++){
             Funny(rnd);
             postep[i] += (x*x+y*y+z*z);
@@ -236,8 +253,11 @@ ContinueLattice::ContinueLattice()
 }
 
 void ContinueLattice::Funny(Random &rnd){
+    //theta is uniform
     double theta{rnd.Rannyu(0,2.*(double)M_PI)};
+    //phi should be distributed as 1/2 sin(x)
     double r{rnd.Rannyu()};
+    //inverse cdf of 1/2 sin(x)
     double phi{acos(1.-2.*r)};
     x += sin(phi)*cos(theta);
     y += sin(phi)*sin(theta);

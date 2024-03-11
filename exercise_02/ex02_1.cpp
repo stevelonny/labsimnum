@@ -15,7 +15,9 @@ int main(){
     Random rnd;
     initRandom(rnd, paths::path_SEED);
 
-    BlockingMonte cosenounif(0., 1.);
+    Coseno coseno;
+
+    BlockingMonte cosenounif(coseno, 0., 1.);
 
     ofstream out;
     out.open(paths::path_DATA/"ex_02.1a.dat");
@@ -28,7 +30,11 @@ int main(){
 
     out.close();
 
-    MonteLin cosenolin(0., 1.);
+    //Coseno coseno2;
+
+    //MonteLin cosenolin(coseno, 0., 1.);
+
+    MonteLin cosenolin(cosenounif);
 
     out.clear();
     out.open(paths::path_DATA/"ex_02.1b.dat");
