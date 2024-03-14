@@ -203,13 +203,14 @@ void BlockingLattice::Calculate(int throws, int blocks, Random &rnd, ofstream &f
         // compute sum for this block
         Average(rnd);
         for(int j{0}; j<nstep; j++){
-           posavg[j] += postep[j]/(double)l_block;
-           posavg2[j] += (postep[j]*postep[j])/(double)l_block;
+           posavg[j] += sqrt(postep[j]/(double)l_block) /* postep[j]/(double)l_block */;
+           posavg2[j] += postep[j]/(double)l_block /* (postep[j]*postep[j])/(double)l_block */;
         }
         //reset cumulative square position
         fill(postep.begin(), postep.end(), 0.);
     }
     //write out to file
+    fmt::print(file, "{0}\t{1}\t{2}\n", 0, 0, 0);
     for(int i{0}; i<nstep; i++){
         // calculate uncertainty: this is the error of the mean
         // should be propagated with the error of the sum? (did in the notebooks)

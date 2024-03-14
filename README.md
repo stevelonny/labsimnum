@@ -38,6 +38,10 @@ _TODO_
 
 _TODO_
 
+### Global todo
+
+- [ ] Refactor all libraries
+
 ### Exercise 01
 [Notebook](/notebooks/exercise_01.ipynb), [Codes](/exercise_01/)
 
@@ -60,6 +64,17 @@ _TODO_
 - [ ] Add fits for random walks
 - [ ] Add comparison with fitted curves
 - [x] Commenting code where needed
+- [ ] Adding messages in the c++ codes
+
+### Exercise 03
+[Notebook](/notebooks/exercise_03.ipynb), [Codes](/exercise_03/)
+
+### To Do
+
+- [ ] Accurate description in the notebook
+- [ ] Add assignments
+- [ ] Add comparison between each method, and analytic resolutions
+- [ ] Commenting code where needed
 - [ ] Adding messages in the c++ codes
 
 

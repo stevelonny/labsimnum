@@ -10,5 +10,6 @@ add_subdirectory(random)
 add_subdirectory(fmt)
 add_subdirectory(exercise_01)
 add_subdirectory(exercise_02)
+add_subdirectory(exercise_03)
 
 configure_file( ${CMAKE_SOURCE_DIR}/version_config.hpp.in ${CMAKE_BINARY_DIR}/version_config.h)
