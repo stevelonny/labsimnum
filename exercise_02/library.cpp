@@ -1,35 +1,5 @@
 #include "library.h"
 
-/* int rng */
-void initRandom(Random &rnd, string seedfile = paths::path_SEED){
-
-    double p1, p2;
-    int seed[4];
-    ifstream Primes(paths::path_PRIMES);
-    if(Primes.is_open()){
-        Primes >> p1 >> p2;
-        Primes.close();
-        ifstream input(seedfile);
-        string property;
-        if (input.is_open()){
-            while ( !input.eof() ){
-            input >> property;
-            if( property == "RANDOMSEED" ){
-                input >> seed[0] >> seed[1] >> seed[2] >> seed[3];
-                rnd.SetRandom(seed,p1,p2);
-            }
-        }
-        input.close();
-        }
-        else{
-            cerr << "Error: Unable to open seed file " << seedfile << endl;
-        }
-    }
-    else{
-        cerr << "Error: Unable to open Primes" << endl;
-    }
-}
-
 /* base class for blocking average */
 BlockingAvg::BlockingAvg()
 {
@@ -51,7 +21,7 @@ void BlockingAvg::Calculate(int n_throws, int n_blocks, Random &rnd, ofstream &f
         fmt::print(cerr, "Running block # {0}/{1}\r", i+1, n_blocks);
         Average(rnd);
         //write out to file
-        fmt::print(file, "{0}\t{1}\t{2}\n", (i+1)*l_block, cum_avg/(double)(i+1), Error(cum_avg/(double)(i+1), cum_avg2/(double)(i+1), i));
+        fmt::print(file, "{0}\t{1}\t{2}\n", (i+1), cum_avg/(double)(i+1), Error(cum_avg/(double)(i+1), cum_avg2/(double)(i+1), i));
     }
     std::fflush(stdout);
 }

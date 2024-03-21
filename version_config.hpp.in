@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include <string>
 #include <fmtlib.h>
 //macross
 //#define ROOT_PATH "@CMAKE_SOURCE_DIR@"

@@ -1,5 +1,8 @@
-cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
-project(Lab_Simulazione_Numerica)
+cmake_minimum_required(VERSION 3.11)
+project(
+    Lab_Simulazione_Numerica
+    DESCRIPTION "Laboratorio di Simulazione Numerica"
+    LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED On)

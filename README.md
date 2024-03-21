@@ -28,7 +28,7 @@ cmake ..
 
 Once finished, `cmake` will have configured the necessary `Makefile` for each exercise. The codes can now be compiled and run. Navigate to the desidered exercise's folder (inside the `build` directory) or compile all of the targets by running in the `build` directory.
 
-The data generated will be store  in a direcotry called `data`. Create such directory in the root of the project. The Jupyter notebooks will use this folder for the data analysis.
+The data generated will be stored in a direcotry called `data`. Create such directory in the root of the project. The Jupyter notebooks will use this folder for the data analysis.
 
 ### Usage
 
@@ -40,7 +40,9 @@ _TODO_
 
 ### Global todo
 
-- [ ] Refactor all libraries
+- [ ] Refactor all libraries (ex.: only one blocking avg)
+- [ ] Remake global cmake project structure like [this](https://cliutils.gitlab.io/modern-cmake/chapters/basics/structure.html)
+- [ ] Make data public for release
 
 ### Exercise 01
 [Notebook](/notebooks/exercise_01.ipynb), [Codes](/exercise_01/)

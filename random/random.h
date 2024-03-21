@@ -34,7 +34,14 @@ public:
   double Rannyu(double min, double max);
   // Method to generate a random number with a Gaussian distribution
   double Gauss(double mean, double sigma);
+  //* Method to generate a random number with an exponential distribution
+  double Exponential(double mean, double lambda);
+  //* Method to generate a random number with a Lorentz-Cauchy distribution
+  double Cauchy(double mean, double gamma); 
 };
+
+/* init random number generator */
+void initRandom(Random &rnd, std::string seedfile);
 
 #endif // __Random__
 

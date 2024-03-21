@@ -1,35 +1,5 @@
 #include "library.h"
 
-/* int rng */
-void initRandom(Random &rnd, string seedfile = paths::path_SEED){
-
-    double p1, p2;
-    int seed[4];
-    ifstream Primes(paths::path_PRIMES);
-    if(Primes.is_open()){
-        Primes >> p1 >> p2;
-        Primes.close();
-        ifstream input(seedfile);
-        string property;
-        if (input.is_open()){
-            while ( !input.eof() ){
-            input >> property;
-            if( property == "RANDOMSEED" ){
-                input >> seed[0] >> seed[1] >> seed[2] >> seed[3];
-                rnd.SetRandom(seed,p1,p2);
-            }
-        }
-        input.close();
-        }
-        else{
-            cerr << "Error: Unable to open seed file " << seedfile << endl;
-        }
-    }
-    else{
-        cerr << "Error: Unable to open Primes" << endl;
-    }
-}
-
 /* base class for blocking average */
 BlockingAvg::BlockingAvg()
 {

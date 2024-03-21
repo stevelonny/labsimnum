@@ -12,6 +12,7 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 #include <fstream>
 #include <cmath>
 #include <cstdlib>
+#include <version_config.h>
 #include "random.h"
 
 using namespace std;
@@ -83,6 +84,48 @@ void Random :: SetRandom(int * s, int p1, int p2){
   n4 = p2;
 
   return;
+}
+
+double Random :: Exponential(double mean, double lambda){
+   //* This function generates a random number from an Exponential distribution
+   double rand{Rannyu()};
+   return (-1./lambda) * log(1. - rand);
+}
+
+double Random :: Cauchy(double mean, double gamma){
+   //* This function generates a random number from a Lorentz-Cauchy distribution
+   double rand{Rannyu()};
+   return mean + gamma * tan(M_PI * (rand - 0.5));
+}
+
+/* int rng */
+void initRandom(Random &rnd, string seedfile = paths::path_SEED){
+   // This function initializes the random number generator
+   double p1, p2;
+   int seed[4];
+   ifstream Primes(paths::path_PRIMES);
+   if(Primes.is_open()){
+      Primes >> p1 >> p2;
+      Primes.close();
+      ifstream input(seedfile);
+      string property;
+      if (input.is_open()){
+         while ( !input.eof() ){
+         input >> property;
+         if( property == "RANDOMSEED" ){
+               input >> seed[0] >> seed[1] >> seed[2] >> seed[3];
+               rnd.SetRandom(seed,p1,p2);
+         }
+      }
+      input.close();
+      }
+      else{
+         cerr << "Error: Unable to open seed file " << seedfile << endl;
+      }
+   }
+   else{
+      cerr << "Error: Unable to open Primes" << endl;
+   }
 }
 
 /****************************************************************
