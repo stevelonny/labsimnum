@@ -5,8 +5,8 @@
 #include <cmath>
 #include <random.h>
 #include <version_config.h>
-#include <fmtlib.h>
-#include <ostream.h>
+#include <fmt/format.h>
+#include <fmt/ostream.h>
 
 using namespace std;
 

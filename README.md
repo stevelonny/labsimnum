@@ -1,4 +1,4 @@
-# Numerical Simulation Laboratory
+# Steve's Numerical Simulation Laboratory
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -9,7 +9,10 @@ This is a collection of exercises written during Laboratorio di Simulazione Nume
 ## Installation & Usage
 
 ### Dependences
-For building and running the `C++` codes `cmake` and `make` are required, in addiction of a `C++` compiler such as gcc/g++ or clang version `c++17` or later. Data formatting in `c++`is done through [`fmtlib`](https://fmt.dev/latest/index.html) and it is provided within the repository.
+For building and running the `C++` codes `cmake` and `make` are required, in addiction of a `C++` version `c++17` or later. Dependencies should be handled by cmake.
+
+Data formatting in `c++`is done through [`fmtlib`](https://fmt.dev/latest/index.html) and it is provided within the repository.
+Exercise 04 will use the [`armadillo`](https://arma.sourceforge.net/) libraries for linear algebra calculations in the simulator provided.
 
 All the data analysis is done through `jupyter-notebook` using as kernel python 3.12.2 with the following `python` modules: `mathplotlib`, `numpy`, `math`.
 

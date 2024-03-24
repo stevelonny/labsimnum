@@ -2,7 +2,8 @@
 
 #include <filesystem>
 #include <string>
-#include <fmtlib.h>
+#include <fmt/core.h>
+#include <fmt/os.h>
 //macross
 //#define ROOT_PATH "@CMAKE_SOURCE_DIR@"
 //#define ROOT_DATA "@CMAKE_SOURCE_DIR@/data"
