@@ -12,7 +12,7 @@ This is a collection of exercises written during Laboratorio di Simulazione Nume
 For building and running the `C++` codes `cmake` and `make` are required, in addiction of a `C++` version `c++17` or later. Dependencies should be handled by cmake.
 
 Data formatting in `c++`is done through [`fmtlib`](https://fmt.dev/latest/index.html) and it is provided within the repository.
-Exercise 04 will use the [`armadillo`](https://arma.sourceforge.net/) libraries for linear algebra calculations in the simulator provided.
+Exercise 04 will use the [`armadillo`](https://arma.sourceforge.net/) libraries for linear algebra calculations in the simulator provided, and 'ex04_eq.cpp' make use of multithreading with 'OpenMP'.
 
 All the data analysis is done through `jupyter-notebook` using as kernel python 3.12.2 with the following `python` modules: `mathplotlib`, `numpy`, `math`.
 
@@ -86,6 +86,34 @@ _TODO_
 
 [Notebook](/notebooks/exercise_04.ipynb), [Codes](/exercise_04/)
 
+#### exercise_04_eq - _Equilibration_
+This program runs 10 simulation for each of the 3 phases at different temperature. Its results are used for estimating equilibration time and starting temperature necessary to achieve the desidered temperature.
+On a quadcore i5-10300H, with 100 blocks and 200 steps each block the speed comparison is:
+
+*Single-thread*
+```
+real    15m59.719s
+user    15m55.893s
+sys     0m0.335s
+```
+*Multi-thread*
+```
+real    3m30.244s
+user    21m48.532s
+sys     0m0.909s
+```
+#### _Simulation_
+ToDo: simulation for each phase with the starting condition found thx to the previous exercise
+
+#### To Do
+
+- [ ] Accurate description in the notebook
+- [ ] Add assignments
+- [ ] Add intercept in jupyter with proposed values
+
+
+---
+---
 
 ## License
 

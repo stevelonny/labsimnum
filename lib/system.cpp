@@ -474,9 +474,11 @@ void System :: initialize_properties(system_properties properties){
   _measure_chi      = false;
 
   if(properties.measure_penergy){
-    ofstream coutp(_path_output / "potential_energy.dat");
-    coutp << "#     BLOCK:  ACTUAL_PE:     PE_AVE:      ERROR:" << endl;
-    coutp.close();
+    if(properties.writeout){
+      ofstream coutp(_path_output / "potential_energy.dat");
+      coutp << "#     BLOCK:  ACTUAL_PE:     PE_AVE:      ERROR:" << endl;
+      coutp.close();
+    }
     _nprop++;
     _index_penergy = index_property;
     _measure_penergy = true;
@@ -484,36 +486,44 @@ void System :: initialize_properties(system_properties properties){
     _vtail = 0.0; // TO BE FIXED IN EXERCISE 7
   }
   if(properties.measure_kenergy){
-    ofstream coutk(_path_output / "kinetic_energy.dat");
-    coutk << "#     BLOCK:   ACTUAL_KE:    KE_AVE:      ERROR:" << endl;
-    coutk.close();
+    if(properties.writeout){
+      ofstream coutk(_path_output / "kinetic_energy.dat");
+      coutk << "#     BLOCK:   ACTUAL_KE:    KE_AVE:      ERROR:" << endl;
+      coutk.close();
+    }
     _nprop++;
     _measure_kenergy = true;
     _index_kenergy = index_property;
     index_property++;
   }
   if(properties.measure_tenergy){
-    ofstream coutt(_path_output / "total_energy.dat");
-    coutt << "#     BLOCK:   ACTUAL_TE:    TE_AVE:      ERROR:" << endl;
-    coutt.close();
+    if(properties.writeout){
+      ofstream coutt(_path_output / "total_energy.dat");
+      coutt << "#     BLOCK:   ACTUAL_TE:    TE_AVE:      ERROR:" << endl;
+      coutt.close();
+    }
     _nprop++;
     _measure_tenergy = true;
     _index_tenergy = index_property;
     index_property++;
   }
   if(properties.measure_temp){
-    ofstream coutte(_path_output / "temperature.dat");
-    coutte << "#     BLOCK:   ACTUAL_T:     T_AVE:       ERROR:" << endl;
-    coutte.close();
+    if(properties.writeout){
+      ofstream coutte(_path_output / "temperature.dat");
+      coutte << "#     BLOCK:   ACTUAL_T:     T_AVE:       ERROR:" << endl;
+      coutte.close();
+    }
     _nprop++;
     _measure_temp = true;
     _index_temp = index_property;
     index_property++;
   }
   if(properties.measure_pressure){
-    ofstream coutpr(_path_output / "pressure.dat");
-    coutpr << "#     BLOCK:   ACTUAL_P:     P_AVE:       ERROR:" << endl;
-    coutpr.close();
+    if(properties.writeout){
+      ofstream coutpr(_path_output / "pressure.dat");
+      coutpr << "#     BLOCK:   ACTUAL_P:     P_AVE:       ERROR:" << endl;
+      coutpr.close();
+    }
     _nprop++;
     _measure_pressure = true;
     _index_pressure = index_property;
@@ -521,9 +531,11 @@ void System :: initialize_properties(system_properties properties){
     _ptail = 0.0; // TO BE FIXED IN EXERCISE 7
   }
   if(properties.measure_gofr){
-    ofstream coutgr(_path_output / "gofr.dat");
-    coutgr << "# DISTANCE:     AVE_GOFR:        ERROR:" << endl;
-    coutgr.close();
+    if(properties.writeout){
+      ofstream coutgr(_path_output / "gofr.dat");
+      coutgr << "# DISTANCE:     AVE_GOFR:        ERROR:" << endl;
+      coutgr.close();
+    }
     _n_bins = properties.n_bins;
     _nprop+=_n_bins;
     _bin_size = (_halfside.min() )/(double)_n_bins;
@@ -532,27 +544,33 @@ void System :: initialize_properties(system_properties properties){
     index_property+= _n_bins;
   }
   if(properties.measure_magnet){
-    ofstream coutpr(_path_output / "magnetization.dat");
-    coutpr << "#     BLOCK:   ACTUAL_M:     M_AVE:       ERROR:" << endl;
-    coutpr.close();
+    if(properties.writeout){
+      ofstream coutpr(_path_output / "magnetization.dat");
+      coutpr << "#     BLOCK:   ACTUAL_M:     M_AVE:       ERROR:" << endl;
+      coutpr.close();
+    }
     _nprop++;
     _measure_magnet = true;
     _index_magnet = index_property;
     index_property++;
   }
   if(properties.measure_cv){
-    ofstream coutpr(_path_output / "specific_heat.dat");
-    coutpr << "#     BLOCK:   ACTUAL_CV:    CV_AVE:      ERROR:" << endl;
-    coutpr.close();
+    if(properties.writeout){
+      ofstream coutpr(_path_output / "specific_heat.dat");
+      coutpr << "#     BLOCK:   ACTUAL_CV:    CV_AVE:      ERROR:" << endl;
+      coutpr.close();
+    }
     _nprop++;
     _measure_cv = true;
     _index_cv = index_property;
     index_property++;
   }
   if(properties.measure_chi){
-    ofstream coutpr(_path_output / "susceptibility.dat");
-    coutpr << "#     BLOCK:   ACTUAL_X:     X_AVE:       ERROR:" << endl;
-    coutpr.close();
+    if(properties.writeout){
+      ofstream coutpr(_path_output / "susceptibility.dat");
+      coutpr << "#     BLOCK:   ACTUAL_X:     X_AVE:       ERROR:" << endl;
+      coutpr.close();
+    }
     _nprop++;
     _measure_chi = true;
     _index_chi = index_property;
@@ -845,6 +863,14 @@ if (_measure_pressure){
   coutf << setw(12) << blk << setw(12) << fraction << endl;
   coutf.close();
   
+  return;
+}
+
+void System :: averages(bool nofile){
+  _average     = _block_av / double(_nsteps);
+  _global_av  += _average;
+  _global_av2 += _average % _average; // % -> element-wise multiplication
+
   return;
 }
 

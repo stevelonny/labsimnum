@@ -11,7 +11,6 @@ int main (int argc, char *argv[]){
     properties.measure_temp = true;
     properties.measure_kenergy = true; //necessary to compute temperature
     //Setting the base path for the input and output files
-    string filename = (paths::path_DATA);
     array<string, 3> names = {"solid", "liquid", "gas"};
     //Starting values for the three phases
     array<double, 3> rho = {1.1, 0.8, 0.05};
@@ -21,8 +20,12 @@ int main (int argc, char *argv[]){
     //Starting temps from which the simulations start cycles of 0.05 increments
     array<double, 3> temp = {1.4, 1.7, 0.8};
 
-    for(int l{0}; l<3; l++){ //loop over phases
-        #pragma omp parallel for
+    int current{0};
+    double total = (double)n_blck[0] + (double)n_blck[1] + (double)n_blck[2];
+
+    #pragma omp parallel for
+    for(int l=0; l<3; l++){ //loop over phases
+        #pragma omp taskloop
         for(int i=0; i<10; i++){ //loop over temperatures
             //Setting input parameters
             system_input input;
@@ -31,6 +34,7 @@ int main (int argc, char *argv[]){
             input.temp = temp[l] + 0.05*(double)i;
             input.nblocks = n_blck[l];
             input.nsteps = n_steps[l];
+            //fmt::print("Thread {:<2} | working on phase {:>8} | temperature {:>4.2f}\n", omp_get_thread_num(), names[l], input.temp);
             // Setting filenames for the output files
             string filename = (paths::path_DATA).string() + "/ex04_eq_";
             filename += names[l];
@@ -45,7 +49,7 @@ int main (int argc, char *argv[]){
                     SYS.step();
                     SYS.measure();
                 }
-                SYS.averages(j+1);
+                SYS.averages((bool)true);
                 //Printing the results on the output file
                 int ind_temp = SYS.get_index_temp();
                 double blck_avg = SYS.get_average(ind_temp);
@@ -53,9 +57,14 @@ int main (int argc, char *argv[]){
                 double cum2_avg = SYS.get_sum2average(ind_temp);
                 fmt::print(fileout, "{0:<10.2f} {1:<7} {2:>10.5f} {3:>10.5f} {4:>10.5f}\n",
                                     input.temp, j+1, blck_avg, cum_avg/(double)(j+1), SYS.error(cum_avg, cum2_avg, j+1));
-                if(j == 0){
+                /* if(j == 0){
                     fmt::print("Thread {0:<2} Working on phase {1:<10s} with temp {2:>.2f}\n", 
                                 omp_get_thread_num(), names[l], input.temp);
+                } */
+                if(j%10 == 0){
+                    current ++;
+                    fmt :: print("Overall percentage: {0:>2.0f}%\r", ((double)current/total)*100);
+                    fflush(stdout);
                 }
                 /* if(j%10 == 0){
                     fmt::print("temp:{0:<10.2f} block:{1:<7} blck_temp:{2:>10.5f} cum_temp:{3:>10.5f} error:{4:>10.5f}\r",
@@ -70,5 +79,7 @@ int main (int argc, char *argv[]){
         }
     }
 
+    #pragma omp taskwait
+    fmt::print("\n");
   return 0;
 }

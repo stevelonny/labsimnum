@@ -52,8 +52,9 @@ struct system_properties
   bool measure_cv;
   bool measure_chi;
   int n_bins;
+  bool writeout;
   //ouch
-  system_properties() : measure_penergy(false), measure_kenergy(false), measure_tenergy(false), measure_temp(false), measure_pressure(false), measure_gofr(false), measure_magnet(false), measure_cv(false), measure_chi(false), n_bins{100} {}
+  system_properties() : measure_penergy(false), measure_kenergy(false), measure_tenergy(false), measure_temp(false), measure_pressure(false), measure_gofr(false), measure_magnet(false), measure_cv(false), measure_chi(false), n_bins{100}, writeout{false} {}
 };
 
 class System {
@@ -122,6 +123,7 @@ public: // Function declarations
   void block_reset(int blk);  // Reset block averages
   void measure();             // Measure properties of the system
   void averages(int blk);     // Compute averages of properties
+  void averages(bool nofile); // Compute averages of properties without writing to file
   double error(double acc, double acc2, int blk); // Compute error
   void move(int part);        // Move a particle
   bool metro(int part);       // Perform Metropolis acceptance-rejection step
