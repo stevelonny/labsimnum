@@ -17,7 +17,35 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 
 using namespace std;
 
-Random :: Random(){}
+Random :: Random(){
+   // Default constructor
+   string seedfile = paths::path_SEED;
+   double p1, p2;
+   int seed[4];
+   ifstream Primes(paths::path_PRIMES);
+   if(Primes.is_open()){
+      Primes >> p1 >> p2;
+      Primes.close();
+      ifstream input(seedfile);
+      string property;
+      if (input.is_open()){
+         while ( !input.eof() ){
+         input >> property;
+         if( property == "RANDOMSEED" ){
+               input >> seed[0] >> seed[1] >> seed[2] >> seed[3];
+               this->SetRandom(seed,p1,p2);
+         }
+      }
+      input.close();
+      }
+      else{
+         cerr << "Error: Unable to open seed file " << seedfile << endl;
+      }
+   }
+   else{
+      cerr << "Error: Unable to open Primes" << endl;
+   }
+}
 // Default constructor, does not perform any action
 
 Random :: ~Random(){}

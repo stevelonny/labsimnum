@@ -13,6 +13,7 @@ namespace paths{
     const std::filesystem::path path_PRIMES("@CMAKE_SOURCE_DIR@/random/Primes");
     const std::filesystem::path path_ROOT("@CMAKE_SOURCE_DIR@");
     const std::filesystem::path path_DATA("@CMAKE_SOURCE_DIR@/data");
+    const std::filesystem::path path_IO("@CMAKE_SOURCE_DIR@/input-output");
 }
 
 /* add formatter for filepath (ok)*/

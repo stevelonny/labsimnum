@@ -62,7 +62,7 @@ _TODO_
 ### Exercise 02
 [Notebook](/notebooks/exercise_02.ipynb), [Codes](/exercise_02/)
 
-### To Do
+#### To Do
 
 - [ ] Accurate description in the notebook
 - [ ] Add assignments
@@ -74,13 +74,17 @@ _TODO_
 ### Exercise 03
 [Notebook](/notebooks/exercise_03.ipynb), [Codes](/exercise_03/)
 
-### To Do
+#### To Do
 
 - [ ] Accurate description in the notebook
 - [ ] Add assignments
 - [ ] Add comparison between each method, and analytic resolutions
 - [ ] Commenting code where needed
 - [ ] Adding messages in the c++ codes
+
+### Exercise 04
+
+[Notebook](/notebooks/exercise_04.ipynb), [Codes](/exercise_04/)
 
 
 ## License

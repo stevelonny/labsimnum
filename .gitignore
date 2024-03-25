@@ -76,5 +76,7 @@ build/
 build/*
 build/**
 data/
+*.tar.gz
+input-output/
 
 version_config.hpp

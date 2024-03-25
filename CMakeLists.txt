@@ -22,11 +22,17 @@ FetchContent_MakeAvailable(fmtlib)
 
 find_package(Armadillo REQUIRED)
 
+find_package(OpenMP REQUIRED)
+
 #setting directories
-add_subdirectory(random)
+file(MAKE_DIRECTORY data)
+file(MAKE_DIRECTORY input-output/INPUT/CONFIG)
+file(MAKE_DIRECTORY input-output/OUTPUT/CONFIG)
+add_subdirectory(lib)
 add_subdirectory(exercise_01)
 add_subdirectory(exercise_02)
 add_subdirectory(exercise_03)
+add_subdirectory(exercise_04)
 
 configure_file( ${CMAKE_SOURCE_DIR}/version_config.hpp.in ${CMAKE_BINARY_DIR}/version_config.h)
 

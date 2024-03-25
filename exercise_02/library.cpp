@@ -183,7 +183,6 @@ void BlockingLattice::Calculate(int throws, int blocks, Random &rnd, ofstream &f
     fmt::print(file, "{0}\t{1}\t{2}\n", 0, 0, 0);
     for(int i{0}; i<nstep; i++){
         // calculate uncertainty: this is the error of the mean
-        // should be propagated with the error of the sum? (did in the notebooks)
         double uncert = Error(posavg[i]/n_blocks, posavg2[i]/n_blocks, n_blocks);
         fmt::print(file, "{0}\t{1}\t{2}\n", i+1, posavg[i]/(double)n_blocks, uncert);
     }
