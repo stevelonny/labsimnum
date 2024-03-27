@@ -9,7 +9,7 @@ This is a collection of exercises written during Laboratorio di Simulazione Nume
 ## Installation & Usage
 
 ### Dependences
-For building and running the `C++` codes `cmake` and `make` are required, in addiction of a `C++` compiler compatibile with std `c++17` or later. Dependencies should be handled by cmake.
+For building and running the `C++` codes `cmake` and `make` are required, in addiction of a gcc/g++ (clang does give problems compiling some libraries). Dependencies should be handled by cmake.
 
 Data formatting in `c++`is done through [`fmtlib`](https://fmt.dev/latest/index.html) and it is provided within the repository.
 Exercise 04 will use the [`armadillo`](https://arma.sourceforge.net/) libraries for linear algebra calculations in the simulator provided, and `ex04_eq.cpp` make use of multithreading with `OpenMP`.
@@ -31,7 +31,7 @@ cmake ..
 
 Once finished, `cmake` will have configured the necessary `Makefile` for each exercise. The codes can now be compiled and run. Navigate to the desidered exercise's folder (inside the `build` directory) or compile all of the targets by running in the `build` directory.
 
-The data generated will be stored in a direcotry called `data`. Create such directory in the root of the project. The Jupyter notebooks will use this folder for the data analysis.
+The data generated will be stored in a direcotry called `data`. The Jupyter notebooks will use this folder for the data analysis.
 
 ### Usage
 
@@ -89,7 +89,7 @@ _TODO_
 #### exercise_04_eq - _Equilibration_
 This program runs 10 simulation for each of the 3 phases at different temperature. Its results are used for estimating equilibration time and starting temperature necessary to achieve the desidered temperature.
 On a quadcore i5-10300H, with 100 blocks and 200 steps each block the speed comparison is:
-
+Todo: get rid of output as it is not needed.
 *Single-thread*
 ```
 real    15m59.719s
@@ -102,7 +102,10 @@ real    3m30.244s
 user    21m48.532s
 sys     0m0.909s
 ```
-#### _Simulation_
+#### exercise_04_prep - _Preparation_
+This program runs simulations to prepare a stable configuration for the desired configurations.
+
+#### exercise_04_sim - _Simulation_
 ToDo: simulation for each phase with the starting condition found thx to the previous exercise
 
 #### To Do

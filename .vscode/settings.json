@@ -6,6 +6,8 @@
         "fstream": "cpp",
         "iostream": "cpp",
         "iosfwd": "cpp",
-        "array": "cpp"
+        "array": "cpp",
+        "system_error": "cpp",
+        "filesystem": "cpp"
     }
 }
