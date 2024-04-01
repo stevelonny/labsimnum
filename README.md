@@ -86,10 +86,14 @@ _TODO_
 
 [Notebook](/notebooks/exercise_04.ipynb), [Codes](/exercise_04/)
 
+This exercise is divided in three parts:
+- Equilibration - Generate a bunch of temperatures data to extrapolate starting temperature needed to equilibrate
+- Preparation - Prepare the system in a equilibrated state
+- Simulation - Run the actual simulation
+
 #### exercise_04_eq - _Equilibration_
 This program runs 10 simulation for each of the 3 phases at different temperature. Its results are used for estimating equilibration time and starting temperature necessary to achieve the desidered temperature.
 On a quadcore i5-10300H, with 100 blocks and 200 steps each block the speed comparison is:
-Todo: get rid of output as it is not needed.
 *Single-thread*
 ```
 real    15m59.719s
@@ -102,19 +106,23 @@ real    3m30.244s
 user    21m48.532s
 sys     0m0.909s
 ```
+Todo: get rid of output as it is not needed.
+
 #### exercise_04_prep - _Preparation_
 This program runs simulations to prepare a stable configuration for the desired configurations.
+Run 1 single block of the required number of steps (solid: 50000, liquid: 50000, gas: 500000). Saves the output in [data/ex04](/data/ex04/) under ```INPUT_*```.
 
 #### exercise_04_sim - _Simulation_
-ToDo: simulation for each phase with the starting condition found thx to the previous exercise
+Runs the actual simulation restarting from the input folders generated from the previous code.
 
 #### To Do
 
 - [ ] Accurate description in the notebook
 - [ ] Add assignments
 - [x] Add intercept in jupyter with proposed values
-- []
-
+- [ ] Add a way to calculate equilibration time (for now it is estimated)
+- [ ] Add controls to specify which phase to run
+- [ ] Polish unneeded output (for ex: each task in the equilibration step write to the same output file)
 
 ---
 ---

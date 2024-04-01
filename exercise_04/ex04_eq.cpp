@@ -24,8 +24,6 @@ int main (int argc, char *argv[]){
     //Starting temps from which the simulations start cycles of 0.05 increments
     array<double, 3> temp = {1.4, 1.7, 0.8};
 
-    int current{0};
-    double total = (double)n_blck[0] + (double)n_blck[1] + (double)n_blck[2];
     fmt::print("Using {0} threads, format : <thread>:<phase>_<temperature>_<block>\n", omp_get_max_threads());
     #pragma omp parallel for
     for(int l=0; l<3; l++){ //loop over phases

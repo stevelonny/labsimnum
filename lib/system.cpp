@@ -629,7 +629,7 @@ void System :: write_configuration(){
 // Write configuration nconf as a .xyz file in directory ../OUTPUT/CONFIG/
 void System :: write_XYZ(int nconf){
   ofstream coutf;
-  coutf.open(string(_path_output.c_str()) + "CONFIG/config_" + to_string(nconf) + ".xyz");
+  coutf.open(_path_output / string("CONFIG/config_" + to_string(nconf) + ".xyz"));
   if(coutf.is_open()){
     coutf << _npart << endl;
     coutf << "#Comment!" << endl;

@@ -16,13 +16,13 @@ int main (int argc, char *argv[]){
     //properties.writeout = true;    
     //Setting the base path for the input and output files
     array<string, 3> names = {"SOLID", "LIQUID", "GAS"};
-    array<int, 3> b_count = {0, 0, 0};
+    //array<int, 3> b_count = {0, 0, 0};
     //Starting values for the three phases
-    array<int, 3> n_blck = {20, 40, 100}; //number of blocks needed to stabilize
-    array<int, 3> n_steps = {200, 200, 1000};
+    array<int, 3> n_blck = {1, 1, 1}; //number of blocks needed to stabilize
+    array<int, 3> n_steps = {50000, 50000, 500000};
     array<double, 3> rho = {1.1, 0.8, 0.05};
     array<double, 3> r_cut = {2.2, 2.5, 5.0};
-    array<double, 3> temp = {1.54, 1.97, 0.95}; //correct starting temperatures
+    array<double, 3> temp = {1.54, 1.98, 0.95}; //correct starting temperatures
 
     #pragma omp parallel for
     for(int l=0; l<3; l++){ //loop over phases
@@ -46,10 +46,10 @@ int main (int argc, char *argv[]){
             }
             SYS.averages(j+1);
             SYS.block_reset(j+1);
-            fmt::print("SOLID {0:>2}/{1} LIQUID {2:>2}/{3} GAS {4:>2}/{5}\r", b_count[0], n_blck[0], b_count[1], n_blck[1], b_count[2], n_blck[2]);
-            fflush(stdout);
+            //fmt::print("SOLID {0:>2}/{1} LIQUID {2:>2}/{3} GAS {4:>2}/{5}\r", b_count[0], n_blck[0], b_count[1], n_blck[1], b_count[2], n_blck[2]);
+            //fflush(stdout);
         }
-        fmt::print("\n");
+        //fmt::print("\n");
         SYS.finalize();
     }
 
