@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.13)
 project(
     Lab_Simulazione_Numerica
     DESCRIPTION "Laboratorio di Simulazione Numerica di steve"
