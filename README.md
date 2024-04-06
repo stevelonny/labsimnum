@@ -124,6 +124,11 @@ Runs the actual simulation restarting from the input folders generated from the 
 - [ ] Add controls to specify which phase to run
 - [ ] Polish unneeded output (for ex: each task in the equilibration step write to the same output file)
 
+### Exercise 05
+
+[Notebook](/notebooks/exercise_05.ipynb), [Codes](/exercise_05/)
+
+
 ---
 ---
 

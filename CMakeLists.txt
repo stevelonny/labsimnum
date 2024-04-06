@@ -34,6 +34,9 @@ file(MAKE_DIRECTORY data/ex04/INPUT_LIQUID/CONFIG)
 file(MAKE_DIRECTORY data/ex04/OUTPUT_SOLID/CONFIG)
 file(MAKE_DIRECTORY data/ex04/OUTPUT_GAS/CONFIG)
 file(MAKE_DIRECTORY data/ex04/OUTPUT_LIQUID/CONFIG)
+file(MAKE_DIRECTORY data/ex04/OUTPUT_EQ_SOLID/CONFIG)
+file(MAKE_DIRECTORY data/ex04/OUTPUT_EQ_GAS/CONFIG)
+file(MAKE_DIRECTORY data/ex04/OUTPUT_EQ_LIQUID/CONFIG)
 
 
 add_subdirectory(lib)
@@ -41,6 +44,7 @@ add_subdirectory(exercise_01)
 add_subdirectory(exercise_02)
 add_subdirectory(exercise_03)
 add_subdirectory(exercise_04)
+add_subdirectory(exercise_05)
 
 configure_file( ${CMAKE_SOURCE_DIR}/version_config.hpp.in ${CMAKE_BINARY_DIR}/version_config.h)
 
