@@ -760,17 +760,25 @@ void System :: measure(){ // Measure properties
   // TEMPERATURE ///////////////////////////////////////////////////////////////
   if (_measure_temp and _measure_kenergy) _measurement(_index_temp) = (2.0/3.0) * kenergy_temp;
   // PRESSURE //////////////////////////////////////////////////////////////////
-if (_measure_pressure){
+  if (_measure_pressure){
     virial = 48.0 * virial_temp / (3.0 * double(_npart));
-    _measurement(_index_pressure) = _rho * _temp + virial / _volume;
+    _measurement(_index_pressure and _measure_temp and _measure_kenergy) = _rho * _measurement(_index_temp) + virial / _volume;
   }
-// TO BE FIXED IN EXERCISE 4
   // MAGNETIZATION /////////////////////////////////////////////////////////////
-// TO BE FIXED IN EXERCISE 6
+  if (_measure_magnet){
+    for(int i{0}; i<_npart; i++){
+      _measurement(_index_magnet) += double(_particle(i).getspin());
+    }
+  }
   // SPECIFIC HEAT /////////////////////////////////////////////////////////////
-// TO BE FIXED IN EXERCISE 6
+  if (_measure_cv and _measure_tenergy){
+    double current_H{_measurement(_index_tenergy)*double(_npart)};
+    _measurement(_index_cv) = current_H*current_H;
+  }
   // SUSCEPTIBILITY ////////////////////////////////////////////////////////////
-// TO BE FIXED IN EXERCISE 6
+  if (_measure_chi & _measure_magnet){
+    _measurement(_index_chi) = _measurement(_index_magnet)*_measurement(_index_magnet)*_beta;
+  }
 
   _block_av += _measurement; //Update block accumulators
 
@@ -781,7 +789,10 @@ void System :: averages(int blk){
 
   ofstream coutf;
   double average, sum_average, sum_ave2;
-
+  if(_measure_cv and _measure_tenergy){ // there must be a better way: prepare _block_av(_index_cv) such as when divided per _n_steps gives the correct avg
+    _block_av(_index_cv) -= pow(_block_av(_index_temp)*double(_npart), 2)/double(_nsteps);
+    _block_av(_index_cv) *= _beta*_beta;
+  }
   _average     = _block_av / double(_nsteps);
   _global_av  += _average;
   _global_av2 += _average % _average; // % -> element-wise multiplication
@@ -835,7 +846,7 @@ void System :: averages(int blk){
     coutf.close();
   }
   // PRESSURE //////////////////////////////////////////////////////////////////
-if (_measure_pressure){
+  if (_measure_pressure){
     coutf.open(_path_output / "pressure.dat",ios::app);
     average  = _average(_index_pressure);
     sum_average = _global_av(_index_pressure);
@@ -846,15 +857,44 @@ if (_measure_pressure){
           << setw(12) << this->error(sum_average, sum_ave2, blk) << endl;
     coutf.close();
   }
-  // TO BE FIXED IN EXERCISE 4
   // GOFR //////////////////////////////////////////////////////////////////////
   // TO BE FIXED IN EXERCISE 7
   // MAGNETIZATION /////////////////////////////////////////////////////////////
-  // TO BE FIXED IN EXERCISE 6
+  if(_measure_magnet){
+    coutf.open(_path_output / "magnetization.dat",ios::app);
+    average  = _average(_index_magnet);
+    sum_average = _global_av(_index_magnet);
+    sum_ave2 = _global_av2(_index_magnet);
+    coutf << setw(12) << blk
+          << setw(12) << average
+          << setw(12) << sum_average/double(blk)
+          << setw(12) << this->error(sum_average, sum_ave2, blk) << endl;
+    coutf.close();
+  }
   // SPECIFIC HEAT /////////////////////////////////////////////////////////////
-  // TO BE FIXED IN EXERCISE 6
+  if(_measure_cv){
+    coutf.open(_path_output / "specific_heat.dat",ios::app);
+    average  = _average(_index_cv);
+    sum_average = _global_av(_index_cv);
+    sum_ave2 = _global_av2(_index_cv);
+    coutf << setw(12) << blk
+          << setw(12) << average
+          << setw(12) << sum_average/double(blk)
+          << setw(12) << this->error(sum_average, sum_ave2, blk) << endl;
+    coutf.close();
+  }
   // SUSCEPTIBILITY ////////////////////////////////////////////////////////////
-  // TO BE FIXED IN EXERCISE 6
+  if(_measure_magnet){
+    coutf.open(_path_output / "susceptibility.dat",ios::app);
+    average  = _average(_index_chi);
+    sum_average = _global_av(_index_chi);
+    sum_ave2 = _global_av2(_index_chi);
+    coutf << setw(12) << blk
+          << setw(12) << average
+          << setw(12) << sum_average/double(blk)
+          << setw(12) << this->error(sum_average, sum_ave2, blk) << endl;
+    coutf.close();
+  }
   // ACCEPTANCE ////////////////////////////////////////////////////////////////
   double fraction;
   coutf.open(_path_output / "acceptance.dat",ios::app);
@@ -867,6 +907,10 @@ if (_measure_pressure){
 }
 
 void System :: averages(bool nofile){
+  if(_measure_cv and _measure_tenergy){ //
+    _block_av(_index_cv) -= pow(_block_av(_index_temp)*double(_npart), 2)/double(_nsteps);
+    _block_av(_index_cv) *= _beta*_beta;
+  }
   _average     = _block_av / double(_nsteps);
   _global_av  += _average;
   _global_av2 += _average % _average; // % -> element-wise multiplication
