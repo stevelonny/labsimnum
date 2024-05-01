@@ -128,6 +128,20 @@ Runs the actual simulation restarting from the input folders generated from the 
 
 [Notebook](/notebooks/exercise_05.ipynb), [Codes](/exercise_05/)
 
+TODO: eliminate usage of smart ptrs as their correct implementations request a complete refactor of constructors
+
+### Exercise 06
+
+Usage:
+
+    ./exercise_06 <simulation_type> [<external_field>]
+
+Where ```<simulation_type>``` cane be either ```2``` for metro or ```3``` for gibbs.
+Without ```[<external_field>]``` set, the program computes tenergy, heat capacity and chi with ```h = 0```.
+The optional argument ```[<external_field>]``` can be whatever value, it will prompt the program to set the external field to ```h = 0.02``` and it will compute only magnetization values.
+
+TODO: investigate strange behaviour when taking advantage of omp directives, such outputting certain values to 0.
+
 
 ---
 ---

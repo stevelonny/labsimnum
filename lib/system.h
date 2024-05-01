@@ -28,6 +28,8 @@ struct system_input
 {
   /* data */
   int sim_type;
+  double _J;
+  double _H;
   int restart;
   double temp;
   int npart;
@@ -134,10 +136,14 @@ public: // Function declarations
   double Boltzmann(int i, bool xnew); // Calculate Boltzmann factor for Metropolis acceptance
 
 
-  const int get_index_temp() {return _index_temp;} // Get index for temperature
-  const double get_average(int index) {return _average(index);} // Get average value of a property
-  const double get_sumaverage(int index) {return _global_av(index);} // Get sum of averages of a property
-  const double get_sum2average(int index) {return _global_av2(index);} // Get sum of squared averages of a property
+  const int get_index_temp() {return _index_temp;}                      // Get index for temperature
+  const int get_index_tenergy() {return _index_tenergy;}                // Get index for total energy
+  const int get_index_cv() {return _index_cv;}                          // Get index for heat capacity
+  const int get_index_chi() {return _index_chi;}                        // Get index for susceptibility
+  const int get_index_magnet() {return _index_magnet;}                  // Get index for magnetization
+  const double get_average(int index) {return _average(index);}         // Get average value of a property
+  const double get_sumaverage(int index) {return _global_av(index);}    // Get sum of averages of a property
+  const double get_sum2average(int index) {return _global_av2(index);}  // Get sum of squared averages of a property
 
 };
 

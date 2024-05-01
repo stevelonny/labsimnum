@@ -45,6 +45,7 @@ add_subdirectory(exercise_02)
 add_subdirectory(exercise_03)
 add_subdirectory(exercise_04)
 add_subdirectory(exercise_05)
+add_subdirectory(exercise_06)
 
 configure_file( ${CMAKE_SOURCE_DIR}/version_config.hpp.in ${CMAKE_BINARY_DIR}/version_config.h)
 

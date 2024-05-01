@@ -78,7 +78,17 @@ double System :: Force(int i, int dim){
 
 void System :: move(int i){ // Propose a MC move for particle i
   if(_sim_type == 3){ //Gibbs sampler for Ising
-    // TO BE FIXED IN EXERCISE 6
+    int spin = _particle(i).getspin(); // Used for determining the exponent in Boltzmann
+    // Calculates the Boltzmann probability of flipping the spin of particle i
+    // Remember periodic boundary conditions, the spin of the neighbors is accessed with the pbc method
+    double p_up = 1.0 / (1.0 + exp(-2.0 * _beta * (_J * (spin * (_particle(this->pbc(i-1)).getspin() + _particle(this->pbc(i+1)).getspin()) + _H))));
+    // Wont use the flip method: a value of spin is set independently of the previous one 
+    if(_rnd.Rannyu() < p_up){
+      _particle(i).setspin(1);
+    } else {
+      _particle(i).setspin(-1);
+    }
+    _naccepted++; // always accepted
   } else {           // M(RT)^2
     if(_sim_type == 1){       // LJ system
       vec shift(_ndim);       // Will store the proposed translation
@@ -230,17 +240,22 @@ void System :: initialize(system_input input){
 
   ofstream coutf;
   coutf.open(_path_output / "output.dat");
-  double delta;
   //only for md nve leonard jonnes simulations for now
   if(input.sim_type == 0){
     _sim_type = 0;    
+  }
+  if(input.sim_type > 1){
+    _J = input._J;
+    _H = input._H;
   }
   if(input.sim_type > 3){
     cerr << "PROBLEM: unknown simulation type" << endl;
     exit(EXIT_FAILURE);
   }
   if(input.sim_type == 0)      coutf << "LJ MOLECULAR DYNAMICS (NVE) SIMULATION"  << endl;
-  
+  else if(_sim_type == 1) coutf << "LJ MONTE CARLO (NVT) SIMULATION"         << endl;
+  else if(_sim_type == 2) coutf << "ISING 1D MONTE CARLO (MRT^2) SIMULATION" << endl;
+  else if(_sim_type == 3) coutf << "ISING 1D MONTE CARLO (GIBBS) SIMULATION" << endl;
   _restart = input.restart;
   _temp = input.temp;
   _beta = 1.0/_temp;
@@ -716,6 +731,7 @@ void System :: measure(){ // Measure properties
   double kenergy_temp=0.0; // temporary accumulator for kinetic energy
   double tenergy_temp=0.0;
   double magnetization=0.0;
+  double chi_temp=0.0;
   double virial=0.0;
   if (_measure_penergy or _measure_pressure or _measure_gofr) {
     for (int i=0; i<_npart-1; i++){
@@ -762,22 +778,26 @@ void System :: measure(){ // Measure properties
   // PRESSURE //////////////////////////////////////////////////////////////////
   if (_measure_pressure){
     virial = 48.0 * virial_temp / (3.0 * double(_npart));
-    _measurement(_index_pressure and _measure_temp and _measure_kenergy) = _rho * _measurement(_index_temp) + virial / _volume;
+    _measurement(_index_pressure) = _rho * _measurement(_index_temp) + virial / _volume;
   }
   // MAGNETIZATION /////////////////////////////////////////////////////////////
   if (_measure_magnet){
     for(int i{0}; i<_npart; i++){
-      _measurement(_index_magnet) += double(_particle(i).getspin());
+      magnetization += double(_particle(i).getspin());
     }
+    _measurement(_index_magnet) = magnetization;
   }
   // SPECIFIC HEAT /////////////////////////////////////////////////////////////
-  if (_measure_cv and _measure_tenergy){
+  if (_measure_cv){
     double current_H{_measurement(_index_tenergy)*double(_npart)};
-    _measurement(_index_cv) = current_H*current_H;
+    current_H *= current_H;
+    _measurement(_index_cv) = current_H;
   }
   // SUSCEPTIBILITY ////////////////////////////////////////////////////////////
-  if (_measure_chi & _measure_magnet){
-    _measurement(_index_chi) = _measurement(_index_magnet)*_measurement(_index_magnet)*_beta;
+  if (_measure_chi){
+    chi_temp = _measurement(_index_magnet)*_measurement(_index_magnet)*_beta;
+    chi_temp /= double(_npart);
+    _measurement(_index_chi) = chi_temp;
   }
 
   _block_av += _measurement; //Update block accumulators
@@ -789,8 +809,8 @@ void System :: averages(int blk){
 
   ofstream coutf;
   double average, sum_average, sum_ave2;
-  if(_measure_cv and _measure_tenergy){ // there must be a better way: prepare _block_av(_index_cv) such as when divided per _n_steps gives the correct avg
-    _block_av(_index_cv) -= pow(_block_av(_index_temp)*double(_npart), 2)/double(_nsteps);
+  if(_measure_cv){ // there must be a better way: prepare _block_av(_index_cv) such as when divided per _n_steps gives the correct avg
+    _block_av(_index_cv) -= pow(_block_av(_index_tenergy)*double(_npart), 2)/double(_nsteps);
     _block_av(_index_cv) *= _beta*_beta;
   }
   _average     = _block_av / double(_nsteps);
@@ -884,7 +904,7 @@ void System :: averages(int blk){
     coutf.close();
   }
   // SUSCEPTIBILITY ////////////////////////////////////////////////////////////
-  if(_measure_magnet){
+  if(_measure_chi){
     coutf.open(_path_output / "susceptibility.dat",ios::app);
     average  = _average(_index_chi);
     sum_average = _global_av(_index_chi);
@@ -907,9 +927,11 @@ void System :: averages(int blk){
 }
 
 void System :: averages(bool nofile){
-  if(_measure_cv and _measure_tenergy){ //
-    _block_av(_index_cv) -= pow(_block_av(_index_temp)*double(_npart), 2)/double(_nsteps);
-    _block_av(_index_cv) *= _beta*_beta;
+  if(_measure_cv){ //
+    double cv_temp{_block_av(_index_cv)};
+    cv_temp -= pow(_block_av(_index_tenergy)*double(_npart), 2)/double(_nsteps);
+    cv_temp *= pow(_beta, 2);
+    _block_av(_index_cv) = cv_temp;
   }
   _average     = _block_av / double(_nsteps);
   _global_av  += _average;
