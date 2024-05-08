@@ -135,15 +135,21 @@ public: // Function declarations
   double Force(int i, int dim); // Calculate force on a particle along a dimension
   double Boltzmann(int i, bool xnew); // Calculate Boltzmann factor for Metropolis acceptance
 
-
+  // Getters. these does not make any boundary checks
   const int get_index_temp() {return _index_temp;}                      // Get index for temperature
   const int get_index_tenergy() {return _index_tenergy;}                // Get index for total energy
   const int get_index_cv() {return _index_cv;}                          // Get index for heat capacity
   const int get_index_chi() {return _index_chi;}                        // Get index for susceptibility
   const int get_index_magnet() {return _index_magnet;}                  // Get index for magnetization
+  const int get_index_potential() {return _index_penergy;}              // Get index for potential energy
+  const int get_index_gofr() {return _index_gofr;}                      // Get index for radial dist. function
+  const int get_nbins() {return _n_bins;}                               // Get number of bins for radial dist. function
   const double get_average(int index) {return _average(index);}         // Get average value of a property
   const double get_sumaverage(int index) {return _global_av(index);}    // Get sum of averages of a property
   const double get_sum2average(int index) {return _global_av2(index);}  // Get sum of squared averages of a property
+
+  const int get_nattempts() {return _nattempts;}                        // Get number of attempted moves
+  const int get_naccepted() {return _naccepted;}                        // Get number of accepted moves
 
 };
 

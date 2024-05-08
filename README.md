@@ -44,7 +44,8 @@ _TODO_
 ### Global todo
 
 - [ ] Refactor all libraries (ex.: only one blocking avg)
-- [ ] Remake global cmake project structure like [this](https://cliutils.gitlab.io/modern-cmake/chapters/basics/structure.html)
+- [x] Remake global cmake project structure like [this](https://cliutils.gitlab.io/modern-cmake/chapters/basics/structure.html)
+- [ ] Before making data public, uniform naming convention for all data files
 - [ ] Make data public for release
 
 ### Exercise 01
@@ -65,7 +66,7 @@ _TODO_
 #### To Do
 
 - [ ] Accurate description in the notebook
-- [ ] Add assignments
+- [x] Add assignments
 - [ ] Add fits for random walks
 - [ ] Add comparison with fitted curves
 - [x] Commenting code where needed
@@ -77,7 +78,7 @@ _TODO_
 #### To Do
 
 - [ ] Accurate description in the notebook
-- [ ] Add assignments
+- [x] Add assignments
 - [ ] Add comparison between each method, and analytic resolutions
 - [ ] Commenting code where needed
 - [ ] Adding messages in the c++ codes
@@ -117,6 +118,8 @@ Runs the actual simulation restarting from the input folders generated from the 
 
 #### To Do
 
+instead of using omp for multithreading and a monolithic program, a python script may be more appropriate for the task.
+
 - [ ] Accurate description in the notebook
 - [ ] Add assignments
 - [x] Add intercept in jupyter with proposed values
@@ -128,9 +131,17 @@ Runs the actual simulation restarting from the input folders generated from the 
 
 [Notebook](/notebooks/exercise_05.ipynb), [Codes](/exercise_05/)
 
-TODO: eliminate usage of smart ptrs as their correct implementations request a complete refactor of constructors
+#### To Do
+
+- [ ] refactor classes to borrowing standards or smart pointers
+- [ ]
+- [ ]
 
 ### Exercise 06
+
+[Notebook](/notebooks/exercise_06.ipynb), [Codes](/exercise_06/)
+
+The code is a reimplemantation of exercise_04, but the equilibrations phase is integrated in the simulation phase. The code is not parallelized as the previous one.
 
 Usage:
 
@@ -141,6 +152,24 @@ Without ```[<external_field>]``` set, the program computes tenergy, heat capacit
 The optional argument ```[<external_field>]``` can be whatever value, it will prompt the program to set the external field to ```h = 0.02``` and it will compute only magnetization values.
 
 TODO: investigate strange behaviour when taking advantage of omp directives, such outputting certain values to 0.
+
+### Exercise 07
+
+[Notebook](/notebooks/exercise_07.ipynb), [Codes](/exercise_07/)
+
+
+
+#### exercise_07_acc
+Code to compute acceptance rate against delta.
+
+#### exercise_07_2
+does what you think it does
+
+### exercise_07_4
+still does what you think it does. code not yet tested but it compiles
+
+#### To Do
+
 
 
 ---

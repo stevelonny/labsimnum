@@ -232,7 +232,7 @@ void System :: initialize(){ // Initialize the System object according to the co
   return;
 }
 
-void System :: initialize(system_input input){
+void System :: initialize(system_input input){ // Initialize the System  object according to the system_input input variable
 
   ofstream couta(_path_output / "acceptance.dat"); // Set the heading line in file ../OUTPUT/acceptance.dat
   couta << "#   N_BLOCK:  ACCEPTANCE:" << endl;
@@ -240,7 +240,7 @@ void System :: initialize(system_input input){
 
   ofstream coutf;
   coutf.open(_path_output / "output.dat");
-  //only for md nve leonard jonnes simulations for now
+  _sim_type = input.sim_type;
   if(input.sim_type == 0){
     _sim_type = 0;    
   }
@@ -381,7 +381,11 @@ void System :: initialize_properties(){ // Initialize data members used for meas
         _index_penergy = index_property;
         _measure_penergy = true;
         index_property++;
-        _vtail = 0.0; // TO BE FIXED IN EXERCISE 7
+        #if defined(TAIL_CORRECTION)
+          _vtail = 8.*M_PI*_rho*(1./(9.*pow(_r_cut, 9))-1./(3.*pow(_r_cut, 3)));
+        #else
+          _vtail = 0.;
+        #endif
       } else if( property == "KINETIC_ENERGY" ){
         ofstream coutk(_path_output / "kinetic_energy.dat");
         coutk << "#     BLOCK:   ACTUAL_KE:    KE_AVE:      ERROR:" << endl;
@@ -414,7 +418,11 @@ void System :: initialize_properties(){ // Initialize data members used for meas
         _measure_pressure = true;
         _index_pressure = index_property;
         index_property++;
-        _ptail = 0.0; // TO BE FIXED IN EXERCISE 7
+        #if  defined(TAIL_CORRECTION)
+          _ptail = 32.*M_PI*_rho*(1./(9.*pow(_r_cut, 9))-1./(6.*pow(_r_cut, 3)));
+        #else
+          _ptail = 0.;
+        #endif
       } else if( property == "GOFR" ){
         ofstream coutgr(_path_output / "gofr.dat");
         coutgr << "# DISTANCE:     AVE_GOFR:        ERROR:" << endl;
@@ -474,7 +482,7 @@ void System :: initialize_properties(){ // Initialize data members used for meas
   return;
 }
 
-void System :: initialize_properties(system_properties properties){
+void System :: initialize_properties(system_properties properties){ //Initialize data members used for measurement of properties, with systemt_properties struct
 
   int index_property = 0;
   _nprop = 0;
@@ -498,7 +506,11 @@ void System :: initialize_properties(system_properties properties){
     _index_penergy = index_property;
     _measure_penergy = true;
     index_property++;
-    _vtail = 0.0; // TO BE FIXED IN EXERCISE 7
+    #if defined(TAIL_CORRECTION)
+      _vtail = 8.*M_PI*_rho*(1./(9.*pow(_r_cut, 9))-1./(3.*pow(_r_cut, 3)));
+    #else
+      _vtail = 0.;
+    #endif
   }
   if(properties.measure_kenergy){
     if(properties.writeout){
@@ -543,7 +555,11 @@ void System :: initialize_properties(system_properties properties){
     _measure_pressure = true;
     _index_pressure = index_property;
     index_property++;
-    _ptail = 0.0; // TO BE FIXED IN EXERCISE 7
+    #if  defined(TAIL_CORRECTION)
+      _ptail = 32.*M_PI*_rho*(1./(9.*pow(_r_cut, 9))-1./(6.*pow(_r_cut, 3)));
+    #else
+      _ptail = 0.;
+    #endif
   }
   if(properties.measure_gofr){
     if(properties.writeout){
@@ -741,6 +757,13 @@ void System :: measure(){ // Measure properties
         distance(2) = this->pbc( _particle(i).getposition(2,true) - _particle(j).getposition(2,true), 2);
         dr = sqrt( dot(distance,distance) );
         // GOFR ... TO BE FIXED IN EXERCISE 7
+        // use this for cycle as it provide distances
+        if (_measure_gofr){
+          bin = int(dr/_bin_size);
+          if(bin < _n_bins){
+            _measurement(_index_gofr+bin) += 2.0;
+          }
+        }
         if(dr < _r_cut){
           if(_measure_penergy)  penergy_temp += 1.0/pow(dr,12) - 1.0/pow(dr,6); // POTENTIAL ENERGY
           if(_measure_pressure) virial_temp += 1.0/pow(dr,12) - 0.5/pow(dr,6); // PRESSURE ... TO BE FIXED IN EXERCISE 4 
@@ -812,6 +835,13 @@ void System :: averages(int blk){
   if(_measure_cv){ // there must be a better way: prepare _block_av(_index_cv) such as when divided per _n_steps gives the correct avg
     _block_av(_index_cv) -= pow(_block_av(_index_tenergy)*double(_npart), 2)/double(_nsteps);
     _block_av(_index_cv) *= _beta*_beta;
+  }
+  if(_measure_gofr){
+      for(int i=0; i<_n_bins; i++){
+      _block_av(_index_gofr + i) /= (double) _npart; // one for the normalization
+      _block_av(_index_gofr + i) /= _rho; // still normalization
+      _block_av(_index_gofr + i) /= (4./3.)*M_PI*(pow(static_cast<double>(i+1)*_bin_size,3)-pow(static_cast<double>(i)*_bin_size,3)); // last step of normalization: volume shell
+    }
   }
   _average     = _block_av / double(_nsteps);
   _global_av  += _average;
@@ -932,6 +962,13 @@ void System :: averages(bool nofile){
     cv_temp -= pow(_block_av(_index_tenergy)*double(_npart), 2)/double(_nsteps);
     cv_temp *= pow(_beta, 2);
     _block_av(_index_cv) = cv_temp;
+  }
+  if(_measure_gofr){
+    for(int i=0; i<_n_bins; i++){
+      _block_av(_index_gofr + i) /= (double) _npart; // one for the normalization
+      _block_av(_index_gofr + i) /= _rho; // still normalization
+      _block_av(_index_gofr + i) /= (4./3.)*M_PI*(pow(static_cast<double>(i+1)*_bin_size,3)-pow(static_cast<double>(i)*_bin_size,3)); // last step of normalization: volume shell
+    }
   }
   _average     = _block_av / double(_nsteps);
   _global_av  += _average;

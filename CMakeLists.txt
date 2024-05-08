@@ -25,9 +25,12 @@ find_package(Armadillo REQUIRED)
 find_package(OpenMP REQUIRED)
 
 #setting directories
+#data directory
 file(MAKE_DIRECTORY data)
+#dirs to stash NSL simulator IO files
 file(MAKE_DIRECTORY input-output/INPUT/CONFIG)
 file(MAKE_DIRECTORY input-output/OUTPUT/CONFIG)
+#ex04 IO dirs
 file(MAKE_DIRECTORY data/ex04/INPUT_SOLID/CONFIG)
 file(MAKE_DIRECTORY data/ex04/INPUT_GAS/CONFIG)
 file(MAKE_DIRECTORY data/ex04/INPUT_LIQUID/CONFIG)
@@ -37,7 +40,13 @@ file(MAKE_DIRECTORY data/ex04/OUTPUT_LIQUID/CONFIG)
 file(MAKE_DIRECTORY data/ex04/OUTPUT_EQ_SOLID/CONFIG)
 file(MAKE_DIRECTORY data/ex04/OUTPUT_EQ_GAS/CONFIG)
 file(MAKE_DIRECTORY data/ex04/OUTPUT_EQ_LIQUID/CONFIG)
-
+#ex07 IO dirs
+file(MAKE_DIRECTORY data/ex07/OUTPUT_NVE_SOLID/CONFIG)
+file(MAKE_DIRECTORY data/ex07/OUTPUT_NVE_GAS/CONFIG)
+file(MAKE_DIRECTORY data/ex07/OUTPUT_NVE_LIQUID/CONFIG)
+file(MAKE_DIRECTORY data/ex07/OUTPUT_NVT_SOLID/CONFIG)
+file(MAKE_DIRECTORY data/ex07/OUTPUT_NVT_GAS/CONFIG)
+file(MAKE_DIRECTORY data/ex07/OUTPUT_NVT_LIQUID/CONFIG)
 
 add_subdirectory(lib)
 add_subdirectory(exercise_01)
@@ -46,6 +55,7 @@ add_subdirectory(exercise_03)
 add_subdirectory(exercise_04)
 add_subdirectory(exercise_05)
 add_subdirectory(exercise_06)
+add_subdirectory(exercise_07)
 
 configure_file( ${CMAKE_SOURCE_DIR}/version_config.hpp.in ${CMAKE_BINARY_DIR}/version_config.h)
 
