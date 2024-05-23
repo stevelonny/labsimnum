@@ -623,6 +623,21 @@ void System :: initialize_properties(system_properties properties){ //Initialize
 }
 
 void System :: finalize(){
+  ofstream coutgofr;
+  if (_measure_gofr){
+  coutgofr.open(_path_output / "gofr.dat"/* ,ios::app */);
+  double average, sum_average, sum_ave2;
+  for(int i{0}; i<_n_bins; i++){
+    average  = _average(_index_gofr+i);
+    sum_average = _global_av(_index_gofr+i);
+    sum_ave2 = _global_av2(_index_gofr+i);
+    coutgofr << setw(12) << i
+          << setw(12) << static_cast<double>(i)*_bin_size
+          << setw(12) << sum_average/double(_nblocks)
+          << setw(12) << this->error(sum_average, sum_ave2, _nblocks) << endl;
+  }
+  coutgofr.close();
+  }
   this->write_configuration();
   _rnd.SaveSeed();
   ofstream coutf;
@@ -908,7 +923,7 @@ void System :: averages(int blk){
     coutf.close();
   }
   // GOFR //////////////////////////////////////////////////////////////////////
-  // TO BE FIXED IN EXERCISE 7
+  // every block???
   // MAGNETIZATION /////////////////////////////////////////////////////////////
   if(_measure_magnet){
     coutf.open(_path_output / "magnetization.dat",ios::app);
