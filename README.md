@@ -6,7 +6,7 @@
 
 This is a collection of exercises written during Laboratorio di Simulazione Numerica (A.A. 2023-2024) @UNIMI. It's a pair of `C++` codes for data generation and `jupyter-notebook` for data analysis.
 
-## Installation & Usage
+## Installation
 
 ### Dependences
 For building and running the `C++` codes `cmake` and `make` are required, in addiction of a gcc/g++ (clang does give problems compiling some libraries). Dependencies should be handled by cmake.
@@ -33,9 +33,6 @@ Once finished, `cmake` will have configured the necessary `Makefile` for each ex
 
 The data generated will be stored in a direcotry called `data`. The Jupyter notebooks will use this folder for the data analysis.
 
-### Usage
-
-_TODO_
 
 ## Exercises
 
@@ -133,9 +130,7 @@ instead of using omp for multithreading and a monolithic program, a python scrip
 
 #### To Do
 
-- [ ] refactor classes to borrowing standards or smart pointers
-- [ ]
-- [ ]
+refactor code to use shared_ptr or similar. remember to use make_shared, and dynamic/static_pointer_cast.
 
 ### Exercise 06
 
@@ -157,20 +152,32 @@ TODO: investigate strange behaviour when taking advantage of omp directives, suc
 
 [Notebook](/notebooks/exercise_07.ipynb), [Codes](/exercise_07/)
 
-
-
 #### exercise_07_acc
 Code to compute acceptance rate against delta.
 
 #### exercise_07_2
 does what you think it does
 
-### exercise_07_4
+#### exercise_07_4
 still does what you think it does. code not yet tested but it compiles
 
 #### To Do
 
+### Exercise 08
+to do everything after refactor ex05 code.
 
+### Exercise 09
+
+[Notebook](/notebooks/exercise_09.ipynb), [Codes](/exercise_09/)
+
+Usage:
+
+    ./exercise_09 <mapper>
+
+Where mapper can be either ```circle``` or ```square```.
+
+#### To Do
+check every mutation algorithm, and find best mutation rate.
 
 ---
 ---
