@@ -20,42 +20,7 @@ int main(int argc, char* argv[]){
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    /* std::shared_ptr<Mapper> atlas;
-    // double* coords;
-    if(argc == 2 && strcmp(argv[1], "circle") == 0){
-        // atlas.reset(new Mapper()); 
-        atlas = std::make_shared<Mapper>();
-    }
-    else if(argc == 2 && strcmp(argv[1], "square") == 0){
-        // atlas = static_pointer_cast<Mapper>(std::make_shared<SquareMapper>(SquareMapper()));
-        // atlas = dynamic_pointer_cast<Mapper>(std::make_shared<SquareMapper>());
-    }
-    */
-    /* else if(argc == 2 && strcmp(argv[1], "provita")){
-        if(rank == 0){
-            ifstream filein(fmt::format("{0}/ex10_provita.dat", paths::path_ROOT, "/exercise_10"));
-            if(filein.is_open()){
-                int n_cities{110};
-                coords = new double[n_cities];
-                for(int i{0}; i<n_cities; i++){
-                    filein >> coords[i];
-                }
-            }
-            else{
-                fmt::print("File not found\n");
-                MPI_Finalize();
-                return 1;
-            }
-        }
-        MPI_Bcast(coords, 110, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-        atlas = static_pointer_cast<Mapper>(std::make_shared<SquareMapper>(SquareMapper(coords, 110)));
-    } */
-    /*   
-    else{
-        if(rank == 0) fmt::print(cerr, "Usage: {0} <mapper>\nwhere <mapper> is either 'circle' or 'square'\n", argv[0]);
-        MPI_Finalize();
-        return 1;
-    } */
+    double* coords;
     if(size < 3 || size > 11){
         fmt::print("This program must be run with 3 to 11 processes\n");
         MPI_Finalize();
@@ -71,12 +36,42 @@ int main(int argc, char* argv[]){
     }
     int Nmigr{10};
     // std::shared_ptr<Mapper> atlas = static_pointer_cast<Mapper>(std::make_shared<SquareMapper>(SquareMapper()));
-    auto atlas = make_shared<Mapper>();
+    std::shared_ptr<Mapper> atlas;
+    if(argc ==2 && strcmp(argv[1], "circle")==0){
+        atlas = make_shared<Mapper>();
+    }
+    else if(argc ==2 && strcmp(argv[1], "square")==0){
+        atlas = make_shared<SquareMapper>();
+    }
+    else if(argc == 2 && strcmp(argv[1], "provita")){
+        if(rank == 0){
+            ifstream filein(fmt::format("{0}/prov_ita.dat", paths::path_ROOT, "/exercise_10"));
+            if(filein.is_open()){
+                int n_cities{110};
+                coords = new double[n_cities];
+                for(int i{0}; i<n_cities; i++){
+                    filein >> coords[i];
+                }
+            }
+            else{
+                fmt::print("File not found\n");
+                MPI_Finalize();
+                return 1;
+            }
+        }
+        MPI_Bcast(coords, 110, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+        atlas = std::make_shared<SquareMapper>(coords, 110);
+    }
+    if(argc != 2 && (strcmp(argv[1], "circle") != 0 || strcmp(argv[1], "square") != 0)){
+        fmt::print("Usage: {0} <mapper>\nwhere <mapper> is either 'circle' or 'square'\n", argv[0]);
+        MPI_Finalize();
+        return 1;
+    }
     atlas->whoami();
     arma::imat tributes;
     if(rank == 0){
         // int gen{0};
-        string filename = fmt::format("{0}/ex10_atlas_{1}.dat", paths::path_DATA.string(), "circle");
+        string filename = fmt::format("{0}/ex10_atlas_{1}.dat", paths::path_DATA.string(), argv[1]);
         ofstream fileout(filename.c_str());
         for(int i{0}; i<atlas->getNCities(); i++){
             fmt::print(fileout, "{0:<5} {1:<10.5f} {2:<10.5f}\n", i, atlas->Position(i)[0], atlas->Position(i)[1]);
@@ -88,7 +83,7 @@ int main(int argc, char* argv[]){
 /*
     if(rank==0){
         int gen{0};
-        string filename = fmt::format("{0}/ex10_atlas.dat", paths::path_DATA.string(), "circle");
+        string filename = fmt::format("{0}/ex10_atlas.dat", paths::path_DATA.string(), argv[1]);
         ofstream fileout(filename.c_str());
         for(int i{0}; i<atlas->getNCities(); i++){
             fmt::print(fileout, "{0:<5} {1:<10.5f} {2:<10.5f}\n", i, atlas->Position(i)[0], atlas->Position(i)[1]);
@@ -132,7 +127,7 @@ int main(int argc, char* argv[]){
     // initilize rnd with different seed for each rank
     // Random rnd(rank);
     Population pop(atlas);
-    fmt::print(cerr, "{0:<3}: atlas ptr counter {1}\n", rank, atlas.use_count());
+    // fmt::print(cerr, "{0:<3}: atlas ptr counter {1}\n", rank, atlas.use_count());
     BattleRoyale pubg(rank);
     /* if(rank == 0)  */tributes.set_size(atlas->getNCities(), size);
     for(int i{0}; i<500; i++){
@@ -195,18 +190,18 @@ int main(int argc, char* argv[]){
         }
         */
         tributes.print("Bests");
-        tributes.save(fmt::format("{0}/ex10_bests_{1}.dat", paths::path_DATA, "circle"), arma::raw_ascii);
+        tributes.save(fmt::format("{0}/ex10_bests_{1}.dat", paths::path_DATA, argv[1]), arma::raw_ascii);
         Population bests(atlas, tributes.n_cols);
         bests._apopulation = tributes;
         bests.GiveDistance();
-        string filename = fmt::format("{0}/ex10_champion_{1}.dat", paths::path_DATA.string(), "circle");
+        string filename = fmt::format("{0}/ex10_champion_{1}.dat", paths::path_DATA.string(), argv[1]);
         ofstream fileout(filename.c_str());
         best = pop._apopulation.col(pop.getBestIndex());
         for(int i{0}; i<best.size(); i++){
             fmt::print(fileout, "{0:<5} {1:<10.5f} {2:<10.5f}\n", best(i), atlas.get()->Position(best(i))[0], atlas.get()->Position(best(i))[1]);
         }
         fileout.close();
-        fmt::print(cerr, "{0:<3}: atlas ptr counter {1}\n", rank, atlas.use_count());
+        // fmt::print(cerr, "{0:<3}: atlas ptr counter {1}\n", rank, atlas.use_count());
     }
     // fmt::print(cerr, "{0:<3}: atlas ptr counter {1}\n", rank, atlas.use_count());
     // atlas.unique();
