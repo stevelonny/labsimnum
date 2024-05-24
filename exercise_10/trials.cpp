@@ -16,15 +16,26 @@ int main(int argc, char *argv[]){
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     if(size < 2 || size > 10){
-        fmt::print("This program must be run with 2 to 6 processes\n");
+        fmt::print("This program must be run with 2 to 10 processes\n");
         MPI_Finalize();
         return 1;
     }
-    MPI_Request request;
     int* currentgens = new int[size-1];
     int r_gen{0};
     int genes{5};
     MPI_Status status;
+
+    arma::imat tributes;
+    arma::ivec tribute(genes);
+    if(rank == 0) tributes.set_size(genes, size);
+    tribute = arma::linspace<arma::ivec>(10*rank, 10*rank+genes, genes);
+    MPI_Gather(tribute.memptr(), genes, MPI_INTEGER8, tributes.memptr(), genes, MPI_INTEGER8, 0, MPI_COMM_WORLD);
+    tributes = shuffle(tributes, 1);
+    if(rank == 0){
+        tributes.print("Tributes");
+    }
+
+/*
     if(rank==0){
         
         Random rnd(0);
@@ -47,7 +58,7 @@ int main(int argc, char *argv[]){
         MPI_Recv(tribute.memptr(), tribute.size(), MPI_INTEGER8, 0, 0, MPI_COMM_WORLD, &status);
         tribute.save(fmt::format("{1}/champion_{0}.dat", rank, paths::path_DATA), arma::raw_ascii);
     }
-
+*/
     MPI_Finalize();
 
     return 0;

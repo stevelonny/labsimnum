@@ -17,7 +17,7 @@ add_library(
 target_include_directories(multi_br PUBLIC ${MPI_CXX_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(multi_br PRIVATE MPI::MPI_CXX armadillo random fmt::fmt stdc++fs)
 
-set(CMAKE_CXX_FLAGS "-Wall -larmadillo")
+set(CMAKE_CXX_FLAGS "-Wall -O3 -larmadillo")
 
 add_definitions(-D_VAR=\"${CMAKE_SOURCE_DIR}\")
 include_directories( ${CMAKE_BINARY_DIR} ${MPI_CXX_INCLUDE_DIRS})
