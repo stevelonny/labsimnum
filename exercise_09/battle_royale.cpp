@@ -1,6 +1,6 @@
 #include "battle_royale.h"
 
-Mapper::Mapper(unsigned int n_cities) : _ncities(n_cities), _atlas(n_cities), rnd() {
+Mapper::Mapper(unsigned int n_cities) : _ncities(n_cities), _atlas(n_cities), rnd(0) {
     InitAtlas();
 }
 
@@ -50,7 +50,7 @@ vector<double> SquareMapper::Position(int city){
 
 
 Population::Population(shared_ptr<Mapper>& atlas, int n_populace) :
-    _apopulation(atlas->getNCities(), n_populace), _rnd(), _n_populace(n_populace), _n_genes(atlas->getNCities()), _atlas(atlas), _distance(n_populace), _total_score{0.}
+    _apopulation(atlas->getNCities(), n_populace), _n_populace(n_populace), _n_genes(atlas->getNCities()), _atlas(atlas), _distance(n_populace), _total_score{0.}
 {
     // _atlas = move(atlas);
     for (int i{0}; i < _n_populace; i++) {
@@ -121,8 +121,8 @@ const double Population::getHalfBest(){
     return sum / static_cast<double>(half_size);
 }
 
-BattleRoyale::BattleRoyale(double swap_rate, double permutation_rate, double shift_rate, double inversion_rate, double crossover_rate) :
-    _swap_rate(swap_rate), _permutation_rate(permutation_rate), _shift_rate(shift_rate), _inversion_rate(inversion_rate), _crossover_rate(crossover_rate), rnd()
+BattleRoyale::BattleRoyale(int mrank, double swap_rate, double permutation_rate, double shift_rate, double inversion_rate, double crossover_rate) :
+    _rank{mrank}, _swap_rate(swap_rate), _permutation_rate(permutation_rate), _shift_rate(shift_rate), _inversion_rate(inversion_rate), _crossover_rate(crossover_rate), rnd(mrank)
 {}
 
 void BattleRoyale::Reproduce(Population &pop){

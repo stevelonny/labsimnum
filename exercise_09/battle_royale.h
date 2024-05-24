@@ -78,7 +78,6 @@ class Population {
 
     private:
         void TotalScore();
-        Random _rnd;
         shared_ptr<Mapper> _atlas;
         double _total_score;
         unsigned int _n_populace;
@@ -89,17 +88,19 @@ class Population {
 /* class to handle evolutions and generations */
 class BattleRoyale{
     public:
-        BattleRoyale() : BattleRoyale(_SWAP_RATE, _PERMUTATION_RATE, _SHIFT_RATE, _INVERSION_RATE, _CROSSOVER_RATE) {}
-        BattleRoyale(double swap_rate, double permutation_rate, double shift_rate, double inversion_rate, double crossover_rate);
+        BattleRoyale() : BattleRoyale(0) {};
+        BattleRoyale(int mrank) : BattleRoyale(mrank, _SWAP_RATE, _PERMUTATION_RATE, _SHIFT_RATE, _INVERSION_RATE, _CROSSOVER_RATE){}
+        BattleRoyale(int mrank, double swap_rate, double permutation_rate, double shift_rate, double inversion_rate, double crossover_rate);
 
         // Evolve the population
         void Reproduce(Population& pop);
         // Handle all mutations
         void Mutation(Population& pop);
-
+        int Selection(Population& pop);
         const int getNGenerations(){return _n_generations;}
     private:
         Random rnd;
+        int _rank;
         double _swap_rate;
         double _permutation_rate;
         double _shift_rate;
@@ -111,7 +112,6 @@ class BattleRoyale{
         // int _n_genes;
         int _n_mutation;
         // Selects a chromosome by extracting from the distribution given by distance scores
-        int Selection(Population& pop);
         // Generate two sons crossing over
         arma::imat Crossover(Population& pop, int first, int second);
         // Swaps two genes in a chromosome

@@ -36,8 +36,6 @@ The data generated will be stored in a direcotry called `data`. The Jupyter note
 
 ## Exercises
 
-_TODO_
-
 ### Global todo
 
 - [ ] Refactor all libraries (ex.: only one blocking avg)

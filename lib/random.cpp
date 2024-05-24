@@ -17,14 +17,19 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 
 using namespace std;
 
-Random :: Random(){
+Random :: Random(int prime){
    // Default constructor
    string seedfile = paths::path_SEED;
    double p1, p2;
    int seed[4];
+   int c_line{0};
    ifstream Primes(paths::path_PRIMES);
    if(Primes.is_open()){
       Primes >> p1 >> p2;
+      while(c_line < prime){
+         Primes >> p1 >> p2;
+         c_line++;
+      }
       Primes.close();
       ifstream input(seedfile);
       string property;

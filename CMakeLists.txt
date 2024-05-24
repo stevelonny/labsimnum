@@ -24,6 +24,10 @@ find_package(Armadillo REQUIRED)
 
 find_package(OpenMP REQUIRED)
 
+set(MPI_HOME /usr/lib64/mpich/)
+
+find_package(MPI REQUIRED)
+include_directories(${MPI_INCLUDE_PATH})
 #setting directories
 #data directory
 file(MAKE_DIRECTORY data)
@@ -57,6 +61,7 @@ add_subdirectory(exercise_05)
 add_subdirectory(exercise_06)
 add_subdirectory(exercise_07)
 add_subdirectory(exercise_09)
+add_subdirectory(exercise_10)
 
 configure_file( ${CMAKE_SOURCE_DIR}/version_config.hpp.in ${CMAKE_BINARY_DIR}/version_config.h)
 

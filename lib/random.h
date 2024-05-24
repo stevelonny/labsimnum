@@ -21,7 +21,8 @@ protected:
 
 public:
   // Default constructor
-  Random();
+  Random() : Random(0) {};
+  Random(int prime);
   // Destructor
   ~Random();
   // Method to set the seed for the RNG
