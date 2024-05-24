@@ -180,6 +180,18 @@ check every mutation algorithm, and find best mutation rate.
 ---
 ---
 
+### Exercise 10
+
+[Notebook](/notebooks/exercise_10.ipynb), [Codes](/exercise_10/)
+
+Usage:
+
+    mpiexec -np <n> ./exercise_10
+
+Where ```<n>``` is the number of nodes to run the simulation on. 
+#### To Do
+refactor atlas so we can send with MPI_Bcast the map to all nodes, or at least a seed system (should be already implentem implicitely beacause rnd set seed with 0)
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).

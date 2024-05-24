@@ -16,14 +16,13 @@ bool isThisTheEnd(int gen[], int size){
 
 int main(int argc, char* argv[]){
 
-    auto atlas = make_shared<Mapper>();
-    atlas->whoami();
+
     int Nmigr{10};
     MPI_Init(&argc, &argv);
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-        if(size < 3 || size > 11){
+    if(size < 3 || size > 11){
         fmt::print("This program must be run with 3 to 11 processes\n");
         MPI_Finalize();
         return 1;
@@ -35,12 +34,13 @@ int main(int argc, char* argv[]){
     if(rank == 0){
         for(int i{0}; i<size-1; i++){
             currentgens[i] = 0;
-            indexes[i] = atlas->getNCities()+1;
-        }
-
-        
+            // indexes[i] = atlas->getNCities()+1;
+        }        
     }
-
+    auto atlas = make_shared<Mapper>();
+    atlas->whoami();
+    arma::imat tributes; // used only by rank 0 to store tributes coming from other continents
+/*
     if(rank==0){
         int gen{0};
         string filename = fmt::format("{0}/ex10_atlas.dat", paths::path_DATA.string(), argv[1]);
@@ -82,30 +82,64 @@ int main(int argc, char* argv[]){
         tributes.print("Bests");
         tributes.save(fmt::format("{0}/ex10_bests.dat", paths::path_DATA), arma::raw_ascii);
     }
-    else{
-        Population pop(atlas);
-        BattleRoyale pubg(rank);
-        for(int i{0}; i<500; i++){
-            r_gen++;
-            if(i%Nmigr == 0 && i != 0){
-                int champion = pubg.Selection(pop);
-                arma::ivec tribute = pop._apopulation.col(champion);
-                arma::ivec homecoming(atlas->getNCities());
-                // MPI_Isend(tribute.memptr(), tribute.size(), MPI_INT, 0, rank, MPI_COMM_WORLD, &request);
+*/
+
+    // initilize rnd with different seed for each rank
+    Random rnd(rank);
+    Population pop(atlas);
+    BattleRoyale pubg(rank);
+    if(rank == 0) tributes.set_size(atlas->getNCities(), size); // lets avoid doing useless operation in every rank
+    for(int i{0}; i<500; i++){
+        r_gen++;
+        if(i%Nmigr == 0 && i != 0){
+            int champion = pubg.Selection(pop);
+            arma::ivec tribute = pop._apopulation.col(champion);
+            arma::ivec homecoming(atlas->getNCities());
+            if(rank == 0){
+                tributes.col(0) = tribute;
+                for(int i{1}; i<size; i++){
+                    MPI_Recv(tributes.colptr(i), tributes.n_rows, MPI_INTEGER8, i, i, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                    fmt::print("Received champion from continent {0}\n", i);
+                }
+                int champ_0 = static_cast<int>(rnd.Rannyu(0, tributes.n_cols));
+                pop._apopulation.col(champion) = tributes.col(champ_0);
+                tributes.shed_col(champ_0);
+                int dest{1};
+                while(0<tributes.n_cols){
+                    int chosen = static_cast<int>(rnd.Rannyu(0, tributes.n_cols));
+                    MPI_Send(tributes.colptr(chosen), tributes.n_rows, MPI_INTEGER8, dest, 0, MPI_COMM_WORLD);
+                    dest++;
+                    tributes.shed_col(chosen);
+                }
+                tributes.set_size(atlas->getNCities(), size);
+            }
+            else {
                 MPI_Send(tribute.memptr(), tribute.size(), MPI_INTEGER8, 0, rank, MPI_COMM_WORLD);
                 MPI_Recv(homecoming.memptr(), homecoming.size(), MPI_INTEGER8, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
                 fmt::print(cerr, "{1:<3}:Received champion from continent {0}\n", 0, rank);
                 pop._apopulation.col(champion) = homecoming;
             }
-            pubg.Reproduce(pop);
-            pubg.Mutation(pop);
+            MPI_Gather(&r_gen, 1, MPI_INT, currentgens, 1, MPI_INT, 0, MPI_COMM_WORLD);
+            if(rank == 0) fmt::print("Generations: {0}\n", currentgens[0]);
         }
-        fmt::print(cerr, "{1:<3}:Generations: {0}\n", r_gen, rank);
-        pop.GiveDistance();
-        arma::ivec best = pop._apopulation.col(pop.getBestIndex());
-        MPI_Send(best.memptr(), best.size(), MPI_INTEGER8, 0, 10+rank, MPI_COMM_WORLD);
+        pubg.Reproduce(pop);
+        pubg.Mutation(pop);
     }
-
+    // fmt::print(cerr, "{1:<3}:Generations: {0}\n", r_gen, rank);
+    // send best to root process
+    pop.GiveDistance();
+    arma::ivec best = pop._apopulation.col(pop.getBestIndex());
+    if(rank != 0) MPI_Send(best.memptr(), best.size(), MPI_INTEGER8, 0, 10+rank, MPI_COMM_WORLD);
+    // root process receives and saves bests
+    if(rank == 0){
+        tributes.col(0) = best;
+        for(int i{1}; i<size; i++){
+            MPI_Recv(tributes.colptr(i), tributes.n_rows, MPI_INTEGER8, i, 10+i, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            fmt::print("Received best from continent {0}\n", i);
+        }
+        tributes.print("Bests");
+        tributes.save(fmt::format("{0}/ex10_bests.dat", paths::path_DATA), arma::raw_ascii);
+    }
 
     MPI_Finalize();
     return  0;
