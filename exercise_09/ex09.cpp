@@ -6,22 +6,19 @@
 
 int main(int argc, char *argv[]){
     
-    std::shared_ptr<Mapper> atlas;
+    auto atlas = std::make_shared<Mapper>();
     if(argc == 2 && strcmp(argv[1], "circle") == 0){
-        atlas = std::make_shared<Mapper>(Mapper());   
+        atlas->InitCirlce();
     }
     else if(argc == 2 && strcmp(argv[1], "square") == 0){
-        atlas = static_pointer_cast<Mapper>(std::make_shared<SquareMapper>(SquareMapper()));
+        atlas->InitSquare();
     }
     else{
-        fmt::print("Usage: ./ex09_acc <mapper>\nwhere <mapper> is either 'circle' or 'square'\n");
+        fmt::print(cerr, "Usage: ./ex09_acc <mapper>\nwhere <mapper> is either 'circle' or 'square'\n");
         return 1;
     }
 
-    // auto atlas = std::shared_ptr<Mapper>(new SquareMapper());
-    atlas->whoami();
-    // atlasRef->whoami();
-    Population pop(atlas, 1000);
+    Population pop(atlas, 200);
     string filename = fmt::format("{0}/ex09_atlas_{1}.dat", paths::path_DATA.string(), argv[1]);
     ofstream fileout(filename.c_str());
     for(int i{0}; i<atlas->getNCities(); i++){
@@ -46,8 +43,10 @@ int main(int argc, char *argv[]){
     pop.GiveDistance();
     fileout.close();
     fileout.clear();
-
+    fmt::print("\n");
+    fmt::print("Done. Writing to file ");
     filename = fmt::format("{0}/ex09_best_{1}.dat", paths::path_DATA.string(), argv[1]);
+    fmt::print("{0}\n", filename);
     fileout.open(filename.c_str());
     arma::ivec best = pop._apopulation.col(pop.getBestIndex());
     for(int i{0}; i<best.size(); i++){

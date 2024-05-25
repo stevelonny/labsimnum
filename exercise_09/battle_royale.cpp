@@ -1,51 +1,47 @@
 #include "battle_royale.h"
 
-Mapper::Mapper(unsigned int n_cities) : _ncities(n_cities), _atlas(n_cities), rnd(0) {
-    InitAtlas();
+Mapper::Mapper(unsigned int n_cities) : _ncities(n_cities), _atlas(n_cities), rnd(0)
+{}
+
+Mapper::Mapper(arma::dmat coords) : _ncities(coords.n_rows), _atlas(coords.n_rows), rnd(0) {
+    InitCoords(coords);
 }
 
-void Mapper::InitAtlas()
-{
-    for (int i{0}; i < _ncities; i++)
-    {
-        // _atlas[i] = (2 * M_PI * static_cast<double>(i)) / static_cast<double>(_ncities);
-        _atlas[i] = rnd.Rannyu(0, 2 * M_PI);
+void Mapper::InitCoords(arma::dmat coords){
+    _ncities = coords.n_rows;
+    for(int i{0}; i < _ncities; i++){
+        _atlas[i].first = coords(i, 0);
+        _atlas[i].second = coords(i, 1);
+    }
+}
+
+void Mapper::InitCirlce(){
+    for(int i{0}; i<_ncities; i++){
+        double angle{rnd.Rannyu(0, 2 * M_PI)};
+        _atlas[i].first = cos(angle);
+        _atlas[i].second = sin(angle);
+    }
+}
+
+void Mapper::InitSquare(){
+    for(int i{0}; i<_ncities; i++){
+        _atlas[i].first = rnd.Rannyu(-1., 1.);
+        _atlas[i].second = rnd.Rannyu(-1., 1.);
     }
 }
 
 double Mapper::Distance(int first_city, int second_city){
-    double angle1 = _atlas[_pbc(first_city)];
-    double angle2 = _atlas[_pbc(second_city)];
-    return pow(cos(angle1) - cos(angle2), 2) + pow(sin(angle1) - sin(angle2), 2);
-}
-
-vector<double> Mapper::Position(int city){
-    double angle = _atlas[_pbc(city)];
-    double x = cos(angle);
-    double y = sin(angle);
-    return {x, y};
-}
-
-SquareMapper::SquareMapper(unsigned int n_cities) : Mapper(n_cities) {
-    InitAtlas();
-}
-
-void SquareMapper::InitAtlas(){
-    for(int i{0}; i < getNCities(); i++){
-        _atlas[i] = make_pair(rnd.Rannyu(-1., 1.), rnd.Rannyu(-1., 1));
-    }
-}
-
-double SquareMapper::Distance(int first_city, int second_city){
     double x1{_atlas[_pbc(first_city)].first};
     double y1{_atlas[_pbc(first_city)].second};
     double x2{_atlas[_pbc(second_city)].first};
     double y2{_atlas[_pbc(second_city)].second};
-    return pow(x1 - x2, 2) + pow(y1 - y2, 2);
+    return sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
 }
 
-vector<double> SquareMapper::Position(int city){
-    return { _atlas[_pbc(city)].first, _atlas[_pbc(city)].second};
+vector<double> Mapper::Position(int city){
+    double x = _atlas[_pbc(city)].first;
+    double y = _atlas[_pbc(city)].second;
+    return {x, y};
 }
 
 
@@ -98,7 +94,7 @@ vector<int> Population::Check(){
 
         std::set<int> unique_cities(_apopulation.col(i).begin(), _apopulation.col(i).end());
         if(unique_cities.size() != _n_genes){
-            fmt::print(cerr, "Error: not all cities are visited in chromosome {}\n", unique_cities.size());
+            fmt::print(cerr, "Error: not all cities are visited in chromosome {}\n", i);
             check.push_back(i);
         }
 
@@ -132,7 +128,7 @@ void BattleRoyale::Reproduce(Population &pop){
     // sort(sorted_pop.begin(), sorted_pop.end(), [](pair<int, double> a, pair<int, double> b) {return a.second < b.second;});
     // create a new population
     arma::imat new_pop(pop._apopulation.n_rows, pop._apopulation.n_cols);
-    for(int i{0}; i < pop.getNPopulace(); i++){
+    for(int i{0}; i < pop.getNPopulace(); i+=2){
         int first{Selection(pop)};
         int second{Selection(pop)};
         if(rnd.Rannyu() < _crossover_rate){
@@ -144,9 +140,11 @@ void BattleRoyale::Reproduce(Population &pop){
             new_pop.col(i) = pop._apopulation.col(first);
             new_pop.col(i + 1) = pop._apopulation.col(second);
         }
-        i++;
     }
-    vector<int> check{pop.Check()};
+    // for(int i{0}; i<pop.getNPopulace(); i++){
+    //     int selected{pop.getBestIndex()};
+    //     new_pop.col(i) = pop._apopulation.col(selected);
+    // }
     // if(check.size() > 0){
     //     fmt::print(cerr, "Error: population is not well formed\n");
     //     for(auto i : check){
@@ -154,19 +152,26 @@ void BattleRoyale::Reproduce(Population &pop){
     //     }
     // }
     pop._apopulation = new_pop;
+    vector<int> check{pop.Check()};
 }
 
 int BattleRoyale::Selection(Population &pop){
-    double total_score{pop.getTotalScore()};
-    double r{rnd.Rannyu(0, total_score)};
-    double chosen_score{0};
-    int the_chosen{0};
-    while(chosen_score < r){
-        chosen_score += 1./pop._distance[the_chosen].second;
-        the_chosen++;
-    }
-    return pop._distance[the_chosen-1].first;
+    // double total_score{pop.getTotalScore()};
+    // double r{rnd.Rannyu(0, total_score)};
+    // double chosen_score{0};
+    // int the_chosen{0};
+    // while(chosen_score < r){
+    //     chosen_score += 1./pop._distance[the_chosen].second;
+    //     the_chosen++;
+    // }
+    // return pop._distance[the_chosen-1].first;
+    int chosen{static_cast<int>(rnd.Rannyu(0, pop.getNPopulace()))};
+    chosen = pop.getNPopulace()*static_cast<int>(1-pow(rnd.Rannyu(), 3));
+    if(chosen >= pop.getNPopulace()) chosen = pop.getNPopulace() - 1;
+    if(chosen < 0) chosen = 0;
+    return pop._distance[chosen].first;
 }
+
 
 arma::imat BattleRoyale::Crossover(Population& pop, int first, int second){
     // find the cut position

@@ -12,7 +12,7 @@ bool isThisTheEnd(int gen[], int size){
     return true;
 }
 
-// remember that sword of arma in 64bit systems is int64_t, so MPI_INTEGER8 (otherwhise 32bit for 32bit systems)
+// remember that sword of arma in 64bit systems is int64_t, so 64/8=MPI_INTEGER8 (otherwhise 32bit for 32bit systems)
 
 int main(int argc, char* argv[]){
 
@@ -20,12 +20,12 @@ int main(int argc, char* argv[]){
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    double* coords;
-    if(size < 3 || size > 11){
+    if(size < 3 || size > 21){
         fmt::print("This program must be run with 3 to 11 processes\n");
         MPI_Finalize();
         return 1;
     }
+
     int* currentgens = new int[size-1];
     int r_gen{0};
     if(rank == 0){
@@ -34,23 +34,24 @@ int main(int argc, char* argv[]){
             // indexes[i] = atlas->getNCities()+1;
         }        
     }
-    int Nmigr{10};
-    // std::shared_ptr<Mapper> atlas = static_pointer_cast<Mapper>(std::make_shared<SquareMapper>(SquareMapper()));
-    std::shared_ptr<Mapper> atlas;
+
+    arma::dmat coords;
+    int Nmigr{20};
+    auto atlas = make_shared<Mapper>();
     if(argc ==2 && strcmp(argv[1], "circle")==0){
-        atlas = make_shared<Mapper>();
+        atlas->InitCirlce();
     }
     else if(argc ==2 && strcmp(argv[1], "square")==0){
-        atlas = make_shared<SquareMapper>();
+        atlas->InitSquare();
     }
-    else if(argc == 2 && strcmp(argv[1], "provita")){
+    else if(argc == 2 && strcmp(argv[1], "provita")==0){
+        coords.set_size(110, 2);
         if(rank == 0){
-            ifstream filein(fmt::format("{0}/prov_ita.dat", paths::path_ROOT, "/exercise_10"));
+            ifstream filein(fmt::format("{0}/{1}/cap_prov_ita.dat", paths::path_ROOT, "/exercise_10"));
             if(filein.is_open()){
                 int n_cities{110};
-                coords = new double[n_cities];
                 for(int i{0}; i<n_cities; i++){
-                    filein >> coords[i];
+                    filein >> coords(i, 0) >> coords(i, 1);
                 }
             }
             else{
@@ -59,20 +60,21 @@ int main(int argc, char* argv[]){
                 return 1;
             }
         }
-        MPI_Bcast(coords, 110, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-        atlas = std::make_shared<SquareMapper>(coords, 110);
+        MPI_Bcast(coords.memptr(), coords.size(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+        atlas->InitCoords(coords);
     }
-    if(argc != 2 && (strcmp(argv[1], "circle") != 0 || strcmp(argv[1], "square") != 0)){
+    if(argc != 2 && ((strcmp(argv[1], "circle") != 0 || strcmp(argv[1], "square") != 0) || strcmp(argv[1], "provita") != 0)){
         fmt::print("Usage: {0} <mapper>\nwhere <mapper> is either 'circle' or 'square'\n", argv[0]);
         MPI_Finalize();
         return 1;
     }
-    atlas->whoami();
     arma::imat tributes;
+    string filename;
+    ofstream fileout;
     if(rank == 0){
         // int gen{0};
-        string filename = fmt::format("{0}/ex10_atlas_{1}.dat", paths::path_DATA.string(), argv[1]);
-        ofstream fileout(filename.c_str());
+        filename = fmt::format("{0}/ex10_atlas_{1}.dat", paths::path_DATA.string(), argv[1]);
+        fileout.open(filename.c_str());
         for(int i{0}; i<atlas->getNCities(); i++){
             fmt::print(fileout, "{0:<5} {1:<10.5f} {2:<10.5f}\n", i, atlas->Position(i)[0], atlas->Position(i)[1]);
         }
@@ -126,14 +128,19 @@ int main(int argc, char* argv[]){
 
     // initilize rnd with different seed for each rank
     // Random rnd(rank);
-    Population pop(atlas);
+    Population pop(atlas, 200);
     // fmt::print(cerr, "{0:<3}: atlas ptr counter {1}\n", rank, atlas.use_count());
     BattleRoyale pubg(rank);
     /* if(rank == 0)  */tributes.set_size(atlas->getNCities(), size);
+    filename = fmt::format("{0}/ex10_r{2}_values_{1}.dat", paths::path_DATA.string(), argv[1], rank);
+    fileout.open(filename.c_str());
     for(int i{0}; i<500; i++){
+        fmt::print(fileout, "{0:<5} {1:<10.5f} {2:<10.5f}\n", i, pop.getDistance(0), pop.getHalfBest()/* pop.getBest() */);
         r_gen++;
         if(i%Nmigr == 0 && i != 0){
-            int champion = pubg.Selection(pop);
+            pop.GiveDistance();
+            int champion = pop.getBestIndex();
+            vector<double> v_bestlength(size);
             arma::ivec tribute = pop._apopulation.col(champion);
             //arma::ivec homecoming(atlas->getNCities());
             MPI_Gather(tribute.memptr(), tribute.size(), MPI_INTEGER8, tributes.memptr(), tribute.size(), MPI_INTEGER8, 0, MPI_COMM_WORLD);
@@ -169,10 +176,10 @@ int main(int argc, char* argv[]){
             */
             pop._apopulation.col(champion) = tributes.col(rank);
             MPI_Gather(&r_gen, 1, MPI_INT, currentgens, 1, MPI_INT, 0, MPI_COMM_WORLD);
-            if(rank == 0) fmt::print("Generations: {0}\n", currentgens[0]);
+            if(rank == 0) fmt::print("Generations: {0}\r", currentgens[0]);
         }
-        pubg.Reproduce(pop);
         pubg.Mutation(pop);
+        pubg.Reproduce(pop);
     }
     // fmt::print(cerr, "{1:<3}:Generations: {0}\n", r_gen, rank);
     // send best to root process
@@ -189,12 +196,19 @@ int main(int argc, char* argv[]){
             fmt::print("Received best from continent {0}\n", i);
         }
         */
-        tributes.print("Bests");
-        tributes.save(fmt::format("{0}/ex10_bests_{1}.dat", paths::path_DATA, argv[1]), arma::raw_ascii);
+        fmt::print("\n");
+        tributes.brief_print("Bests");
+        fmt::print("Done. Writing champions to file ");
+        filename = fmt::format("{0}/ex10_bests_{1}.dat", paths::path_DATA, argv[1]);
+        fmt::print("{0}\n", filename);
+        tributes.save(filename, arma::raw_ascii);
+        // creates a new population with the bests just to find the best of the best
         Population bests(atlas, tributes.n_cols);
         bests._apopulation = tributes;
         bests.GiveDistance();
-        string filename = fmt::format("{0}/ex10_champion_{1}.dat", paths::path_DATA.string(), argv[1]);
+        fmt::print("Writing champion to file ");
+        filename = fmt::format("{0}/ex10_champion_{1}.dat", paths::path_DATA.string(), argv[1]);
+        fmt::print("{0}\n", filename);
         ofstream fileout(filename.c_str());
         best = pop._apopulation.col(pop.getBestIndex());
         for(int i{0}; i<best.size(); i++){

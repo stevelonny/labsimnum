@@ -15,7 +15,7 @@ using namespace arma;
 
 #define _NCITIES 34
 #define _NPOPULACE 1000
-#define _SWAP_RATE 0.15
+#define _SWAP_RATE 0.10
 #define _PERMUTATION_RATE 0.05
 #define _SHIFT_RATE 0.05
 #define _INVERSION_RATE 0.10
@@ -26,36 +26,19 @@ class Mapper {
     public:
         Mapper() : Mapper(_NCITIES) {}
         Mapper(unsigned int n_cities);
-        virtual void InitAtlas();
+        Mapper(arma::dmat coords);
+        void InitCirlce();
+        void InitSquare();
+        void InitCoords(arma::dmat coords);
         virtual double Distance(int first_city, int second_city);
-        // std::function<double(int, int)> DDistance = [this](int first_city, int second_city) {
-        //     return Distance(first_city, second_city);
-        // };
         const int getNCities(){return _ncities;}
-        // double DDistance(int first_city, int second_city);
-        // const double getAngle(int city){return _atlas[_pbc(city)];}
         virtual vector<double> Position(int city); /* we'll use this method to print out coordinates */
         const int _pbc(int index){return index%_ncities;}
-        virtual void whoami(){fmt::print(cerr, "I am a Circle\n");}
-    protected:
-        unordered_map<int, double> _atlas;
-        Random rnd;
     private:
         unsigned int _ncities;
-};
-
-class SquareMapper : public Mapper {
-    public:
-        SquareMapper() : SquareMapper(_NCITIES) {}
-        SquareMapper(unsigned int n_cities);
-        void InitAtlas() override;
-        double Distance(int first_city, int second_city) override;
-        vector<double> Position(int city) override;
-        void whoami() override {fmt::print(cerr, "I am a Square\n");}
-    protected:
         unordered_map<int, pair<double, double>> _atlas;
+        Random rnd;
 };
-        
 
 /* class for population */
 class Population {
