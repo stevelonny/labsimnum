@@ -1,18 +1,16 @@
 # Steve's Numerical Simulation Laboratory
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-## Description
 
 This is a collection of exercises written during Laboratorio di Simulazione Numerica (A.A. 2023-2024) @UNIMI. It's a pair of `C++` codes for data generation and `jupyter-notebook` for data analysis.
 
-## Installation
+## Usage
 
 ### Dependences
-For building and running the `C++` codes `cmake` and `make` are required, in addiction of a gcc/g++ (clang does give problems compiling some libraries). Dependencies should be handled by cmake.
+For building and running the `C++` codes `cmake` and `make` are required, in addiction of a GCC compatible compiler (clang does give problems beacuase of implicit narrowing and casting). Dependencies linkage should be handled by CMake, but the user is required to provide them.
 
-Data formatting in `c++`is done through [`fmtlib`](https://fmt.dev/latest/index.html) and it is provided within the repository.
-Exercise 04 will use the [`armadillo`](https://arma.sourceforge.net/) libraries for linear algebra calculations in the simulator provided, and `ex04_eq.cpp` make use of multithreading with `OpenMP`.
+Data formatting in `c++`is done through [`fmtlib`](https://fmt.dev/latest/index.html) and it is provided through CMake.
+Some exercises will use the [`armadillo`](https://arma.sourceforge.net/) libraries, and `OpenMP` for dirty and fast speedup, and [exercise_10](#exercise-10) uses mpich implementation of the MPI interaface.
 
 All the data analysis is done through `jupyter-notebook` using as kernel python 3.12.2 with the following `python` modules: `mathplotlib`, `numpy`, `math`.
 
@@ -38,12 +36,13 @@ The data generated will be stored in a direcotry called `data`. The Jupyter note
 
 ### Global todo
 
-- [ ] Refactor all libraries (ex.: only one blocking avg)
+- [x] Refactor all libraries (ex.: only one blocking avg)
 - [x] Remake global cmake project structure like [this](https://cliutils.gitlab.io/modern-cmake/chapters/basics/structure.html)
-- [ ] Before making data public, uniform naming convention for all data files
+- [x] Before making data public, uniform naming convention for all data files
 - [ ] Make data public for release
 
 ### Exercise 01
+Testing the pseudo-random generator with blocking averages and inverse distributions.
 [Notebook](/notebooks/exercise_01.ipynb), [Codes](/exercise_01/)
 
 #### To Do
@@ -51,7 +50,7 @@ The data generated will be stored in a direcotry called `data`. The Jupyter note
 - [ ] Accurate description in the notebook
 - [x] Add assignments
 - [x] Progressive uncertainity for all blocking avgs in the notebooks
-- [ ] Add fits to histograms in notebook, ex01.2
+- [x] Add fits to histograms in notebook, ex01.2
 - [x] Commenting code where needed
 - [x] Adding messages in the c++ codes
 
@@ -162,7 +161,7 @@ still does what you think it does. code not yet tested but it compiles
 #### To Do
 
 ### Exercise 08
-to do everything after refactor ex05 code.
+~~to do everything after refactor ex05 code.~~ rewrite code to borrowing standr or similar
 
 ### Exercise 09
 
@@ -177,8 +176,6 @@ Where mapper can be either ```circle``` or ```square```.
 #### To Do
 check every mutation algorithm, and find best mutation rate.
 
----
----
 
 ### Exercise 10
 
@@ -191,6 +188,9 @@ Usage:
 Where ```<n>``` is the number of nodes to run the simulation on. 
 #### To Do
 refactor atlas so we can send with MPI_Bcast the map to all nodes, or at least a seed system (should be already implentem implicitely beacause rnd set seed with 0)
+
+---
+---
 
 ## License
 

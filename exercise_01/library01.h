@@ -19,15 +19,15 @@ class BlockingAvg
 private:
     virtual void Funny(Random &rnd);
     virtual void Average(Random &rnd);
-    double Error(double ave, double av2, int i);
 protected:
+    double Error(double ave, double av2, int i);
     double cum_avg, cum_avg2;
     double sum;
     int n_throws, n_blocks, l_block;
 public:
     BlockingAvg();
     virtual ~BlockingAvg();
-    void Calculate(int n_throws, int n_blocks, Random &rnd, ofstream &file);
+    virtual void Calculate(int n_throws, int n_blocks, Random &rnd, ofstream &file);
 };
 
 /* child class for sigma^2 */

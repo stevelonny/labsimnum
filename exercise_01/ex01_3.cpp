@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include "library.h"
+#include <library01.h>
 
 using namespace std;
 using namespace filesystem;
@@ -18,9 +18,9 @@ int main(){
 
     /* file output */
     ofstream out;
-    out.open(paths::path_DATA/"ex_01.3.dat");
+    out.open(paths::path_DATA/"ex01_3.dat");
     if(!out.is_open()){
-        fmt::print(cerr, "Error: unable to open {0}\n", paths::path_DATA/"ex_01.3.dat");
+        fmt::print(cerr, "Error: unable to open {0}\n", paths::path_DATA/"ex01_3.dat");
         return -1;
     }
 
@@ -28,7 +28,7 @@ int main(){
     fmt::print("Calculating buffon's needle with {0} throws through {1} blocks\n", n_throws, n_blocks);    
     BlockingBuffon buffone(0.8, 1.);
     buffone.Calculate(n_throws, n_blocks, rnd, out);
-    fmt::print("Output written in {0}\n", paths::path_DATA/"ex_01.3.dat");
+    fmt::print("Output written in {0}\n", paths::path_DATA/"ex01_3.dat");
 
     return 0;
 }

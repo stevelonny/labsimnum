@@ -1,5 +1,6 @@
 #pragma once
 
+#include <library01.h>
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -10,43 +11,6 @@
 #include <fmt/ostream.h>
 
 using namespace std;
-
-
-/* mother class for blocking avg */
-class BlockingAvg
-{
-private:
-    virtual void Funny(Random &rnd);
-    virtual void Average(Random &rnd);
-protected:
-    double Error(double ave, double av2, int i);
-    double cum_avg, cum_avg2;
-    double sum;
-    int n_throws, n_blocks, l_block;
-public:
-    BlockingAvg();
-    virtual ~BlockingAvg();
-    virtual void Calculate(int n_throws, int n_blocks, Random &rnd, ofstream &file);
-};
-
-/* child class for sigma^2 */
-class BlockingVar : public BlockingAvg
-{
-private:
-    void Funny(Random &rnd) override;
-};
-
-/* child class for buffon's needle */
-class BlockingBuffon : public BlockingAvg
-{
-    public:
-        BlockingBuffon();
-        BlockingBuffon(double needle, double distance);
-    private:
-        double l, d;
-        void Average(Random &rnd) override;
-        void Funny(Random &rnd) override;
-};
 
 /* functions classes for montecarlo simulations */
 class Function

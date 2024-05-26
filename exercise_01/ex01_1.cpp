@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include "library.h"
+#include <library01.h>
 
 using namespace std;
 using namespace filesystem;
@@ -13,45 +13,45 @@ int main(int argc, const char** argv){
     initRandom(rnd, paths::path_SEED);
 
     /* setting # of throws and blocks */
-    int n_throws = 1E7;
+    int n_throws = 1E6;
     int n_blocks{100};
 
     /* average */
     BlockingAvg avg;
 
     ofstream out;
-    out.open(paths::path_DATA/"ex_01.1a.dat");
+    out.open(paths::path_DATA/"ex01_1a.dat");
     if(!out.is_open()){
-        fmt::print(cerr, "Error: unable to open {0}\n", paths::path_DATA/"ex_01.1a.dat");
+        fmt::print(cerr, "Error: unable to open {0}\n", paths::path_DATA/"ex01_1a.dat");
         return -1;
     }
 
     fmt::print("Calculating average of rannyu distribution with {0} throws through {1} blocks\n", n_throws, n_blocks);
     avg.Calculate(n_throws, n_blocks, rnd, out);
-    fmt::print("Output written in {0}\n", paths::path_DATA/"ex_01.1a.dat");
+    fmt::print("Output written in {0}\n", paths::path_DATA/"ex01_1a.dat");
     out.close();
 
     /* variance */
     BlockingVar var;
 
     out.clear();
-    out.open(paths::path_DATA/"ex_01.1b.dat");
+    out.open(paths::path_DATA/"ex01_1b.dat");
     if(!out.is_open()){
-        fmt::print(cerr, "Error: unable to open {0}\n", paths::path_DATA/"/ex_01.1b.dat");
+        fmt::print(cerr, "Error: unable to open {0}\n", paths::path_DATA/"/ex01_1b.dat");
         return -1;
     }
 
     fmt::print("Calculating variance of rannyu distribution with {0} throws through {1} blocks\n", n_throws, n_blocks);
     var.Calculate(n_throws, n_blocks, rnd, out);
-    fmt::print("Output written in {0}\n", paths::path_DATA/"ex_01.1b.dat");
+    fmt::print("Output written in {0}\n", paths::path_DATA/"ex01_1b.dat");
 
     /* chi2 */
     out.close();
 
     out.clear();
-    out.open(paths::path_DATA/"ex_01.1c.dat");
+    out.open(paths::path_DATA/"ex01_1c.dat");
     if(!out.is_open()){
-        fmt::print(cerr, "Error: unable to open {0}\n", paths::path_DATA/"ex_01.1c.dat");
+        fmt::print(cerr, "Error: unable to open {0}\n", paths::path_DATA/"ex01_1c.dat");
         return -1;
     }
 
@@ -85,7 +85,7 @@ int main(int argc, const char** argv){
         }
         fmt::print(out, "{0}\t{1}\n", k+1, chi);
     }
-    fmt::print("Output written in {0}\n", paths::path_DATA/"ex_01.1c.dat");
+    fmt::print("Output written in {0}\n", paths::path_DATA/"ex01_1c.dat");
     out.close();
 
     return 0;

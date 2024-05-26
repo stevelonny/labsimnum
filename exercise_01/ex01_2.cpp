@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include "library.h"
+#include <library01.h>
 
 using namespace std;
 using namespace filesystem;
@@ -28,7 +28,7 @@ int main(){
     /* lets use some smart pointer and ofstream, we're writing in c++ anyway */
     unique_ptr<ofstream[]> out(new ofstream[N.size()]);
     for(int i{0}; i<N.size(); i++){
-        path filepath = paths::path_DATA / fmt::format(string("ex_01.2s_{}.dat"), N[i]);
+        path filepath = paths::path_DATA / fmt::format(string("ex01_2s_{}.dat"), N[i]);
         out[i].open(filepath);
         if(!out[i].is_open()){
             fmt::print(cerr, "Error: unable to open {0}\n", filepath);
@@ -52,7 +52,7 @@ int main(){
         fmt::print(out[s], "{0}\t{1}\t{2}\n", sum_unif/(double)N[s], sum_expo/(double)N[s], sum_cauchy/(double)N[s]);
         }
     }
-    fmt::print("Output written in {0}\n", string(paths::path_DATA.c_str()) + "ex_01.2s_*.dat");
+    fmt::print("Output written in {0}\n", string(paths::path_DATA.c_str()) + "ex01_2s_*.dat");
     //do i need to close files? should be automatically closed by the destructors...
 
     //delete[] out; /* no need to free mem from heap with smrt pointers! */

@@ -1,4 +1,4 @@
-#include "library.h"
+#include <library02.h>
 
 /* base class for blocking average */
 BlockingAvg::BlockingAvg()

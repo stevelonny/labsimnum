@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED On)
 set(CMAKE_CXX_FLAGS "-Wall -O3")
 set(MAKEFLAGS += -s)
 
-#setting dependencies
+# setting dependencies
 include(FetchContent)
 
 FetchContent_Declare(
@@ -28,13 +28,13 @@ set(MPI_HOME /usr/lib64/mpich/)
 
 find_package(MPI REQUIRED)
 include_directories(${MPI_INCLUDE_PATH})
-#setting directories
-#data directory
+# setting directories
+# data directory
 file(MAKE_DIRECTORY data)
-#dirs to stash NSL simulator IO files
+# dirs to stash NSL simulator IO files
 file(MAKE_DIRECTORY input-output/INPUT/CONFIG)
 file(MAKE_DIRECTORY input-output/OUTPUT/CONFIG)
-#ex04 IO dirs
+# ex04 IO dirs
 file(MAKE_DIRECTORY data/ex04/INPUT_SOLID/CONFIG)
 file(MAKE_DIRECTORY data/ex04/INPUT_GAS/CONFIG)
 file(MAKE_DIRECTORY data/ex04/INPUT_LIQUID/CONFIG)
@@ -44,7 +44,7 @@ file(MAKE_DIRECTORY data/ex04/OUTPUT_LIQUID/CONFIG)
 file(MAKE_DIRECTORY data/ex04/OUTPUT_EQ_SOLID/CONFIG)
 file(MAKE_DIRECTORY data/ex04/OUTPUT_EQ_GAS/CONFIG)
 file(MAKE_DIRECTORY data/ex04/OUTPUT_EQ_LIQUID/CONFIG)
-#ex07 IO dirs
+# ex07 IO dirs
 file(MAKE_DIRECTORY data/ex07/OUTPUT_NVE_SOLID/CONFIG)
 file(MAKE_DIRECTORY data/ex07/OUTPUT_NVE_GAS/CONFIG)
 file(MAKE_DIRECTORY data/ex07/OUTPUT_NVE_LIQUID/CONFIG)
@@ -60,6 +60,7 @@ add_subdirectory(exercise_04)
 add_subdirectory(exercise_05)
 add_subdirectory(exercise_06)
 add_subdirectory(exercise_07)
+# add_subdirectory(exercise_08)
 add_subdirectory(exercise_09)
 add_subdirectory(exercise_10)
 
