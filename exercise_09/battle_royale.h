@@ -15,6 +15,7 @@ using namespace arma;
 
 #define _NCITIES 34
 #define _NPOPULACE 1000
+#define _SELECTION_TYPE 0
 #define _SWAP_RATE 0.10
 #define _PERMUTATION_RATE 0.05
 #define _SHIFT_RATE 0.05
@@ -33,7 +34,7 @@ class Mapper {
         virtual double Distance(int first_city, int second_city);
         const int getNCities(){return _ncities;}
         virtual vector<double> Position(int city); /* we'll use this method to print out coordinates */
-        const int _pbc(int index){return index%_ncities;}
+        const int _pbc(int index){return index<1?1:(index>_ncities?index%_ncities:index);}
     private:
         unsigned int _ncities;
         unordered_map<int, pair<double, double>> _atlas;
@@ -72,8 +73,9 @@ class Population {
 class BattleRoyale{
     public:
         BattleRoyale() : BattleRoyale(0) {};
-        BattleRoyale(int mrank) : BattleRoyale(mrank, _SWAP_RATE, _PERMUTATION_RATE, _SHIFT_RATE, _INVERSION_RATE, _CROSSOVER_RATE){}
-        BattleRoyale(int mrank, double swap_rate, double permutation_rate, double shift_rate, double inversion_rate, double crossover_rate);
+        BattleRoyale(int mrank) : BattleRoyale(mrank, _SELECTION_TYPE, _SWAP_RATE, _PERMUTATION_RATE, _SHIFT_RATE, _INVERSION_RATE, _CROSSOVER_RATE){}
+        BattleRoyale(int mrank, int seltype) : BattleRoyale(mrank, seltype, _SWAP_RATE, _PERMUTATION_RATE, _SHIFT_RATE, _INVERSION_RATE, _CROSSOVER_RATE){}
+        BattleRoyale(int mrank, int seltype, double swap_rate, double permutation_rate, double shift_rate, double inversion_rate, double crossover_rate);
 
         // Evolve the population
         void Reproduce(Population& pop);
@@ -84,6 +86,7 @@ class BattleRoyale{
     private:
         Random rnd;
         int _rank;
+        int _selectiontype;
         double _swap_rate;
         double _permutation_rate;
         double _shift_rate;

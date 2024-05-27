@@ -1,22 +1,22 @@
 #include "battle_royale.h"
 
-Mapper::Mapper(unsigned int n_cities) : _ncities(n_cities), _atlas(n_cities), rnd(0)
+Mapper::Mapper(unsigned int n_cities) : _ncities(n_cities), /* _atlas(n_cities), */ rnd(0)
 {}
 
-Mapper::Mapper(arma::dmat coords) : _ncities(coords.n_rows), _atlas(coords.n_rows), rnd(0) {
+Mapper::Mapper(arma::dmat coords) : _ncities(coords.n_rows), /* _atlas(coords.n_rows), */ rnd(0) {
     InitCoords(coords);
 }
 
 void Mapper::InitCoords(arma::dmat coords){
     _ncities = coords.n_rows;
-    for(int i{0}; i < _ncities; i++){
-        _atlas[i].first = coords(i, 0);
-        _atlas[i].second = coords(i, 1);
+    for(int i{1}; i<_ncities+1; i++){
+        _atlas[i].first = coords(i-1, 0);
+        _atlas[i].second = coords(i-1, 1);
     }
 }
 
 void Mapper::InitCirlce(){
-    for(int i{0}; i<_ncities; i++){
+    for(int i{1}; i<_ncities+1; i++){
         double angle{rnd.Rannyu(0, 2 * M_PI)};
         _atlas[i].first = cos(angle);
         _atlas[i].second = sin(angle);
@@ -24,23 +24,23 @@ void Mapper::InitCirlce(){
 }
 
 void Mapper::InitSquare(){
-    for(int i{0}; i<_ncities; i++){
+    for(int i{1}; i<_ncities+1; i++){
         _atlas[i].first = rnd.Rannyu(-1., 1.);
         _atlas[i].second = rnd.Rannyu(-1., 1.);
     }
 }
 
 double Mapper::Distance(int first_city, int second_city){
-    double x1{_atlas[_pbc(first_city)].first};
-    double y1{_atlas[_pbc(first_city)].second};
-    double x2{_atlas[_pbc(second_city)].first};
-    double y2{_atlas[_pbc(second_city)].second};
+    double x1{_atlas.at(_pbc(first_city)).first};
+    double y1{_atlas.at(_pbc(first_city)).second};
+    double x2{_atlas.at(_pbc(second_city)).first};
+    double y2{_atlas.at(_pbc(second_city)).second};
     return sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
 }
 
 vector<double> Mapper::Position(int city){
-    double x = _atlas[_pbc(city)].first;
-    double y = _atlas[_pbc(city)].second;
+    double x = _atlas.at(_pbc(city)).first;
+    double y = _atlas.at(_pbc(city)).second;
     return {x, y};
 }
 
@@ -117,8 +117,8 @@ const double Population::getHalfBest(){
     return sum / static_cast<double>(half_size);
 }
 
-BattleRoyale::BattleRoyale(int mrank, double swap_rate, double permutation_rate, double shift_rate, double inversion_rate, double crossover_rate) :
-    _rank{mrank}, _swap_rate(swap_rate), _permutation_rate(permutation_rate), _shift_rate(shift_rate), _inversion_rate(inversion_rate), _crossover_rate(crossover_rate), rnd(mrank)
+BattleRoyale::BattleRoyale(int mrank, int seltype, double swap_rate, double permutation_rate, double shift_rate, double inversion_rate, double crossover_rate) :
+    _rank{mrank}, _selectiontype{seltype}, _swap_rate(swap_rate), _permutation_rate(permutation_rate), _shift_rate(shift_rate), _inversion_rate(inversion_rate), _crossover_rate(crossover_rate), rnd(mrank)
 {}
 
 void BattleRoyale::Reproduce(Population &pop){
@@ -156,6 +156,58 @@ void BattleRoyale::Reproduce(Population &pop){
 }
 
 int BattleRoyale::Selection(Population &pop){
+    int the_chosen{0};
+    double chosen_score{0};
+    double r{0};
+    double total_score{0};
+    int k{0};
+    switch (_selectiontype)
+    {
+    case 0:
+        /* linear rank-based selection */
+        // int chosen{static_cast<int>(rnd.Rannyu(0, pop.getNPopulace()))};
+        the_chosen = static_cast<int>((double)pop.getNPopulace()*(pow(rnd.Rannyu(), 6)));
+        if(the_chosen > pop.getNPopulace()) the_chosen = pop.getNPopulace() - 1;
+        if(the_chosen < 0) the_chosen = 0;
+        break;
+    case 1:
+        /* roulette-based selection */
+        total_score = pop.getTotalScore();
+        r = rnd.Rannyu(0, total_score);
+        while(chosen_score > r){
+            chosen_score += 1./pop._distance[the_chosen].second;
+            the_chosen++;
+        }
+        the_chosen--;
+        if(the_chosen < 0) the_chosen = 0;
+        if(the_chosen >= pop.getNPopulace()) the_chosen = pop.getNPopulace() - 1;
+
+        break;        
+    case 2:
+        /* tournament-based selection */
+        k = static_cast<int>(rnd.Rannyu(1, pop.getNPopulace()));
+        the_chosen = pop._distance[static_cast<int>(rnd.Rannyu(0, pop.getNPopulace()))].first;
+        for(int i{1}; i<k; i++){
+            int selected{pop._distance[static_cast<int>(rnd.Rannyu(0, pop.getNPopulace()))].first};
+            if(pop._distance[selected].second < pop._distance[the_chosen].second){
+                the_chosen = selected;
+            }
+        }
+        break;
+    case 3:
+        /* stochastic acceptance */
+        the_chosen = static_cast<int>(rnd.Rannyu(0, pop.getNPopulace()));
+        chosen_score = 1./pop._distance[the_chosen].second;
+        while(rnd.Rannyu() > chosen_score/(1./pop._distance[0].second)){
+            the_chosen = static_cast<int>(rnd.Rannyu(0, pop.getNPopulace()));
+            chosen_score = 1./pop._distance[the_chosen].second;
+        }
+    default:
+        /* the best */
+        the_chosen = 0;
+        break;
+    }
+
     // double total_score{pop.getTotalScore()};
     // double r{rnd.Rannyu(0, total_score)};
     // double chosen_score{0};
@@ -165,11 +217,7 @@ int BattleRoyale::Selection(Population &pop){
     //     the_chosen++;
     // }
     // return pop._distance[the_chosen-1].first;
-    int chosen{static_cast<int>(rnd.Rannyu(0, pop.getNPopulace()))};
-    chosen = pop.getNPopulace()*static_cast<int>(1-pow(rnd.Rannyu(), 3));
-    if(chosen >= pop.getNPopulace()) chosen = pop.getNPopulace() - 1;
-    if(chosen < 0) chosen = 0;
-    return pop._distance[chosen].first;
+    return pop._distance[the_chosen].first;
 }
 
 
