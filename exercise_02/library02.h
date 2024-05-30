@@ -54,11 +54,6 @@ class MonteLin : public BlockingMonte
         double Probability(Random &rnd) override;
 };
 
-
-/* inverse distribution */
-double exponential_distribution(double rand, double lambda);
-double cauchy_distribution(double rand, double center, double gamma);
-
 /* discrete random walk */
 //as the class is heavily modified in respect to the inherited methods of blockingavg, rewrite should be in order
 class BlockingLattice : public BlockingAvg

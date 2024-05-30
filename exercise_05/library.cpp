@@ -3,34 +3,34 @@
 Metro::Metro() : BlockingAvg(), actual{{0.,0.,1.5/2.}}, next{{0.,0.,1.5/2.}}
 {
     output = {0.};
-    mstep = new UniformStep(1.5/2.);
-    macc = new GroundState();
+    mstep = make_shared<UniformStep>(1.5/2.);
+    macc = make_shared<GroundState>();
 }
 
 Metro::Metro(double x, double y, double z, double delta)
     : BlockingAvg(), actual{{x,y,z}}, next{{x,y,z}}
 {
     output = {0.};
-    mstep = new UniformStep(delta);
-    macc = new GroundState();
+    mstep = make_shared<UniformStep>(delta);
+    macc = make_shared<GroundState>();
 }
 
-Metro::Metro(double x, double y, double z, UniformStep &Step) :
-    BlockingAvg(), actual{{x,y,z}}, next{{x,y,z}}, mstep(&Step)
+Metro::Metro(double x, double y, double z, std::shared_ptr<UniformStep> &Step) :
+    BlockingAvg(), actual{{x,y,z}}, next{{x,y,z}}, mstep{Step}
 {
     output = {0.};
-    macc = new GroundState();
+    macc = make_shared<GroundState>();
 }
 
-Metro::Metro(double x, double y, double z, double delta, Acceptance &Acc) :
-    BlockingAvg(), actual{{x,y,z}}, next{{x,y,z}}, macc(&Acc)
+Metro::Metro(double x, double y, double z, double delta, std::shared_ptr<Acceptance> &Acc) :
+    BlockingAvg(), actual{{x,y,z}}, next{{x,y,z}}, macc{Acc}
 {
     output = {0.};
-    mstep = new UniformStep(delta);
+    mstep = make_shared<UniformStep>(delta);
 }
 
-Metro::Metro(double x, double y, double z, Acceptance &Acc, UniformStep &Step) :
-    BlockingAvg(), actual{{x,y,z}}, next{{x,y,z}}, macc(&Acc), mstep(&Step)
+Metro::Metro(double x, double y, double z, std::shared_ptr<Acceptance> &Acc, std::shared_ptr<UniformStep> &Step) :
+    BlockingAvg(), actual{{x,y,z}}, next{{x,y,z}}, macc(Acc), mstep(Step)
 {
     output = {0.};
 }

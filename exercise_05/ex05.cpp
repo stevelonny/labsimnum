@@ -8,8 +8,6 @@
 
 using namespace std;
 
-void Step(Random &rnd, vector<double> &pos, double rho);
-double pGround(double r);
 
 int main (int argc, char *argv[]){
     
@@ -44,7 +42,7 @@ int main (int argc, char *argv[]){
         return -1;
     }
 
-    GaussStep gauss(gauss_delta);
+    std::shared_ptr<UniformStep> gauss = make_shared<GaussStep>(gauss_delta);
     Metro gaussground(0., 0., 1.5/2., gauss);
 
     gaussground.Calculate(n_throws, n_blocks, rnd, out);
@@ -58,7 +56,7 @@ int main (int argc, char *argv[]){
         return -1;
     }
 
-    FirstState acc;
+    std::shared_ptr<Acceptance> acc = make_shared<FirstState>();
     Metro first(0., 0., 1.5/2., un_delta_f, acc);
 
     first.Calculate(n_throws, n_blocks, rnd, out);
@@ -72,7 +70,7 @@ int main (int argc, char *argv[]){
         return -1;
     }
 
-    GaussStep gauss1(gauss_delta_f);
+    std::shared_ptr<UniformStep> gauss1 = make_shared<GaussStep>(gauss_delta_f);
     Metro firstgauss(0., 0., 1.5/2., acc, gauss1);
 
     firstgauss.Calculate(n_throws, n_blocks, rnd, out);

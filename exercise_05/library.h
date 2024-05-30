@@ -1,6 +1,7 @@
 #pragma once
 
 #include <blocking.h>
+
 #include <array>
 #include <numeric>
 
@@ -43,9 +44,9 @@ class Metro : public BlockingAvg
     public:
         Metro();
         Metro(double x, double y, double z, double delta);
-        Metro(double x, double y, double z, UniformStep &Step);
-        Metro(double x, double y, double z, double delta, Acceptance &Acc);
-        Metro(double x, double y, double z, Acceptance &Acc, UniformStep &Step);
+        Metro(double x, double y, double z, std::shared_ptr<UniformStep> &Step);
+        Metro(double x, double y, double z, double delta, std::shared_ptr<Acceptance> &Acc);
+        Metro(double x, double y, double z, std::shared_ptr<Acceptance> &Acc, std::shared_ptr<UniformStep> &Step);
     protected:
         //accepted position
         array<double, 3> actual;
@@ -54,7 +55,7 @@ class Metro : public BlockingAvg
     private:
         void Funny(Random &rnd) override;
         double rDistance(const array<double, 3> &pos);
-        UniformStep *mstep;
-        Acceptance *macc;
+        std::shared_ptr<UniformStep> mstep;
+        std::shared_ptr<Acceptance> macc;
 };
 
