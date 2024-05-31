@@ -46,13 +46,13 @@ Testing the pseudo-random generator with blocking averages and inverse distribut
 [Notebook](/notebooks/exercise_01.ipynb), [Codes](/exercise_01/)
 
 #### To Do
-
-- [ ] Accurate description in the notebook
+Done!
+<!-- - [x] Accurate description in the notebook
 - [x] Add assignments
 - [x] Progressive uncertainity for all blocking avgs in the notebooks
 - [x] Add fits to histograms in notebook, ex01.2
 - [x] Commenting code where needed
-- [x] Adding messages in the c++ codes
+- [x] Adding messages in the c++ codes -->
 
 ### Exercise 02
 [Notebook](/notebooks/exercise_02.ipynb), [Codes](/exercise_02/)

@@ -74,11 +74,6 @@ int main(int argc, const char** argv){
             // round to the nearest lower int to get which interval the throw is fallen into
             int j{static_cast<int>(current/width)};
             counter[j] ++;
-            /* 
-            for(int j{0}; j<m_intervals; j++){
-                counter[j] += ((current<(j+1)*width)?((current>j*width)?1:0):0); //yuk
-            }
-            */
         }
         for(int i{0}; i<m_intervals; i++){
             chi += pow(counter[i] - expected, 2)/expected;

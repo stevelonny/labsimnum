@@ -4,16 +4,21 @@
 #include <string>
 #include <fmt/core.h>
 #include <fmt/os.h>
-//macross
-//#define ROOT_PATH "@CMAKE_SOURCE_DIR@"
-//#define ROOT_DATA "@CMAKE_SOURCE_DIR@/data"
+
+#define ROOT_PATH "@ROOT_PATH@"
+#define DATA_PATH "@DATA_PATH@"
+#define SEED_PATH "@SEED_PATH@"
+#define PRIMES_PATH "@PRIMES_PATH@"
+#define IO_PATH "@IO_PATH@"
+
 /* the future is now, old man */
+
 namespace paths{
-    const std::filesystem::path path_SEED("@CMAKE_SOURCE_DIR@/lib/seed.in");
-    const std::filesystem::path path_PRIMES("@CMAKE_SOURCE_DIR@/lib/Primes");
-    const std::filesystem::path path_ROOT("@CMAKE_SOURCE_DIR@");
-    const std::filesystem::path path_DATA("@CMAKE_SOURCE_DIR@/data");
-    const std::filesystem::path path_IO("@CMAKE_SOURCE_DIR@/input-output");
+    const std::filesystem::path path_ROOT(ROOT_PATH);
+    const std::filesystem::path path_DATA(DATA_PATH);
+    const std::filesystem::path path_SEED(SEED_PATH);
+    const std::filesystem::path path_PRIMES(PRIMES_PATH);
+    const std::filesystem::path path_IO(IO_PATH);
 }
 
 /* add formatter for filepath (ok)*/
