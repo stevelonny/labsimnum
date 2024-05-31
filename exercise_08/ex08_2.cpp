@@ -6,6 +6,13 @@
 #include "version_config.h"
 #include "library08.h"
 
+#define STARTING_TEMP 3.
+#define N_THROWS 1e6
+#define N_BLOCKS 10
+#define DELTA 2.5
+#define DELTA_MU 1.
+#define DELTA_SIGMA 0.5
+
 using namespace std;
 
 int main (int argc, char *argv[]){
@@ -13,10 +20,10 @@ int main (int argc, char *argv[]){
     Random rnd;
     initRandom(rnd, paths::path_SEED);
 
-    int n_throws = 1e6;
-    int n_blocks{10};
+    int n_throws = N_THROWS;
+    int n_blocks{N_BLOCKS};
 
-    double delta{2.5};
+    double delta{DELTA};
 
 
     auto step = std::make_shared<UniformStep>(delta);
@@ -39,13 +46,13 @@ int main (int argc, char *argv[]){
     // std::fflush(stdout);
 
     // actual simualtion
-    double T{2.};
+    double T{STARTING_TEMP};
     double beta{1./T};
 
     acc->SetParameters(1., 1.);
     // d_acc->setBeta(beta);
-    double delta_mu{1.};
-    double delta_sigma{0.5};
+    double delta_mu{DELTA_MU};
+    double delta_sigma{DELTA_SIGMA};
     double best_mu{1.};
     double best_sigma{1.};
     double best_energy{0.};
@@ -73,8 +80,13 @@ int main (int argc, char *argv[]){
 
     polis.Reset();
     while(T>0.001){
-        next_mu = abs(current_mu + rnd.Rannyu(-1.,1.)*delta_mu*(sqrt(T))/sqrt(2.));
-        next_sigma = abs(current_sigma + rnd.Rannyu(-1., 1.)*delta_sigma*sqrt(T)/sqrt(2.));
+        // dont know if its better to use the previous "current" parameters or search around the current "best"
+        // ive tried also adjusting the way the deltas are updated, with a sqrt(T) factor (remember to normalize)
+        // could implement a check for when the deltas goes out of bounds
+        delta_mu = delta_mu>current_mu ? current_mu : DELTA_MU; // this doesnt work well if mu or sigma are small values, as the step cannot go very far
+        delta_sigma = delta_sigma>current_sigma ? current_sigma : DELTA_SIGMA;
+        next_mu = abs(current_mu + rnd.Rannyu(-1.,1.)*delta_mu*((T))/(STARTING_TEMP));
+        next_sigma = abs(current_sigma + rnd.Rannyu(-1., 1.)*delta_sigma*(T)/(STARTING_TEMP));
         acc->SetParameters(next_mu, next_sigma);
         // d_acc->setBeta(beta);
         polis.Reset();

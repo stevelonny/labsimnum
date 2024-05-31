@@ -9,7 +9,15 @@
 using namespace std;
 
 int main (int argc, char *argv[]){
-    
+
+    if(argc != 3){
+        fmt::print(cerr, "Usage: {0} <mu> <sigma>\n", argv[0]);
+        return -1;
+    }
+
+    double mu{std::stod(argv[1])};
+    double sigma{std::stod(argv[2])};
+
     Random rnd;
     initRandom(rnd, paths::path_SEED);
 
@@ -36,7 +44,7 @@ int main (int argc, char *argv[]){
 
     auto step = std::make_shared<UniformStep>(delta);
     auto acc = std::make_shared<DoubleGaussian>();
-    acc->SetParameters(0.811, 0.619);
+    acc->SetParameters(mu, sigma);
 
     Metro polis(0., n_throws, n_blocks, acc, step);
 
