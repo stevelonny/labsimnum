@@ -1,7 +1,6 @@
 #include <iostream>
 #include <system.h>
 #include <fmt/ostream.h>
-// #include <omp.h>
 
 using namespace std;
 
@@ -48,29 +47,22 @@ int main (int argc, char *argv[]){
     input.r_cut = 0.;
     input.nsteps = 20000;
     input.nblocks = 20;
-    /* base_properties.measure_cv = true;
-    base_properties.measure_chi = true;
-    base_properties.measure_tenergy = true;
-    base_properties.measure_magnet = false;
-    base_input.npart = 50;
-    base_input.delta = 0.;
-    base_input.sim_type = type;
-    base_input._J = 1.;
-    base_input._H = h;
-    base_input.restart = 0;
-    base_input.rho = 1.;
-    base_input.r_cut = 0.;
-    base_input.nsteps = 20000;
-    base_input.nblocks = 20;
-    base_input.temp = 0.5; */
-    //Thread monitoring
-    // vector<int> b_count(omp_get_max_threads());
-    // vector<int> i_count(omp_get_max_threads());
 
-    // fmt::print("Using {0} threads, format : <thread>:<temperature>_<block>\n", omp_get_max_threads());
-    // #pragma omp parallel for
+    ofstream out_total;
+    string fileout_total = fmt::format("{0}/ex06_{1}_{2}.dat",
+                                        paths::path_DATA.c_str(), input.sim_type>2?"gibbs":"metro", argc<3?"h0":"h002");
+    if(filesystem::exists(fileout_total)){
+        filesystem::remove(fileout_total);
+    }
+    out_total.open(fileout_total.c_str(), ios::app);
+    if(argc < 3){
+        fmt::print(out_total, "# T block <E> <E_err> <Cv> <Cv_err> <chi> <chi_err>\n");
+    }
+    else{
+        fmt::print(out_total, "# T block <M> <M_err>\n");
+    }
+
     for(int i=0; i<16; i++){ //loop over temperatures
-        // i_count[omp_get_thread_num()] = i;
         //Setting input parameters
         input.temp = 0.5 + 0.1*(double)i;
         //Setting filenames for the output files
@@ -82,7 +74,6 @@ int main (int argc, char *argv[]){
         SYS.initialize(input);
         SYS.initialize_properties(properties);
         SYS.block_reset(0);
-        // b_count[omp_get_thread_num()] = 0;
         //Equilibration
         for(int k{0}; k < 10000; k++){
             SYS.step();
@@ -114,14 +105,18 @@ int main (int argc, char *argv[]){
                                     cum_avg/(double)(j+1), SYS.error(cum_avg, cum2_avg, j+1));
             }
             fmt::print(fileout, "\n");
-            //thread monitoring
-            // b_count[omp_get_thread_num()]++;
-            /* for(int t{0}; t<(omp_get_thread_num()>0?omp_get_thread_num():1); t++){
-                fmt::print("{0}:{1}_{2:<3} | ", t, i_count[t], b_count[t]);
+            if(j == SYS.get_nbl()-1){
+                fmt::print(out_total, "{0:<4.1f} {1:<4} ",
+                                    input.temp, j+1);
+                for(int t{0}; t < index.size(); t++){
+                    double cum_avg = SYS.get_sumaverage(index[t]);
+                    double cum2_avg = SYS.get_sum2average(index[t]);
+                    fmt::print(out_total, "{0:>10.5f} {1:>10.5f} ",
+                                        cum_avg/(double)(j+1), SYS.error(cum_avg, cum2_avg, j+1));
+                }
+                fmt::print(out_total, "\n");
             }
-            fmt::print("\r");
-            fflush(stdout); */
-            //single thread monitoring
+            // monitoring
             if(/* j%5 == 0) */ true) {
                 fmt::print("temp:{0:<10.2f} block:{1:<7}\r",
                             input.temp, j+1);
@@ -133,9 +128,8 @@ int main (int argc, char *argv[]){
         fileout.close();
         fileout.clear();
     }
-
-    //#pragma omp taskwait
-    fmt::print("\n");
+    out_total.close();
+    fmt::print("Done\n");
     
     return 0;
 }
