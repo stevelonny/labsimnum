@@ -19,10 +19,10 @@ int main (int argc, char *argv[]){
     //Starting values for the three phases
     array<double, 3> rho = {1.1, 0.8, 0.05};
     array<double, 3> temp = {0.8, 1.1, 1.2};
-    array<double, 3> r_cut = {2.2, 2.5, 5.0};
+    array<double, 3> r_cut = {2.2, 2.5, 3.};
     array<int, 3> n_blck = {500000, 500000, 500000};
     array<int, 3> n_steps = {1, 1, 1};
-    array<double, 3> delta = {0.11, 0.06, 3.};
+    array<double, 3> delta = {0.12, 0.065, 5.};
 
     fmt::print("Using {0} threads, format : <thread>:<phase>_<block>\n", omp_get_max_threads());
     #pragma omp parallel for

@@ -1,9 +1,9 @@
+#define TAIL_CORRECTION // used to "activate" tail corrections (so old code behaves as it wasnt corrected)
+
 #include <iostream>
 #include <system.h>
 #include <fmt/ostream.h>
 #include <omp.h>
-
-#define TAIL_CORRECTION // used to "activate" tail corrections (so old code behaves as it wasnt corrected)
 
 using namespace std;
 
@@ -48,7 +48,7 @@ int main (int argc, char *argv[]){
     array<int, 3> nvt_equil = {10000, 10000, 10000};
     array<int, 3> n_steps = {2000, 2000, 2000};
     double nve_delta = 0.0005;
-    array<double, 3> delta = {0.11, 0.06, 3.};
+    array<double, 3> delta = {0.12, 0.065, 3.};
 
     // omp_set_num_threads(6);
     fmt::print("Using max {0} threads, format : <thread>:<phase>_<block>\n", omp_get_max_threads());

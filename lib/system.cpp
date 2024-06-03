@@ -78,10 +78,11 @@ double System :: Force(int i, int dim){
 
 void System :: move(int i){ // Propose a MC move for particle i
   if(_sim_type == 3){ //Gibbs sampler for Ising
-    int spin = _particle(i).getspin(); // Used for determining the exponent in Boltzmann
+    // int spin = _particle(i).getspin(); // Used for determining the exponent in Boltzmann
     // Calculates the Boltzmann probability of flipping the spin of particle i
     // Remember periodic boundary conditions, the spin of the neighbors is accessed with the pbc method
-    double p_up = 1.0 / (1.0 + exp(-2.0 * _beta * (_J * (spin * (_particle(this->pbc(i-1)).getspin() + _particle(this->pbc(i+1)).getspin()) + _H))));
+    double p_up = -2.0 * _beta * (_J * ((_particle(this->pbc(i-1)).getspin() + _particle(this->pbc(i+1)).getspin()) + _H));
+    p_up = 1.0 / (1.0 + exp(p_up));
     // Wont use the flip method: a value of spin is set independently of the previous one 
     if(_rnd.Rannyu() < p_up){
       _particle(i).setspin(1);
@@ -252,7 +253,7 @@ void System :: initialize(system_input input){ // Initialize the System  object 
     cerr << "PROBLEM: unknown simulation type" << endl;
     exit(EXIT_FAILURE);
   }
-  if(input.sim_type == 0)      coutf << "LJ MOLECULAR DYNAMICS (NVE) SIMULATION"  << endl;
+  if(input.sim_type == 0) coutf << "LJ MOLECULAR DYNAMICS (NVE) SIMULATION"  << endl;
   else if(_sim_type == 1) coutf << "LJ MONTE CARLO (NVT) SIMULATION"         << endl;
   else if(_sim_type == 2) coutf << "ISING 1D MONTE CARLO (MRT^2) SIMULATION" << endl;
   else if(_sim_type == 3) coutf << "ISING 1D MONTE CARLO (GIBBS) SIMULATION" << endl;
@@ -859,6 +860,14 @@ void System :: averages(int blk){
     }
   }
   _average     = _block_av / double(_nsteps);
+
+  if(_measure_magnet){
+    _average(_index_magnet) /= double(_npart);
+  }
+  if(_measure_cv){
+    _average(_index_cv) /= double(_npart);
+  }
+
   _global_av  += _average;
   _global_av2 += _average % _average; // % -> element-wise multiplication
 
@@ -986,6 +995,14 @@ void System :: averages(bool nofile){
     }
   }
   _average     = _block_av / double(_nsteps);
+  
+  if(_measure_magnet){
+    _average(_index_magnet) /= double(_npart);
+  }
+  if(_measure_cv){
+    _average(_index_cv) /= double(_npart);
+  }
+  
   _global_av  += _average;
   _global_av2 += _average % _average; // % -> element-wise multiplication
 
