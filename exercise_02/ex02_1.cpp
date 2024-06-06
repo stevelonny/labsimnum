@@ -12,11 +12,12 @@ int main(){
     int n_throws = 1E7;
     int n_blocks{100};
 
+    /* init rng */
     Random rnd;
     initRandom(rnd, paths::path_SEED);
 
+    /* integrate with uniform distribution */
     Coseno coseno;
-
     BlockingMonte cosenounif(coseno, 0., 1.);
 
     ofstream out;
@@ -30,10 +31,7 @@ int main(){
 
     out.close();
 
-    //Coseno coseno2;
-
-    //MonteLin cosenolin(coseno, 0., 1.);
-
+    /* integrate with linear distribution */
     MonteLin cosenolin(cosenounif);
 
     out.clear();
@@ -44,6 +42,8 @@ int main(){
     }
 
     cosenolin.Calculate(n_throws, n_blocks, rnd, out);
+
+    out.close();
 
     return 0;
 }

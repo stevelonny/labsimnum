@@ -12,9 +12,11 @@ int main(){
     int n_throws = 1E4;
     int n_blocks{100};
 
+    /* init rng */
     Random rnd;
     initRandom(rnd, paths::path_SEED);
 
+    /* discrete walker */
     BlockingLattice dilattice;
 
     ofstream out;
@@ -29,6 +31,7 @@ int main(){
     out.close();
     out.clear();
 
+    /* continuos walker */
     ContinueLattice conlattice;
 
     out.open(paths::path_DATA/"ex_02.2b.dat");
@@ -38,6 +41,8 @@ int main(){
     }
 
     conlattice.Calculate(n_throws, n_blocks, rnd, out);
+
+    out.close();
 
     return 0;
 }

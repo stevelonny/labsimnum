@@ -7,7 +7,7 @@ double Coseno::Eval(double x){
 
 
 /* integrals with montecarlo mean method, with blck avg */
-//base class with uniform distribution
+/* base class with uniform distribution */
 BlockingMonte::BlockingMonte(){}
 
 BlockingMonte::BlockingMonte(Function &fun) : a{0.}, b{1.}, fun{&fun}{}
@@ -32,19 +32,13 @@ double BlockingMonte::Probability(Random &rnd){
     return rnd.Rannyu(a,b);
 }
 
-/* montecarlo mean method with samples from a linear dist */
+/* child class with linear dist */
 MonteLin::MonteLin(){}
 
 //method to copy over from already constructed uniform montecarlo
 MonteLin::MonteLin(BlockingMonte &monte) : BlockingMonte(monte) {}
 
 MonteLin::MonteLin(Function &fun, double a, double b) : BlockingMonte(fun, a, b) {}
-
-/* void MonteLin::Funny(Random &rnd){
-    double x{Probability(rnd)};
-    double den{2.-2.*x};
-    sum += (b-a)*(double)M_PI_2*cos(x*(double)M_PI_2)/den;
-} */
 
 double MonteLin::Denominator(double x){
     return 2.-2.*x;
@@ -61,7 +55,6 @@ BlockingLattice::BlockingLattice(/* args */) : x{0.}, y{0.}, z{0.}, nstep{100}
     postep = vector<double>(nstep);
     posavg = vector<double>(nstep);
     posavg2 = vector<double>(nstep);
-    //fill(postep.begin(), postep.end(), 0.); //probably not needed
 }
 
 BlockingLattice::~BlockingLattice()
@@ -78,8 +71,8 @@ void BlockingLattice::Calculate(int throws, int blocks, Random &rnd, ofstream &f
         // compute sum for this block
         Average(rnd);
         for(int j{0}; j<nstep; j++){
-           posavg[j] += sqrt(postep[j]/(double)l_block) /* postep[j]/(double)l_block */;
-           posavg2[j] += postep[j]/(double)l_block /* (postep[j]*postep[j])/(double)l_block */;
+           posavg[j] += sqrt(postep[j]/(double)l_block);
+           posavg2[j] += postep[j]/(double)l_block;
         }
         //reset cumulative square position
         fill(postep.begin(), postep.end(), 0.);
