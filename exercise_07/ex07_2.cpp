@@ -1,9 +1,9 @@
+#define TAIL_CORRECTION // used to "activate" tail corrections (so old code behaves as it wasnt corrected)
+
 #include <iostream>
 #include <system.h>
 #include <fmt/ostream.h>
 #include <omp.h>
-
-#define TAIL_CORRECTION // used to "activate" tail corrections (so old code behaves as it wasnt corrected)
 
 using namespace std;
 

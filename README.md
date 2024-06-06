@@ -10,7 +10,7 @@ This is a collection of exercises written during Laboratorio di Simulazione Nume
 For building and running the `C++` codes `cmake` and `make` are required, in addiction of a GCC compatible compiler (clang does give problems beacuase of implicit narrowing and casting). Dependencies linkage should be handled by CMake, but the user is required to provide them.
 
 Data formatting in `c++`is done through [`fmtlib`](https://fmt.dev/latest/index.html) and it is provided through CMake.
-Some exercises will use the [`armadillo`](https://arma.sourceforge.net/) libraries, and `OpenMP` for dirty and fast speedup, and [exercise_10](#exercise-10) uses mpich implementation of the MPI interaface.
+Some exercises will use the [`armadillo`](https://arma.sourceforge.net/) libraries,`OpenMP` for dirty and fast speedup, and [exercise_10](#exercise-10) uses [`mpich`]() implementation of the MPI interaface.
 
 All the data analysis is done through `jupyter-notebook` using as kernel python 3.12.2 with the following `python` modules: `mathplotlib`, `numpy`, `math`.
 
@@ -59,10 +59,10 @@ Done!
 
 #### To Do
 
-- [ ] Accurate description in the notebook
+- [x] Accurate description in the notebook
 - [x] Add assignments
-- [ ] Add fits for random walks
-- [ ] Add comparison with fitted curves
+- [x] Add fits for random walks
+- [x] Add comparison with fitted curves
 - [x] Commenting code where needed
 - [ ] Adding messages in the c++ codes
 
@@ -73,7 +73,7 @@ Done!
 
 - [ ] Accurate description in the notebook
 - [x] Add assignments
-- [ ] Add comparison between each method, and analytic resolutions
+- [x] Add comparison between each method, and analytic resolutions
 - [ ] Commenting code where needed
 - [ ] Adding messages in the c++ codes
 
@@ -89,6 +89,7 @@ This exercise is divided in three parts:
 #### exercise_04_eq - _Equilibration_
 This program runs 10 simulation for each of the 3 phases at different temperature. Its results are used for estimating equilibration time and starting temperature necessary to achieve the desidered temperature.
 On a quadcore i5-10300H, with 100 blocks and 200 steps each block the speed comparison is:
+
 *Single-thread*
 ```
 real    15m59.719s
@@ -143,7 +144,8 @@ Where ```<simulation_type>``` cane be either ```2``` for metro or ```3``` for gi
 Without ```[<external_field>]``` set, the program computes tenergy, heat capacity and chi with ```h = 0```.
 The optional argument ```[<external_field>]``` can be whatever value, it will prompt the program to set the external field to ```h = 0.02``` and it will compute only magnetization values.
 
-TODO: investigate strange behaviour when taking advantage of omp directives, such outputting certain values to 0.
+#### To Do
+accutate description in the notebook, add assignments, plots and fits
 
 ### Exercise 07
 

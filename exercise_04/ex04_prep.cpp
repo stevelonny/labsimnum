@@ -9,14 +9,8 @@ int main (int argc, char *argv[]){
     system_properties properties;
     properties.measure_temp = true;
     properties.measure_kenergy = true;
-    //properties.measure_pressure = true;
-    //properties.measure_penergy = true;
-    //properties.measure_pressure = true;
-    //properties.measure_tenergy = true;
-    //properties.writeout = true;    
     //Setting the base path for the input and output files
     array<string, 3> names = {"SOLID", "LIQUID", "GAS"};
-    //array<int, 3> b_count = {0, 0, 0};
     //Starting values for the three phases
     array<int, 3> n_blck = {1, 1, 1}; //number of blocks needed to stabilize
     array<int, 3> n_steps = {50000, 50000, 500000};
@@ -46,7 +40,6 @@ int main (int argc, char *argv[]){
             }
             SYS.averages(j+1);
             SYS.block_reset(j+1);
-            //fmt::print("SOLID {0:>2}/{1} LIQUID {2:>2}/{3} GAS {4:>2}/{5}\r", b_count[0], n_blck[0], b_count[1], n_blck[1], b_count[2], n_blck[2]);
             //fflush(stdout);
         }
         //fmt::print("\n");
