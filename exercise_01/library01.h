@@ -10,9 +10,6 @@
 
 using namespace std;
 
-/* init random number generator */
-//void initRandom(Random &rnd, string seedfile);
-
 /* mother class for blocking avg */
 class BlockingAvg
 {

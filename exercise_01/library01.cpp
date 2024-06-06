@@ -35,7 +35,7 @@ void BlockingAvg::Average(Random &rnd){
     cum_avg2 += pow(sum/(double)l_block, 2);
 }
 
-// Funny is interchangable, it's the characteristic of the distribution
+// Funny is interchangable with your favourite distribution
 void BlockingAvg::Funny(Random &rnd){
     sum += rnd.Rannyu();
 }
@@ -84,9 +84,9 @@ void BlockingBuffon::Funny(Random &rnd){
     if((rnd.Rannyu() * sqrt(x*x+y*y))/ x /* sin function! */ <=(l/d)){
         sum += 1.;
     }
-    //sum += ((double)rnd.Rannyu()/(acos(1.-(double)rnd.Rannyu()))>(l/d))?0.:1.;
 }
-/* inverse distribution */
+
+/* inverse distributions */
 double exponential_distribution(double rand, double lambda){
     return (-1./lambda) * log(1. - rand);
 }

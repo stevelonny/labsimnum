@@ -53,7 +53,6 @@ int main(){
         }
     }
     fmt::print("Output written in {0}\n", string(paths::path_DATA.c_str()) + "ex01_2s_*.dat");
-    //do i need to close files? should be automatically closed by the destructors...
 
     //delete[] out; /* no need to free mem from heap with smrt pointers! */
 
