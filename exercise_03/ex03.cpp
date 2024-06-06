@@ -12,6 +12,7 @@ int main(){
     int n_throws = 1E4;
     int n_blocks{100};
 
+    /* init rng */
     Random rnd;
     initRandom(rnd, paths::path_SEED);
 
@@ -22,6 +23,7 @@ int main(){
         return -1;
     }
 
+    /* direct call method */
     BlockingDirectCall directcall;
 
     directcall.Calculate(n_throws, n_blocks, rnd, out);
@@ -35,6 +37,7 @@ int main(){
         return -1;
     }
 
+    /* discrete call method */
     BlockingDiscreteCall discretecall;
     discretecall.Calculate(n_throws, n_blocks, rnd, out);
 
@@ -47,6 +50,7 @@ int main(){
         return -1;
     }
 
+    /* direct put */
     BlockingDirectPut directput;
     directput.Calculate(n_throws, n_blocks, rnd, out);
 
@@ -59,8 +63,11 @@ int main(){
         return -1;
     }
 
+    /* discrete put */
     BlockingDiscretePut discreteput;
     discreteput.Calculate(n_throws, n_blocks, rnd, out);
+
+    out.close();
 
     return 0;
 }

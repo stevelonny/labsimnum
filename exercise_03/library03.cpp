@@ -33,7 +33,7 @@ double BlockingDiscreteCall::Price(Random &rnd){
     return price;
 }
 
-/*  */
+/* put option with direct price estimation */
 BlockingDirectPut::BlockingDirectPut(){}
 BlockingDirectPut::BlockingDirectPut(double starting_price, double final_time, double strike_price, double risk_free_interest, double volatility)
     : BlockingDirectCall(starting_price, final_time, strike_price, risk_free_interest, volatility)
@@ -43,7 +43,7 @@ void BlockingDirectPut::Funny(Random &rnd){
     sum += exp(-m_r*m_T) * max(0., m_K-Price(rnd));
 }
 
-/*  */
+/* put option with discrete price estimation */
 BlockingDiscretePut::BlockingDiscretePut(){}
 BlockingDiscretePut::BlockingDiscretePut(double starting_price, double final_time, double strike_price, double risk_free_interest, double volatility)
     : BlockingDiscreteCall(starting_price, final_time, strike_price, risk_free_interest, volatility)

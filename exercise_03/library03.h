@@ -12,7 +12,7 @@
 
 using namespace std;
 
-/*  */
+/* base class for direct call */
 class BlockingDirectCall : public BlockingAvg
 {
     private:
@@ -30,6 +30,7 @@ class BlockingDirectCall : public BlockingAvg
 
 };
 
+/* child class for discrete call */
 class BlockingDiscreteCall : public BlockingDirectCall
 {
     protected:
@@ -40,6 +41,7 @@ class BlockingDiscreteCall : public BlockingDirectCall
 
 };
 
+/* child class for direct put */
 class BlockingDirectPut : public BlockingDirectCall
 {
     private:
@@ -49,6 +51,7 @@ class BlockingDirectPut : public BlockingDirectCall
         BlockingDirectPut(double starting_price, double final_time, double strike_price, double risk_free_interest, double volatility);
 };
 
+/* child class for discrete put */
 class BlockingDiscretePut : public BlockingDiscreteCall
 {
     private:
