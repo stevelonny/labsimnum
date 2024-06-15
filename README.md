@@ -40,6 +40,7 @@ The data generated will be stored in a direcotry called `data`. The Jupyter note
 - [x] Remake global cmake project structure like [this](https://cliutils.gitlab.io/modern-cmake/chapters/basics/structure.html)
 - [x] Before making data public, uniform naming convention for all data files
 - [ ] Make data public for release
+- [ ] Implement auto-equilibration
 
 ### Exercise 01
 Testing the pseudo-random generator with blocking averages and inverse distributions.
@@ -58,25 +59,27 @@ Done!
 [Notebook](/notebooks/exercise_02.ipynb), [Codes](/exercise_02/)
 
 #### To Do
-
+Done!
+<!-- 
 - [x] Accurate description in the notebook
 - [x] Add assignments
 - [x] Add fits for random walks
 - [x] Add comparison with fitted curves
 - [x] Commenting code where needed
 - [ ] Adding messages in the c++ codes
-
+ -->
 ### Exercise 03
 [Notebook](/notebooks/exercise_03.ipynb), [Codes](/exercise_03/)
 
 #### To Do
-
-- [ ] Accurate description in the notebook
+Done!
+<!-- 
+- [x] Accurate description in the notebook
 - [x] Add assignments
 - [x] Add comparison between each method, and analytic resolutions
-- [ ] Commenting code where needed
+- [x] Commenting code where needed
 - [ ] Adding messages in the c++ codes
-
+ -->
 ### Exercise 04
 
 [Notebook](/notebooks/exercise_04.ipynb), [Codes](/exercise_04/)
