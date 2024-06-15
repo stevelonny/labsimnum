@@ -7,14 +7,14 @@ This is a collection of exercises written during Laboratorio di Simulazione Nume
 ## Usage
 
 ### Dependences
-For building and running the `C++` codes `cmake` and `make` are required, in addiction of a GCC compatible compiler (clang does give problems beacuase of implicit narrowing and casting). Dependencies linkage should be handled by CMake, but the user is required to provide them.
+For building and running the `C++` codes `cmake` and `make` are required, in addiction of a GCC compatible compiler (use gcc as clang does give problems beacuase of implicit narrowing and casting). Dependencies linkage should be handled by CMake, but the user is required to provide them.
 
 Data formatting in `c++`is done through [`fmtlib`](https://fmt.dev/latest/index.html) and it is provided through CMake.
 Some exercises will use the [`armadillo`](https://arma.sourceforge.net/) libraries,`OpenMP` for dirty and fast speedup, and [exercise_10](#exercise-10) uses [`mpich`]() implementation of the MPI interaface.
 
-All the data analysis is done through `jupyter-notebook` using as kernel python 3.12.2 with the following `python` modules: `mathplotlib`, `numpy`, `math`.
+All the data analysis is done through `jupyter-notebook` using as kernel python 3.12.2 with the following `python` modules: `mathplotlib`, `numpy`, `math`, `scipy` and for the last two exercises `tensorflow`.
 
-### Build
+### Build & Run
 Clone this repo. In the root directory create a folder called `build`. This is needed by `cmake` for storing the required configuration and `Makefile` files.
 
 ```shell
@@ -31,6 +31,8 @@ Once finished, `cmake` will have configured the necessary `Makefile` for each ex
 
 The data generated will be stored in a direcotry called `data`. The Jupyter notebooks will use this folder for the data analysis.
 
+<!-- to do: install or cpack -->
+
 
 ## Exercises
 
@@ -42,9 +44,8 @@ The data generated will be stored in a direcotry called `data`. The Jupyter note
 - [ ] Make data public for release
 - [ ] Implement auto-equilibration
 
-### Exercise 01
+### Exercise 01 ([Notebook](/notebooks/exercise_01.ipynb), [Codes](/exercise_01/))
 Testing the pseudo-random generator with blocking averages and inverse distributions.
-[Notebook](/notebooks/exercise_01.ipynb), [Codes](/exercise_01/)
 
 #### To Do
 Done!
@@ -55,8 +56,8 @@ Done!
 - [x] Commenting code where needed
 - [x] Adding messages in the c++ codes -->
 
-### Exercise 02
-[Notebook](/notebooks/exercise_02.ipynb), [Codes](/exercise_02/)
+### Exercise 02 ([Notebook](/notebooks/exercise_02.ipynb), [Codes](/exercise_02/))
+Monte Carlo integration and random walks.
 
 #### To Do
 Done!
@@ -68,8 +69,8 @@ Done!
 - [x] Commenting code where needed
 - [ ] Adding messages in the c++ codes
  -->
-### Exercise 03
-[Notebook](/notebooks/exercise_03.ipynb), [Codes](/exercise_03/)
+### Exercise 03 ([Notebook](/notebooks/exercise_03.ipynb), [Codes](/exercise_03/))
+Option pricing with Monte Carlo methods.
 
 #### To Do
 Done!
@@ -80,9 +81,8 @@ Done!
 - [x] Commenting code where needed
 - [ ] Adding messages in the c++ codes
  -->
-### Exercise 04
-
-[Notebook](/notebooks/exercise_04.ipynb), [Codes](/exercise_04/)
+### Exercise 04 ([Notebook](/notebooks/exercise_04.ipynb), [Codes](/exercise_04/))
+First encounter with molecular dynamics. Pressure calculation and phase equilibration.
 
 This exercise is divided in three parts:
 - Equilibration - Generate a bunch of temperatures data to extrapolate starting temperature needed to equilibrate
@@ -118,24 +118,21 @@ Runs the actual simulation restarting from the input folders generated from the 
 
 instead of using omp for multithreading and a monolithic program, a python script may be more appropriate for the task.
 
-- [ ] Accurate description in the notebook
-- [ ] Add assignments
+- [ ] Accurate description in the notebook (remain ex04.2)
+- [x] Add assignments
 - [x] Add intercept in jupyter with proposed values
-- [ ] Add a way to calculate equilibration time (for now it is estimated)
-- [ ] Add controls to specify which phase to run
-- [ ] Polish unneeded output (for ex: each task in the equilibration step write to the same output file)
+- [ ] ~~Add controls to specify which phase to run~~
+- [ ] ~~Polish unneeded output (for ex: each task in the equilibration step write to the same output file)~~
 
-### Exercise 05
-
-[Notebook](/notebooks/exercise_05.ipynb), [Codes](/exercise_05/)
+### Exercise 05 ([Notebook](/notebooks/exercise_05.ipynb), [Codes](/exercise_05/))
+Sampling quantum wavefunctions with the Metropolis algorithm.
 
 #### To Do
-
-refactor code to use shared_ptr or similar. remember to use make_shared, and dynamic/static_pointer_cast.
-
-### Exercise 06
-
-[Notebook](/notebooks/exercise_06.ipynb), [Codes](/exercise_06/)
+basic notebook (ex not required)
+<!-- refactor code to use shared_ptr or similar. remember to use make_shared, and dynamic/static_pointer_cast.
+ -->
+### Exercise 06 ([Notebook](/notebooks/exercise_06.ipynb), [Codes](/exercise_06/))
+Ising and Gibbs simulation.
 
 The code is a reimplemantation of exercise_04, but the equilibrations phase is integrated in the simulation phase. The code is not parallelized as the previous one.
 
@@ -150,9 +147,8 @@ The optional argument ```[<external_field>]``` can be whatever value, it will pr
 #### To Do
 accutate description in the notebook, add assignments, plots and fits
 
-### Exercise 07
-
-[Notebook](/notebooks/exercise_07.ipynb), [Codes](/exercise_07/)
+### Exercise 07 ([Notebook](/notebooks/exercise_07.ipynb), [Codes](/exercise_07/))
+NVE vs NVT and their autocorrelation.
 
 #### exercise_07_acc
 Code to compute acceptance rate against delta.
@@ -164,13 +160,17 @@ does what you think it does
 still does what you think it does. code not yet tested but it compiles
 
 #### To Do
+accurate descr, add assignments, refactor autocorrelation compute.
 
-### Exercise 08
+### Exercise 08 ([Notebook](/notebooks/exercise_08.ipynb), [Codes](/exercise_08/))
+Quantum waveform sampling and simulated annealing with custom potential.
+
+#### To Do
+accurate descr, add assignments
 ~~to do everything after refactor ex05 code.~~ rewrite code to borrowing standr or similar
 
-### Exercise 09
-
-[Notebook](/notebooks/exercise_09.ipynb), [Codes](/exercise_09/)
+### Exercise 09 ([Notebook](/notebooks/exercise_09.ipynb), [Codes](/exercise_09/))
+Genetic algorithm for TSP.
 
 Usage:
 
@@ -179,12 +179,12 @@ Usage:
 Where mapper can be either ```circle``` or ```square```.
 
 #### To Do
-check every mutation algorithm, and find best mutation rate.
+accurate descr, add assignments
+~~check every mutation algorithm, and find best mutation rate.~~
 
 
-### Exercise 10
-
-[Notebook](/notebooks/exercise_10.ipynb), [Codes](/exercise_10/)
+### Exercise 10 ([Notebook](/notebooks/exercise_10.ipynb), [Codes](/exercise_10/))
+MPI parallelization with migrations for TSP.
 
 Usage:
 
@@ -192,6 +192,7 @@ Usage:
 
 Where ```<n>``` is the number of nodes to run the simulation on. 
 #### To Do
+accurate descr, add assignments
 refactor atlas so we can send with MPI_Bcast the map to all nodes, or at least a seed system (should be already implentem implicitely beacause rnd set seed with 0)
 
 ---
