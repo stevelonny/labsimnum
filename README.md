@@ -82,6 +82,9 @@ Done!
 - [ ] Adding messages in the c++ codes
  -->
 ### Exercise 04 ([Notebook](/notebooks/exercise_04.ipynb), [Codes](/exercise_04/))
+
+** RERUN EQUILIBRATION PART **
+
 First encounter with molecular dynamics. Pressure calculation and phase equilibration.
 
 This exercise is divided in three parts:
@@ -115,14 +118,16 @@ Run 1 single block of the required number of steps (solid: 50000, liquid: 50000,
 Runs the actual simulation restarting from the input folders generated from the previous code.
 
 #### To Do
+Done! *CHECK TOTAL ENERGY FOR GASES*
 
+<!-- 
 instead of using omp for multithreading and a monolithic program, a python script may be more appropriate for the task.
 
-- [ ] Accurate description in the notebook (remain ex04.2)
+- [x] Accurate description in the notebook (remain ex04.2)
 - [x] Add assignments
 - [x] Add intercept in jupyter with proposed values
 - [ ] ~~Add controls to specify which phase to run~~
-- [ ] ~~Polish unneeded output (for ex: each task in the equilibration step write to the same output file)~~
+- [ ] ~~Polish unneeded output (for ex: each task in the equilibration step write to the same output file)~~ -->
 
 ### Exercise 05 ([Notebook](/notebooks/exercise_05.ipynb), [Codes](/exercise_05/))
 Sampling quantum wavefunctions with the Metropolis algorithm.
@@ -145,7 +150,8 @@ Without ```[<external_field>]``` set, the program computes tenergy, heat capacit
 The optional argument ```[<external_field>]``` can be whatever value, it will prompt the program to set the external field to ```h = 0.02``` and it will compute only magnetization values.
 
 #### To Do
-accutate description in the notebook, add assignments, plots and fits
+Done!
+<!-- accutate description in the notebook, add assignments, plots and fits -->
 
 ### Exercise 07 ([Notebook](/notebooks/exercise_07.ipynb), [Codes](/exercise_07/))
 NVE vs NVT and their autocorrelation.
@@ -160,7 +166,7 @@ does what you think it does
 still does what you think it does. code not yet tested but it compiles
 
 #### To Do
-accurate descr, add assignments, refactor autocorrelation compute.
+accurate descr, add assignments, refactor autocorrelation compute. *NEEDS GOFRRRRR*
 
 ### Exercise 08 ([Notebook](/notebooks/exercise_08.ipynb), [Codes](/exercise_08/))
 Quantum waveform sampling and simulated annealing with custom potential.
