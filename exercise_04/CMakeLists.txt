@@ -7,6 +7,10 @@ target_link_libraries(exercise_04_prep PRIVATE random fmt::fmt system particle s
 add_executable (exercise_04_sim ex04_sim.cpp)
 target_link_libraries(exercise_04_sim PRIVATE random fmt::fmt system particle stdc++fs)
 
+add_executable (exercise_04_simeq ex04_simeq.cpp)
+target_link_libraries(exercise_04_simeq PRIVATE random fmt::fmt system particle stdc++fs)
+
+
 set(CMAKE_CXX_FLAGS "-Wall -O3 -fopenmp -larmadillo")
 
 file(MAKE_DIRECTORY OUTPUT/CONFIG)
