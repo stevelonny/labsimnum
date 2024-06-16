@@ -82,9 +82,6 @@ Done!
 - [ ] Adding messages in the c++ codes
  -->
 ### Exercise 04 ([Notebook](/notebooks/exercise_04.ipynb), [Codes](/exercise_04/))
-
-** RERUN EQUILIBRATION PART **
-
 First encounter with molecular dynamics. Pressure calculation and phase equilibration.
 
 This exercise is divided in three parts:
