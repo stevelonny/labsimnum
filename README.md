@@ -42,7 +42,9 @@ The data generated will be stored in a direcotry called `data`. The Jupyter note
 - [x] Remake global cmake project structure like [this](https://cliutils.gitlab.io/modern-cmake/chapters/basics/structure.html)
 - [x] Before making data public, uniform naming convention for all data files
 - [ ] Make data public for release
-- [ ] Implement auto-equilibration
+- [ ] ~~Implement auto-equilibration~~
+- [ ] Investigate potential energy and total enry errors (too small !?) (investigate total energy)
+- [ ] Add messages to user when launching programss
 
 ### Exercise 01 ([Notebook](/notebooks/exercise_01.ipynb), [Codes](/exercise_01/))
 Testing the pseudo-random generator with blocking averages and inverse distributions.
@@ -157,20 +159,20 @@ NVE vs NVT and their autocorrelation.
 Code to compute acceptance rate against delta.
 
 #### exercise_07_2
-does what you think it does
+Computes 500000 steps for both NVE and NVT to be ingested for autocorrelation computation.
 
 #### exercise_07_4
-still does what you think it does. code not yet tested but it compiles
+Final simulation for NVE and NVT.
 
 #### To Do
-accurate descr, add assignments, refactor autocorrelation compute. *NEEDS GOFRRRRR*
+accurate descr, ~~add assignments, refactor autocorrelation compute. NEEDS GOFRRRRR~~, add observations for comparisons and negative values in autocorrelation?
 
 ### Exercise 08 ([Notebook](/notebooks/exercise_08.ipynb), [Codes](/exercise_08/))
 Quantum waveform sampling and simulated annealing with custom potential.
 
 #### To Do
 accurate descr, add assignments
-~~to do everything after refactor ex05 code.~~ rewrite code to borrowing standr or similar
+~~to do everything after refactor ex05 code. rewrite code to borrowing standr or similar~~
 
 ### Exercise 09 ([Notebook](/notebooks/exercise_09.ipynb), [Codes](/exercise_09/))
 Genetic algorithm for TSP.

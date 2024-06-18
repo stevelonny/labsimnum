@@ -39,13 +39,13 @@ int main (int argc, char *argv[]){
     //Starting values for the three phases
     array<double, 3> rho = {1.1, 0.8, 0.05};
     array<double, 6> temp = {1.54, 1.98, 0.95, 0.8, 1.1, 1.2};
-    array<double, 3> nvt_temp = {0.8, 1.1, 1.2};
-    array<double, 3> nve_temp = {1.54, 1.98, 0.95};
+    // array<double, 3> nvt_temp = {0.8, 1.1, 1.2};
+    // array<double, 3> nve_temp = {1.54, 1.98, 0.95};
     array<double, 3> r_cut = {2.2, 2.5, 5.0};
     array<int, 3> n_blck = {50, 50, 50};
     array<int, 6> n_equil = {50000, 50000, 50000, 10000, 10000, 10000};
-    array<int, 3> nve_equil = {50000, 50000, 500000};
-    array<int, 3> nvt_equil = {10000, 10000, 10000};
+    // array<int, 3> nve_equil = {50000, 50000, 500000};
+    // array<int, 3> nvt_equil = {10000, 10000, 10000};
     array<int, 3> n_steps = {2000, 2000, 2000};
     double nve_delta = 0.0005;
     array<double, 3> delta = {0.12, 0.065, 3.};
@@ -61,7 +61,7 @@ int main (int argc, char *argv[]){
         input.sim_type = (l<3)?0:1;
         input.rho = rho[l%3];
         input.r_cut = r_cut[l%3];
-        input.temp = temp[l%3];
+        input.temp = temp[l];
         input.delta = (l<3)?nve_delta:delta[l%3];
         input.nblocks = n_blck[l%3];
         input.nsteps = n_steps[l%3];

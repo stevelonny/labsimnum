@@ -7,6 +7,17 @@
 
 using namespace std;
 
+void thread_monitoring(vector<int> &b_count, vector<string> &name_count){
+    string state;
+    for(int t=0; t<=omp_get_thread_num(); t++){
+        if(b_count[t] == 0) state = "eq...";
+        else state = fmt::format("{0}", b_count[t]);
+        fmt::print(cerr, "{1} {0:>7} |", state, name_count[t]);
+    }
+    fmt::print(cerr, "\r");
+    fflush(stdout);
+}
+
 int main (int argc, char *argv[]){
     //Setting starting properties: they are the same for all the simulations
     // they are all set to false as we are probing delta values
@@ -15,7 +26,8 @@ int main (int argc, char *argv[]){
     //Setting the base path for the input and output files
     array<string, 3> names = {"solid", "liquid", "gas"};
     //Thread monitoring
-    array<int, 3> b_count = {0, 0, 0};
+    vector<int> b_count = {0, 0, 0};
+    vector<string> name_count = {"solid", "liquid", "gas"};
     //Starting values for the three phases
     array<double, 3> rho = {1.1, 0.8, 0.05};
     array<double, 3> temp = {0.8, 1.1, 1.2};
@@ -24,7 +36,7 @@ int main (int argc, char *argv[]){
     array<int, 3> n_steps = {1, 1, 1};
     array<double, 3> delta = {0.12, 0.065, 5.};
 
-    fmt::print("Using {0} threads, format : <thread>:<phase>_<block>\n", omp_get_max_threads());
+    fmt::print("Using max {0} threads, format : <thread>:<phase>_<block>\n", omp_get_max_threads());
     #pragma omp parallel for
     for(int l=0; l<3; l++){ //loop over phases
         //Setting input parameters
@@ -46,7 +58,8 @@ int main (int argc, char *argv[]){
         SYS.block_reset(0);
         b_count[omp_get_thread_num()] = 0;
         //equilibration
-        for(int k{0}; k < 10000; k++){
+        thread_monitoring(b_count, name_count);
+        for(int k{0}; k < 100000; k++){
             SYS.step();
         }
         SYS.block_reset(0);
@@ -62,8 +75,9 @@ int main (int argc, char *argv[]){
                                 blck_avg);
             //thread monitoring
             b_count[omp_get_thread_num()]++;
-            fmt::print("SOLID {0:>7} LIQUID {1:>7} GAS {2:>7}\r", b_count[0], b_count[1], b_count[2]) ;
-            fflush(stdout);
+            for(int t{0}; t<3; t++) fmt::print(cerr, "\t");
+            fmt::print(cerr, "\r");
+            if(j%1000 == 0) thread_monitoring(b_count, name_count);
             /* if(j%10 == 0){
                 fmt::print("temp:{0:<10.2f} block:{1:<7} blck_temp:{2:>10.5f} cum_temp:{3:>10.5f} error:{4:>10.5f}\r",
                             input.temp, j+1, blck_avg, cum_avg/(double)(j+1), SYS.error(cum_avg, cum2_avg, j+1));
