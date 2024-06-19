@@ -5,6 +5,13 @@
 #include <fmt/ostream.h>
 #include <omp.h>
 
+#define N_EQUILIBRATION 30000
+#define N_BLOCKS 500000
+#define D_SOLID 0.057
+#define D_LIQUID 0.115
+#define D_GAS 2.675
+
+
 using namespace std;
 
 void thread_monitoring(vector<int> &b_count, vector<string> &name_count){
@@ -32,9 +39,9 @@ int main (int argc, char *argv[]){
     array<double, 3> rho = {1.1, 0.8, 0.05};
     array<double, 3> temp = {0.8, 1.1, 1.2};
     array<double, 3> r_cut = {2.2, 2.5, 3.};
-    array<int, 3> n_blck = {500000, 500000, 500000};
+    array<int, 3> n_blck = {N_BLOCKS, N_BLOCKS, N_BLOCKS};
     array<int, 3> n_steps = {1, 1, 1};
-    array<double, 3> delta = {0.12, 0.065, 5.};
+    array<double, 3> delta = {D_SOLID, D_LIQUID, D_GAS};
 
     fmt::print("Using max {0} threads, format : <thread>:<phase>_<block>\n", omp_get_max_threads());
     #pragma omp parallel for
@@ -50,7 +57,9 @@ int main (int argc, char *argv[]){
         input.nsteps = n_steps[l];
         // Setting filenames for the output files
         string filename = fmt::format("{0}/ex07_istant_{1}.dat", paths::path_DATA.string(), names[l]);
+        string filename_acc = fmt::format("{0}/ex07_istant_acc_{1}.dat", paths::path_DATA.string(), names[l]);
         ofstream fileout(filename.c_str());
+        ofstream fileout_acc(filename_acc.c_str());
         //Setting the system
         System SYS(paths::path_ROOT / "exercise_07/INPUT", paths::path_IO / "OUTPUT" /* useless output, lets stash it away */);
         SYS.initialize(input);
@@ -59,7 +68,7 @@ int main (int argc, char *argv[]){
         b_count[omp_get_thread_num()] = 0;
         //equilibration
         thread_monitoring(b_count, name_count);
-        for(int k{0}; k < 100000; k++){
+        for(int k{0}; k < N_EQUILIBRATION; k++){
             SYS.step();
         }
         SYS.block_reset(0);
@@ -73,6 +82,10 @@ int main (int argc, char *argv[]){
             double blck_avg = SYS.get_average(ind_pot);
             fmt::print(fileout, "{0:>10.5f}\n",
                                 blck_avg);
+            //Printing the acceptance rate
+            double acc = static_cast<double>(SYS.get_naccepted())/static_cast<double>(SYS.get_nattempts());   
+            fmt::print(fileout_acc, "{0:>5.3f}\n",
+                                acc);
             //thread monitoring
             b_count[omp_get_thread_num()]++;
             for(int t{0}; t<3; t++) fmt::print(cerr, "\t");
@@ -88,6 +101,8 @@ int main (int argc, char *argv[]){
         SYS.finalize();
         fileout.close();
         fileout.clear();
+        fileout_acc.close();
+        fileout_acc.clear();
     }
 
     #pragma omp taskwait

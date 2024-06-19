@@ -49,9 +49,9 @@ The data generated will be stored in a direcotry called `data`. The Jupyter note
 ### Exercise 01 ([Notebook](/notebooks/exercise_01.ipynb), [Codes](/exercise_01/))
 Testing the pseudo-random generator with blocking averages and inverse distributions.
 
-#### To Do
+<!-- #### To Do
 Done!
-<!-- - [x] Accurate description in the notebook
+- [x] Accurate description in the notebook
 - [x] Add assignments
 - [x] Progressive uncertainity for all blocking avgs in the notebooks
 - [x] Add fits to histograms in notebook, ex01.2
@@ -61,28 +61,28 @@ Done!
 ### Exercise 02 ([Notebook](/notebooks/exercise_02.ipynb), [Codes](/exercise_02/))
 Monte Carlo integration and random walks.
 
-#### To Do
+<!-- #### To Do
 Done!
-<!-- 
+
 - [x] Accurate description in the notebook
 - [x] Add assignments
 - [x] Add fits for random walks
 - [x] Add comparison with fitted curves
 - [x] Commenting code where needed
-- [ ] Adding messages in the c++ codes
- -->
+- [ ] Adding messages in the c++ codes -->
+
 ### Exercise 03 ([Notebook](/notebooks/exercise_03.ipynb), [Codes](/exercise_03/))
 Option pricing with Monte Carlo methods.
 
-#### To Do
+<!-- #### To Do
 Done!
-<!-- 
+
 - [x] Accurate description in the notebook
 - [x] Add assignments
 - [x] Add comparison between each method, and analytic resolutions
 - [x] Commenting code where needed
-- [ ] Adding messages in the c++ codes
- -->
+- [ ] Adding messages in the c++ codes -->
+
 ### Exercise 04 ([Notebook](/notebooks/exercise_04.ipynb), [Codes](/exercise_04/))
 First encounter with molecular dynamics. Pressure calculation and phase equilibration.
 
@@ -117,7 +117,7 @@ Run 1 single block of the required number of steps (solid: 50000, liquid: 50000,
 Runs the actual simulation restarting from the input folders generated from the previous code.
 
 #### To Do
-Done! *CHECK TOTAL ENERGY FOR GASES*
+*CHECK TOTAL ENERGY FOR GASES*
 
 <!-- 
 instead of using omp for multithreading and a monolithic program, a python script may be more appropriate for the task.
@@ -131,10 +131,10 @@ instead of using omp for multithreading and a monolithic program, a python scrip
 ### Exercise 05 ([Notebook](/notebooks/exercise_05.ipynb), [Codes](/exercise_05/))
 Sampling quantum wavefunctions with the Metropolis algorithm.
 
-#### To Do
+<!-- #### To Do
 basic notebook (ex not required)
-<!-- refactor code to use shared_ptr or similar. remember to use make_shared, and dynamic/static_pointer_cast.
- -->
+refactor code to use shared_ptr or similar. remember to use make_shared, and dynamic/static_pointer_cast. -->
+
 ### Exercise 06 ([Notebook](/notebooks/exercise_06.ipynb), [Codes](/exercise_06/))
 Ising and Gibbs simulation.
 
@@ -149,7 +149,7 @@ Without ```[<external_field>]``` set, the program computes tenergy, heat capacit
 The optional argument ```[<external_field>]``` can be whatever value, it will prompt the program to set the external field to ```h = 0.02``` and it will compute only magnetization values.
 
 #### To Do
-Done!
+* ADD OBSERVATIONS ON THE DIFFERENCE BETWEEN METRO AND GIBBS AT LOWER TEMPS *
 <!-- accutate description in the notebook, add assignments, plots and fits -->
 
 ### Exercise 07 ([Notebook](/notebooks/exercise_07.ipynb), [Codes](/exercise_07/))
@@ -171,8 +171,7 @@ accurate descr, ~~add assignments, refactor autocorrelation compute. NEEDS GOFRR
 Quantum waveform sampling and simulated annealing with custom potential.
 
 #### To Do
-accurate descr, add assignments
-~~to do everything after refactor ex05 code. rewrite code to borrowing standr or similar~~
+complete the observations ant theory part, power spectrum???, ~~add assignments,to do everything after refactor ex05 code. rewrite code to borrowing standr or similar~~
 
 ### Exercise 09 ([Notebook](/notebooks/exercise_09.ipynb), [Codes](/exercise_09/))
 Genetic algorithm for TSP.
@@ -185,6 +184,7 @@ Where mapper can be either ```circle``` or ```square```.
 
 #### To Do
 accurate descr, add assignments
+(added better comparison between selections)
 ~~check every mutation algorithm, and find best mutation rate.~~
 
 
@@ -200,8 +200,13 @@ Where ```<n>``` is the number of nodes to run the simulation on.
 accurate descr, add assignments
 refactor atlas so we can send with MPI_Bcast the map to all nodes, or at least a seed system (should be already implentem implicitely beacause rnd set seed with 0)
 
+### Exercise 11
+
+### Exercise 12
+
 ---
 ---
+
 
 ## License
 
