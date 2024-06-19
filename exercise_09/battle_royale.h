@@ -55,6 +55,8 @@ class Population {
         const double getBest();
         const int getBestIndex();
         const double getHalfBest();
+        const double getMean();
+        const double getStdDev();
         vector<pair<int, double>> _distance;
         const int pbc(int index){return 1 + (index%(_n_genes-1));};
         const int getNPopulace(){return _n_populace;}

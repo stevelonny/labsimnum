@@ -117,6 +117,19 @@ const double Population::getHalfBest(){
     return sum / static_cast<double>(half_size);
 }
 
+const double Population::getMean(){
+    double sum{0.};
+    std::for_each(_distance.begin(), _distance.end(), [&sum](pair<int, double> a) {sum += a.second;});
+    return sum / static_cast<double>(_n_populace);
+}
+
+const double Population::getStdDev(){
+    double mean{getMean()};
+    double sum{0.};
+    std::for_each(_distance.begin(), _distance.end(), [&sum, mean](pair<int, double> a) {sum += pow(a.second - mean, 2);});
+    return sqrt(sum / static_cast<double>(_n_populace));
+}
+
 BattleRoyale::BattleRoyale(int mrank, int seltype, double swap_rate, double permutation_rate, double shift_rate, double inversion_rate, double crossover_rate) :
     _rank{mrank}, _selectiontype{seltype}, _swap_rate(swap_rate), _permutation_rate(permutation_rate), _shift_rate(shift_rate), _inversion_rate(inversion_rate), _crossover_rate(crossover_rate), rnd(mrank)
 {}

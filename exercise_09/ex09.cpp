@@ -60,7 +60,8 @@ int main(int argc, char *argv[]){
 
     for(int i{0}; i<500; i++){
         fmt::print("Generation: {}\r", i);
-        fmt::print(fileout, "{0:<5} {1:<10.5f} {2:<10.5f}\n", i, pop.getDistance(0), pop.getHalfBest()/* pop.getBest() */);
+        fmt::print(fileout, "{0:<5} {1:<10.5f} {2:<10.5f} {3:<10.5f} {4:<10.5f}\n",
+                                i, pop.getDistance(0), pop.getHalfBest()/* pop.getBest() */, pop.getMean(), pop.getStdDev());
         hungergames.Reproduce(pop);
         hungergames.Mutation(pop);
     }
