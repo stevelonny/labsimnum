@@ -110,6 +110,5 @@ class BattleRoyale{
         void Shift(Population& pop, int column);
         // Inverts order of a chromosome
         void Inversion(Population& pop, int column);
-        //Todo: Crossover
 };
 
