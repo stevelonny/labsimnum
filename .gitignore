@@ -75,7 +75,7 @@ ipython_config.py
 build/
 build/*
 build/**
-data/
+data/ex_*
 *.tar.gz
 input-output/
 

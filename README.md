@@ -1,5 +1,5 @@
 # Steve's Numerical Simulation Laboratory
-
+_Stefano Lonardoni_
 
 
 This is a collection of exercises written during Laboratorio di Simulazione Numerica (A.A. 2023-2024) @UNIMI. It's a pair of `C++` codes for data generation and `jupyter-notebook` for data analysis.
@@ -37,14 +37,14 @@ The data generated will be stored in a direcotry called `data`. The Jupyter note
 ## Exercises
 
 ### Global todo
-
+<!-- 
 - [x] Refactor all libraries (ex.: only one blocking avg)
 - [x] Remake global cmake project structure like [this](https://cliutils.gitlab.io/modern-cmake/chapters/basics/structure.html)
-- [x] Before making data public, uniform naming convention for all data files
+- [x] Before making data public, uniform naming convention for all data files -->
 - [ ] Make data public for release
-- [ ] ~~Implement auto-equilibration~~
-- [ ] Investigate potential energy and total enry errors (too small !?) (investigate total energy)
-- [ ] Add messages to user when launching programss
+<!-- - [ ] ~~Implement auto-equilibration~~ -->
+<!-- - [x] Investigate potential energy and total enry errors (too small !?) (investigate total energy)
+- [ ] Add messages to user when launching programss -->
 
 ### Exercise 01 ([Notebook](/notebooks/exercise_01.ipynb), [Codes](/exercise_01/))
 Testing the pseudo-random generator with blocking averages and inverse distributions.
@@ -86,8 +86,8 @@ Done!
 ### Exercise 04 ([Notebook](/notebooks/exercise_04.ipynb), [Codes](/exercise_04/))
 First encounter with molecular dynamics. Pressure calculation and phase equilibration.
 
-#### To Do
-*CHECK TOTAL ENERGY FOR GASES*
+<!-- #### To Do
+*CHECK TOTAL ENERGY FOR GASES* -->
 
 <!-- 
 instead of using omp for multithreading and a monolithic program, a python script may be more appropriate for the task.
@@ -108,38 +108,39 @@ refactor code to use shared_ptr or similar. remember to use make_shared, and dyn
 ### Exercise 06 ([Notebook](/notebooks/exercise_06.ipynb), [Codes](/exercise_06/))
 Ising and Gibbs simulation.
 
-#### To Do
-* ADD OBSERVATIONS ON THE DIFFERENCE BETWEEN METRO AND GIBBS AT LOWER TEMPS *
+<!-- #### To Do
+* ADD OBSERVATIONS ON THE DIFFERENCE BETWEEN METRO AND GIBBS AT LOWER TEMPS * -->
 <!-- accutate description in the notebook, add assignments, plots and fits -->
 
 ### Exercise 07 ([Notebook](/notebooks/exercise_07.ipynb), [Codes](/exercise_07/))
 NVE vs NVT and their autocorrelation.
 
-#### To Do
+<!-- #### To Do
 accurate descr, ~~add assignments, refactor autocorrelation compute. NEEDS GOFRRRRR~~, add observations for comparisons and negative values in autocorrelation?
+ -->
 
 ### Exercise 08 ([Notebook](/notebooks/exercise_08.ipynb), [Codes](/exercise_08/))
 Quantum waveform sampling and simulated annealing with custom potential.
 
-#### To Do
-complete the observations ant theory part, power spectrum???, ~~add assignments,to do everything after refactor ex05 code. rewrite code to borrowing standr or similar~~
+<!-- #### To Do
+complete the observations ant theory part, power spectrum???, ~~add assignments,to do everything after refactor ex05 code. rewrite code to borrowing standr or similar~~ -->
 
 ### Exercise 09 ([Notebook](/notebooks/exercise_09.ipynb), [Codes](/exercise_09/))
 Genetic algorithm for TSP.
 
 
-#### To Do
+<!-- #### To Do
 accurate descr, add assignments
 (added better comparison between selections)
-~~check every mutation algorithm, and find best mutation rate.~~
+~~check every mutation algorithm, and find best mutation rate.~~ -->
 
 
 ### Exercise 10 ([Notebook](/notebooks/exercise_10.ipynb), [Codes](/exercise_10/))
 MPI parallelization with migrations for TSP.
 
-#### To Do
+<!-- #### To Do
 accurate descr, add assignments
-refactor atlas so we can send with MPI_Bcast the map to all nodes, or at least a seed system (should be already implentem implicitely beacause rnd set seed with 0)
+refactor atlas so we can send with MPI_Bcast the map to all nodes, or at least a seed system (should be already implentem implicitely beacause rnd set seed with 0) -->
 
 ### Exercise 11 ([Notebook, 01](/notebooks/exercise_11_1.ipynb), [Notebook, 02](/notebooks/exercise_11_2.ipynb), [Notebook, 03](/notebooks/exercise_11_3.ipynb))
 Fitting functions with machine learning.

@@ -904,7 +904,7 @@ void System :: averages(int blk){
     coutf << setw(12) << blk
           << setw(12) << average
           << setw(12) << sum_average/double(blk)
-          << setw(12) << this->error(sum_average, sum_ave2, blk) << endl;
+          << setw(12) << setprecision(6) << this->error(sum_average, sum_ave2, blk) << endl;
     coutf.close();
   }
   // TEMPERATURE ///////////////////////////////////////////////////////////////
