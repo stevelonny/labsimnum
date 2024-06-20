@@ -76,6 +76,7 @@ build/
 build/*
 build/**
 data/ex_*
+config_*
 *.tar.gz
 input-output/
 
