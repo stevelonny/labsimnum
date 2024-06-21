@@ -76,7 +76,12 @@ int main (int argc, char *argv[]){
     std::fflush(stdout);
     accepted = polis.getAccepted();
     current_energy = polis.getAvg();
+    
+    string filename = fmt::format("{0}/ex08_values.dat", paths::path_DATA.string());
+    ofstream fileout(filename.c_str());
+    fmt::print(fileout, "Temp\tMu\tSigma\tAcceptance\tEnergy\t\n");
     fmt::print("Temp: {0:<.3f}, Mu: {1:<.3f}, Sigma: {2:<.3f}, ,Acceptance: {3:<.2f}, Energy: {4:<.3f}\n", T, current_mu, current_sigma, accepted/(double)n_throws, current_energy);
+    fmt::print(fileout, "{0:<.3f}\t{1:<.3f}\t{2:<.3f}\t{3:<.2f}\t{4:<.3f}\n", T, current_mu, current_sigma, accepted/(double)n_throws, current_energy);
 
     polis.Reset();
     while(T>0.001){
@@ -124,7 +129,8 @@ int main (int argc, char *argv[]){
             next_energy = current_energy;
         }
 
-        fmt::print("Temp: {0:<.3f}, Mu: {1:<.3f}, Sigma: {2:<.3f}, ,Acceptance: {3:<.2f}, Energy: {4:<.3f}\n",T, next_mu, next_sigma, accepted/(double)n_throws, next_energy);
+        fmt::print(cerr, "Temp: {0:<.3f}, Mu: {1:<.3f}, Sigma: {2:<.3f}, ,Acceptance: {3:<.2f}, Energy: {4:<.3f}\n",T, next_mu, next_sigma, accepted/(double)n_throws, next_energy);
+        fmt::print(fileout, "{0:<.3f}\t{1:<.3f}\t{2:<.3f}\t{3:<.2f}\t{4:<.3f}\n", T, next_mu, next_sigma, accepted/(double)n_throws, next_energy);
         fmt::print("Best parameters: Mu: {0:<.3f}, Sigma: {1:<.3f}, Energy: {2:<.3f}\r", best_mu, best_sigma, best_energy);
         std::fflush(stdout);
         T *= 0.995;
@@ -132,7 +138,7 @@ int main (int argc, char *argv[]){
     }
 
     fmt::print("Best parameters: Mu: {0:<.3f}, Sigma: {1:<.3f}, Energy: {2:<.3f}\n", best_mu, best_sigma, best_energy);
-
+    fileout.close();
 /*     ofstream block_out;
     string filename{paths::path_DATA/"ex08_block.dat"};
     block_out.open(filename);

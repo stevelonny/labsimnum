@@ -20,7 +20,7 @@ int main(){
     BlockingLattice dilattice;
 
     ofstream out;
-    out.open(paths::path_DATA/"ex_02.2a.dat");
+    out.open(paths::path_DATA/"ex02.2a.dat");
     if(!out.is_open()){
         fmt::print(cerr, "Error: unable to open {0}\n", paths::path_DATA/"ex_02.2a.dat");
         return -1;
@@ -34,7 +34,7 @@ int main(){
     /* continuos walker */
     ContinueLattice conlattice;
 
-    out.open(paths::path_DATA/"ex_02.2b.dat");
+    out.open(paths::path_DATA/"ex02.2b.dat");
     if(!out.is_open()){
         fmt::print(cerr, "Error: unable to open {0}\n", paths::path_DATA/"ex_02.2b.dat");
         return -1;

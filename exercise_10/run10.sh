@@ -11,6 +11,6 @@ for mapper in "${mappers[@]}"; do
         echo "Running exercise_10 with mapper: $mapper and sel: $sel"
         
         # Call ./exercise_09 with the current mapper and sel values
-        mpiexec -np 10 ../build/exercise_10/exercise_10 "$mapper" "$sel"
+        mpiexec -np 10 ../build/exercise_10/exercise_10_2 "$mapper" "$sel"
     done
 done

@@ -21,7 +21,7 @@ int main(){
     BlockingMonte cosenounif(coseno, 0., 1.);
 
     ofstream out;
-    out.open(paths::path_DATA/"ex_02.1a.dat");
+    out.open(paths::path_DATA/"ex02.1a.dat");
     if(!out.is_open()){
         fmt::print(cerr, "Error: unable to open {0}\n", paths::path_DATA/"ex_02.1a.dat");
         return -1;
@@ -35,7 +35,7 @@ int main(){
     MonteLin cosenolin(cosenounif);
 
     out.clear();
-    out.open(paths::path_DATA/"ex_02.1b.dat");
+    out.open(paths::path_DATA/"ex02.1b.dat");
     if(!out.is_open()){
         fmt::print(cerr, "Error: unable to open {0}\n", paths::path_DATA/"ex_02.1b.dat");
         return -1;

@@ -17,7 +17,7 @@ int main(){
     initRandom(rnd, paths::path_SEED);
 
     ofstream out;
-    out.open(paths::path_DATA/"ex_03_call_direct.dat");
+    out.open(paths::path_DATA/"ex03_call_direct.dat");
     if(!out.is_open()){
         fmt::print(cerr, "Error: unable to open {0}\n", paths::path_DATA/"ex_03_call_direct.dat");
         return -1;
@@ -31,7 +31,7 @@ int main(){
     out.close();
     out.clear();
 
-    out.open(paths::path_DATA/"ex_03_call_discrete.dat");
+    out.open(paths::path_DATA/"ex03_call_discrete.dat");
     if(!out.is_open()){
         fmt::print(cerr, "Error: unable to open {0}\n", paths::path_DATA/"ex_03_call_discrete.dat");
         return -1;
@@ -44,7 +44,7 @@ int main(){
     out.close();
     out.clear();
 
-    out.open(paths::path_DATA/"ex_03_put_direct.dat");
+    out.open(paths::path_DATA/"ex03_put_direct.dat");
     if(!out.is_open()){
         fmt::print(cerr, "Error: unable to open {0}\n", paths::path_DATA/"ex_03_put_direct.dat");
         return -1;
@@ -57,7 +57,7 @@ int main(){
     out.close();
     out.clear();
 
-    out.open(paths::path_DATA/"ex_03_put_discrete.dat");
+    out.open(paths::path_DATA/"ex03_put_discrete.dat");
     if(!out.is_open()){
         fmt::print(cerr, "Error: unable to open {0}\n", paths::path_DATA/"ex_03_put_discrete.dat");
         return -1;

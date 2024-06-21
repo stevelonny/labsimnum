@@ -58,9 +58,9 @@ int main(int argc, char* argv[]){
         MPI_Bcast(coords.memptr(), coords.size(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
         atlas->InitCoords(coords);
     }
-    if((argc < 2 || argc >4)  && ((strcmp(argv[1], "circle") != 0 || strcmp(argv[1], "square") != 0) || strcmp(argv[1], "provita") != 0)){
-        fmt::print(cerr, "Usage: ./ex09_acc <mapper> [<seltype>]\nwhere <mapper> is either 'circle' or 'square'\n");
-        fmt::print(cerr, "and optionally <seltype> is either 0(exp selection) 1(roulette) 2(tournament) 3(stoccazz)\n");
+    if((argc < 2 || argc >4)  || ((strcmp(argv[1], "circle") != 0 || strcmp(argv[1], "square") != 0) || strcmp(argv[1], "provita") != 0)){
+        fmt::print(cerr, "Usage: <mapper> [<seltype>]\nwhere <mapper> is either 'circle' or 'square' or 'provita'\n", argv[0]);
+        fmt::print(cerr, "and optionally <seltype> is either 0(lin rank-based) 1(roulette) 2(tournament) 3(stoch-univ-acc)\n");
         MPI_Finalize();
         return 1;
     }
