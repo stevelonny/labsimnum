@@ -19,3 +19,5 @@ add_definitions(-D_VAR=\"${CMAKE_SOURCE_DIR}\")
 include_directories( ${CMAKE_BINARY_DIR} ${MPI_CXX_INCLUDE_DIRS})
 include_directories(SYSTEM ${MPI_INCLUDE_PATH})
 
+install(TARGETS exercise_10 exercise_10_2 trials)
+

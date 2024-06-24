@@ -12,3 +12,5 @@ target_link_libraries(library03 PUBLIC library01 PRIVATE random fmt::fmt stdc++f
 
 add_definitions(-D_VAR=\"${CMAKE_SOURCE_DIR}\")
 include_directories( ${CMAKE_BINARY_DIR})
+
+install(TARGETS exercise_03)

@@ -17,3 +17,5 @@ file(MAKE_DIRECTORY OUTPUT/CONFIG)
 
 add_definitions(-D_VAR=\"${CMAKE_SOURCE_DIR}\")
 include_directories( ${CMAKE_BINARY_DIR})
+
+install(TARGETS exercise_04_eq exercise_04_prep exercise_04_sim exercise_04_simeq)
