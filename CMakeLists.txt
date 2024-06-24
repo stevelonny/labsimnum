@@ -71,15 +71,14 @@ set(SEED_PATH "${CMAKE_SOURCE_DIR}/lib/seed.in")
 set(PRIMES_PATH "${CMAKE_SOURCE_DIR}/lib/Primes")
 set(IO_PATH "${CMAKE_SOURCE_DIR}/input-output")
 
-
 configure_file( ${CMAKE_SOURCE_DIR}/version_config.hpp.in ${CMAKE_BINARY_DIR}/version_config.h)
 
 # set the install time paths
 
-# set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}")
-# set(ROOT_PATH "${CMAKE_INSTALL_PREFIX}")
-# set(DATA_PATH "${CMAKE_INSTALL_PREFIX}/data")
-# set(SEED_PATH "${CMAKE_INSTALL_PREFIX}/lib/seed.in")
-# set(PRIMES_PATH "${CMAKE_INSTALL_PREFIX}/lib/Primes")
-# set(IO_PATH "${CMAKE_INSTALL_PREFIX}/input-output")
+set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}")
+set(ROOT_PATH "${CMAKE_INSTALL_PREFIX}")
+set(DATA_PATH "${CMAKE_INSTALL_PREFIX}/data")
+set(SEED_PATH "${CMAKE_INSTALL_PREFIX}/lib/seed.in")
+set(PRIMES_PATH "${CMAKE_INSTALL_PREFIX}/lib/Primes")
+set(IO_PATH "${CMAKE_INSTALL_PREFIX}/input-output")
 

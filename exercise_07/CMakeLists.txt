@@ -16,3 +16,5 @@ file(MAKE_DIRECTORY OUTPUT/CONFIG)
 
 add_definitions(-D_VAR=\"${CMAKE_SOURCE_DIR}\")
 include_directories( ${CMAKE_BINARY_DIR})
+
+install(TARGETS exercise_07_acc exercise_07_2 exercise_07_4 acceptance DESTINATION exercise_07)

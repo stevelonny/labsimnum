@@ -6,3 +6,5 @@ target_link_libraries(exercise_08_2 PRIVATE blocking random fmt::fmt stdc++fs)
 
 add_definitions(-D_VAR=\"${CMAKE_SOURCE_DIR}\")
 include_directories( ${CMAKE_BINARY_DIR})
+
+install(TARGETS exercise_08_1 exercise_08_2 DESTINATION exercise_08)
