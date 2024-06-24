@@ -6,4 +6,4 @@ set(CMAKE_CXX_FLAGS "-Wall -O3 -larmadillo")
 add_definitions(-D_VAR=\"${CMAKE_SOURCE_DIR}\")
 include_directories( ${CMAKE_BINARY_DIR})
 
-install(TARGETS exercise_06 DESTINATION exercise_06)
+install(TARGETS exercise_06)

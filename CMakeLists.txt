@@ -18,7 +18,13 @@ FetchContent_Declare(
     GIT_TAG 10.2.1
 )
 
-FetchContent_MakeAvailable(fmtlib)
+# FetchContent_MakeAvailable(fmtlib)
+
+FetchContent_GetProperties(fmtlib)
+if(NOT fmtlib_POPULATED)
+    FetchContent_Populate(fmtlib)
+    add_subdirectory(${fmtlib_SOURCE_DIR} ${fmtlib_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
 
 find_package(Armadillo REQUIRED)
 
