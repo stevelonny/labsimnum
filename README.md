@@ -29,16 +29,15 @@ cmake ..
 Once finished, `cmake` will have configured the necessary `Makefile` for each exercise. The codes can now be compiled and run. Navigate to the desidered exercise's folder (inside the `build` directory) or compile all of the targets by running ```make``` in the `build` directory.
 
 #### Installation
-Targets for building and installing the exercises are provided. The install destination is the `bin` directory in the root of the project. To install the exercises, run the following command in the `build` directory:
+Targets installing the exercises are provided. Run the following command in the `build` directory:
 
 ```shell
 make install
 ```
-
+This will store all the exectubles inside the `bin` folder in the root of the project.
 
 The data generated will be stored in a direcotry called `data`. The Jupyter notebooks will use this folder for the data analysis.
 
-<!-- to do: install or cpack -->
 ---
 
 ## Exercises
