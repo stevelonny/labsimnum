@@ -6,7 +6,7 @@ This is a collection of exercises written during Laboratorio di Simulazione Nume
 ## Usage
 
 ### Dependences
-For building and running the `C++` codes `cmake` and `make` are required, in addiction of a GCC compatible compiler (use gcc as clang does give problems beacuase of implicit narrowing and casting, tested with gcc 13.2 and 8.5). Dependencies linkage should be handled by CMake, but the user is required to provide them.
+For building and running the `C++` codes `cmake` and `make` are required, in addiction of a c/c++ compiler (tested on gcc 13.3, 8.5 and clang 17.0). Dependencies linkage should be handled by CMake, but the user is required to provide them.
 
 Data formatting in `c++`is done through [`fmtlib`](https://fmt.dev/latest/index.html) and it is provided through CMake.
 Some exercises will use the [`armadillo`](https://arma.sourceforge.net/) libraries,`OpenMP` for dirty and fast speedup, and [exercise_10](#exercise-10) uses [`mpich`]() implementation of the MPI interaface.
