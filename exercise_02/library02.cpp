@@ -89,7 +89,7 @@ void BlockingLattice::Calculate(int throws, int blocks, Random &rnd, ofstream &f
 
 void BlockingLattice::Funny(Random &rnd){
     //decide which direction will be the step
-    int which_dir{(rnd.Rannyu(0,3))};
+    int which_dir{static_cast<int>(rnd.Rannyu(0,3))};
     //decide if you want to step forward or backward
     int which_way{rnd.Rannyu(-1.,1.)<0?-1:1};
     double step[3] = {x, y, z};

@@ -282,7 +282,7 @@ void BattleRoyale::Swap(Population &pop, int column){
     else{
         second_gene = static_cast<int>(rnd.Rannyu(0, 2)) == 0 ? (first_gene - 1) : (first_gene + 1);
     }
-    int temp_gene{pop._apopulation(first_gene, column)};
+    int temp_gene{static_cast<int>(pop._apopulation(first_gene, column))};
     pop._apopulation(first_gene, column) = pop._apopulation(second_gene, column);
     pop._apopulation(second_gene, column) = temp_gene;
 }
@@ -291,7 +291,7 @@ void BattleRoyale::Permutation(Population &pop, int column){
     int m{static_cast<int>(rnd.Rannyu(1, pop.getNGenes()/2))};
     int center{static_cast<int>(rnd.Rannyu(1+m, pop.getNGenes()-m))};
     for(int i{0}; i < m; i++){
-        int temp{pop._apopulation(pop.pbc(center + i), column)};
+        int temp{static_cast<int>(pop._apopulation(pop.pbc(center + i), column))};
         pop._apopulation(pop.pbc(center + i), column) = pop._apopulation(pop.pbc(center - i), column);
         pop._apopulation(pop.pbc(center - i), column) = temp;
     }
@@ -307,7 +307,7 @@ void BattleRoyale::Shift(Population &pop, int column){
     
     int new_start{pop.pbc(start + step)};
     for(int i{0}; i < m; i++){
-        int temp{pop._apopulation(pop.pbc(new_start + i), column)};
+        int temp{static_cast<int>(pop._apopulation(pop.pbc(new_start + i), column))};
         pop._apopulation(pop.pbc(new_start + i), column) = pop._apopulation(pop.pbc(start + i), column);
         pop._apopulation(pop.pbc(start + i), column) = temp;
     }
@@ -317,7 +317,7 @@ void BattleRoyale::Inversion(Population& pop, int column){
     int start{static_cast<int>(rnd.Rannyu(1, pop.getNGenes()-1))};
     int end{static_cast<int>(rnd.Rannyu(start, pop.getNGenes()-1))};
     while(start < end){
-        int temp{pop._apopulation(start, column)};
+        int temp{static_cast<int>(pop._apopulation(start, column))};
         pop._apopulation(start, column) = pop._apopulation(end, column);
         pop._apopulation(end, column) = temp;
         start++;
