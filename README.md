@@ -3,6 +3,8 @@ _Stefano Lonardoni_
 
 This is a collection of exercises written during Laboratorio di Simulazione Numerica (A.A. 2023-2024) @UNIMI. It's a pair of `C++` codes for data generation and `jupyter-notebook` for data analysis.
 
+_Disclaimer: I've used this course to experiment with classes and some features of C++ such as smart pointers. This has resulted in some garbled code and it is not easy to read._
+
 ## Usage
 
 ### Dependences
